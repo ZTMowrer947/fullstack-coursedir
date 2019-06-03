@@ -8,7 +8,7 @@ const Layout = props => (
     <>
         <Header />
         <hr />
-        <main className="bounds">
+        <main>
             {props.children}
         </main>
     </>

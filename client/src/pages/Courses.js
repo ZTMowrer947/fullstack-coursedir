@@ -41,7 +41,7 @@ class Courses extends React.Component {
         });
 
         return (
-            <>
+            <div className="bounds">
                 {courseList}
                 <div className="grid-33">
                     <Link to="/courses/create" className="course--module course--add--module">
@@ -60,7 +60,7 @@ class Courses extends React.Component {
                         </h3>
                     </Link>
                 </div>
-            </>
+            </div>
         );
     }
 }
