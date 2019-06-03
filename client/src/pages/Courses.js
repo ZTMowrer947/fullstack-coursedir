@@ -2,7 +2,7 @@
 import axios from "axios";
 import React from "react";
 import { Link } from "react-router-dom";
-import Course from "../components/Course";
+import CourseLink from "../components/CourseLink";
 
 // Components
 class Courses extends React.Component {
@@ -37,7 +37,7 @@ class Courses extends React.Component {
     render() {
         // Map courses to Course components
         const courseList = this.state.courses.map(course => {
-            return <Course id={course.id} title={course.title} key={course.id} />
+            return <CourseLink id={course.id} title={course.title} key={course.id} />
         });
 
         return (

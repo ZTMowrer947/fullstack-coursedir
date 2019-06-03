@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom"
 
 // Components
-const Course = props => (
+const CourseLink = props => (
     <div className="grid-33">
         <Link to={`/courses/${props.id}`} className="course--module course--link">
             <h4 className="course--label">Course</h4>
@@ -14,10 +14,10 @@ const Course = props => (
 );
 
 // Prop Types
-Course.propTypes = {
+CourseLink.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
 }
 
 // Export
-export default Course;
+export default CourseLink;
