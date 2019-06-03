@@ -1,16 +1,12 @@
 // Imports
 import React from "react";
 import PropTypes from "prop-types";
+import Header from "./Header";
 
 // Component
 const Layout = props => (
     <>
-        <header className="header">
-            <div className="bounds">
-                <h1 className="header--logo">Courses</h1>
-                {/* TODO: Add nav */}
-            </div>
-        </header>
+        <Header />
         <hr />
         <main className="bounds">
             {props.children}
