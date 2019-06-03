@@ -32,14 +32,21 @@ const Course = props => (
             <div className="grid-25 grid-right">
                 <div className="course--stats">
                     <ul className="course--stats--list">
-                        <li className="course--stats--list--item">
-                            <h4>Estimated Time</h4>
-                            <h3>{props.estimatedTime}</h3>
-                        </li>
-                        <li className="course--stats--list--item">
-                            <h4>Materials Needed</h4>
-                            <ReactMarkdown source={props.materialsNeeded} />
-                        </li>
+                        {/* Display estimated time only if data is present */}
+                        {props.estimatedTime && (
+                            <li className="course--stats--list--item">
+                                <h4>Estimated Time</h4>
+                                <h3>{props.estimatedTime}</h3>
+                            </li>
+                        )}
+
+                        {/* Display needed materials only if data is present */}
+                        {props.materialsNeeded && (
+                            <li className="course--stats--list--item">
+                                <h4>Materials Needed</h4>
+                                <ReactMarkdown source={props.materialsNeeded} />
+                            </li>
+                        )}
                     </ul>
                 </div>
             </div>
@@ -52,8 +59,8 @@ Course.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    estimatedTime: PropTypes.string.isRequired,
-    materialsNeeded: PropTypes.string.isRequired,
+    estimatedTime: PropTypes.string,
+    materialsNeeded: PropTypes.string,
     user: PropTypes.shape({
         firstName: PropTypes.string.isRequired,
         lastName: PropTypes.string.isRequired,
