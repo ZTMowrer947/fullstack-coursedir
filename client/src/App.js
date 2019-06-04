@@ -9,6 +9,7 @@ import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
 import UserSignIn from "./pages/UserSignIn";
 import UserSignOut from "./pages/UserSignOut";
+import UserSignUp from "./pages/UserSignUp";
 
 // Component
 class App extends React.Component {
@@ -94,6 +95,7 @@ class App extends React.Component {
                         <Switch>
                             <Route path="/" exact={true} component={Courses} />
                             <Route path="/courses/:id" exact={true} component={CourseDetail} />
+                            <Route path="/signup" exact={true} component={UserSignUp} />
                             <Route path="/signin" exact={true} component={UserSignIn} />
                             <Route path="/signout" exact={true} render={() => (
                                 // Pass signOut function to UserSignOut component
