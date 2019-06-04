@@ -20,13 +20,8 @@ class App extends React.Component {
         // Pass props to base class
         super(props);
 
-        /*
-            Declare variable to hold user credentials.
-            We DO NOT want to store user credentials in state
-            because users with React Dev Tools could inspect state
-            and get the credentials, thereby defeating the purpose of authentication.
-        */
-       this.credentials = null;
+        // Declare variables to hold credentials
+        this.credentials = null;
 
         // Initialize state
         this.state = {
@@ -41,6 +36,19 @@ class App extends React.Component {
     // Function to get credentials
     getCredentials() { return this.credentials; }
 
+    // Get user with credentials
+    async getUserWithCredentials(credentials) {
+        // Get user from API with credentials
+        const response = await axios.get("http://localhost:5000/api/users", {
+            headers: {
+                authorization: `Basic ${credentials}`,
+            },
+        });
+
+        // Return the response body
+        return response.data;
+    }
+
     // Sign-in function
     async signIn(emailAddress, password) {
         // Declare variable to hold credentials
@@ -50,11 +58,7 @@ class App extends React.Component {
         credentials = Buffer.from(credentials).toString("base64");
 
         // Get user from API with credentials to verify correctness
-        const response = await axios.get("http://localhost:5000/api/users", {
-            headers: {
-                authorization: `Basic ${credentials}`,
-            },
-        });
+        const user = await this.getUserWithCredentials(credentials);
 
         // If the request succeeds, store credentials for later use
         this.credentials = credentials;
@@ -65,7 +69,7 @@ class App extends React.Component {
                 ...prevState,
                 authData: {
                     ...prevState.authData,
-                    user: response.data,
+                    user,
                 }
             };
         });
