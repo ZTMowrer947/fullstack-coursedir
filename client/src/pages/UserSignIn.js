@@ -1,9 +1,50 @@
 // Imports
 import React from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
 // Component
 class UserSignIn extends React.Component {
+    // Constructor
+    constructor(props) {
+        // Pass props to base class
+        super(props);
+
+        // Initialize state
+        this.state = {
+            emailAddress: "",
+            password: "",
+        };
+    }
+
+    // Handle input change
+    handleInputChange(event) {
+        // Get target name
+        const name = event.target.name;
+
+        // Update state with new input value
+        this.setState({
+            [name]: event.target.value,
+        });
+    }
+
+    // Handle form submission
+    handleFormSubmit(event) {
+        // Prevent default behavior
+        event.preventDefault();
+
+        // Get data from form inputs
+        const { emailAddress, password } = this.state;
+
+        // Attempt to sign in using credentials
+        this.context.signIn(emailAddress, password)
+            // If sign-in succeeds,
+            .then(() => {
+                // Redirect to home page
+                this.props.history.push("/");
+            });
+    }
+
     // Render to DOM
     render() {
         return (
@@ -11,12 +52,26 @@ class UserSignIn extends React.Component {
                 <div className="grid-33 centered signin">
                     <h1>Sign In</h1>
                     <div>
-                        <form>
+                        <form method="POST" onSubmit={this.handleFormSubmit.bind(this)}>
                             <div>
-                                <input id="emailAddress" name="emailAddress" type="text" className="" placeholder="Email Address" />
+                                <input
+                                    id="emailAddress"
+                                    name="emailAddress"
+                                    type="text"
+                                    className=""
+                                    placeholder="Email Address"
+                                    onChange={this.handleInputChange.bind(this)}
+                                />
                             </div>
                             <div>
-                                <input id="password" name="password" type="password" className="" placeholder="Password" />
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    className=""
+                                    placeholder="Password"
+                                    onChange={this.handleInputChange.bind(this)}
+                                />
                             </div>
                             <div className="grid-100 pad-bottom">
                                 <button className="button" type="submit">Sign In</button>
@@ -31,6 +86,9 @@ class UserSignIn extends React.Component {
         );
     }
 }
+
+// Context
+UserSignIn.contextType = AuthContext;
 
 // Export
 export default UserSignIn;
