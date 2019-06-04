@@ -1,9 +1,36 @@
 // Imports
+import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "react-router-dom";
 
 // Component
 class ModifyCourseForm extends React.Component {
+    // Constructor
+    constructor(props) {
+        // Pass props to base class
+        super(props);
+
+        // Initialize state
+        this.state = {
+            title: this.props.title,
+            description: this.props.description,
+            estimatedTime: this.props.estimatedTime,
+            materialsNeeded: this.props.materialsNeeded,
+        };
+    }
+
+    // Handle input changes
+    handleInputChange(event) {
+        // Get event target's name and value
+        const { name, value } = event.target;
+
+        // Update state for input field
+        this.setState({
+            [name]: value,
+        });
+    }
+
+    // Render to DOM
     render() {
         return (
             <div>
@@ -16,7 +43,7 @@ class ModifyCourseForm extends React.Component {
                         </ul>
                     </div>
                 </div> */}
-                <form>
+                <form onSubmit={this.props.handleSubmit}>
                     <div className="grid-66">
                         <div className="course--header">
                             <h4 className="course--label">Course</h4>
@@ -27,6 +54,8 @@ class ModifyCourseForm extends React.Component {
                                     type="text"
                                     className="input-title course--title--input"
                                     placeholder="Course title..."
+                                    onChange={this.handleInputChange.bind(this)}
+                                    value={this.state.title}
                                 />
                             </div>
                             <p>By {this.props.user.firstName} {this.props.user.lastName}</p>
@@ -38,6 +67,8 @@ class ModifyCourseForm extends React.Component {
                                     name="description"
                                     className=""
                                     placeholder="Course description..."
+                                    onChange={this.handleInputChange.bind(this)}
+                                    value={this.state.description}
                                 ></textarea>
                             </div>
                         </div>
@@ -54,6 +85,8 @@ class ModifyCourseForm extends React.Component {
                                             type="text"
                                             className="course--time--input"
                                             placeholder="Hours"
+                                            onChange={this.handleInputChange.bind(this)}
+                                            value={this.state.estimatedTime}
                                         />
                                     </div>
                                 </li>
@@ -65,6 +98,8 @@ class ModifyCourseForm extends React.Component {
                                             name="materialsNeeded"
                                             className=""
                                             placeholder="List materials..."
+                                            onChange={this.handleInputChange.bind(this)}
+                                            value={this.state.materialsNeeded}
                                         ></textarea>
                                     </div>
                                 </li>
@@ -80,6 +115,27 @@ class ModifyCourseForm extends React.Component {
         );
     }
 }
+
+// Prop Types
+ModifyCourseForm.propTypes = {
+    user: PropTypes.shape({
+        firstName: PropTypes.string.isRequired,
+        lastName: PropTypes.string.isRequired,
+    }).isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    estimatedTime: PropTypes.string.isRequired,
+    materialsNeeded: PropTypes.string.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+}
+
+// Default props
+ModifyCourseForm.defaultProps = {
+    title: "",
+    description: "",
+    estimatedTime: "",
+    materialsNeeded: "",
+};
 
 // Export
 export default ModifyCourseForm;
