@@ -75,16 +75,16 @@ class App extends React.Component {
     // Render to DOM
     render() {
         return (
-            <AuthContext.Provider value={this.authData}>
-                <Layout>
-                    <BrowserRouter>
+            <AuthContext.Provider value={this.authData}>                
+                <BrowserRouter>
+                    <Layout>
                         <Switch>
                             <Route path="/" exact={true} component={Courses} />
                             <Route path="/courses/:id" exact={true} component={CourseDetail} />
                             <Route path="/signin" exact={true} component={UserSignIn} />
                         </Switch>
-                    </BrowserRouter>
-                </Layout>
+                    </Layout>
+                </BrowserRouter>
             </AuthContext.Provider>
         );
     }
