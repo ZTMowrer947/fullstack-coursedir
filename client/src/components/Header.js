@@ -1,12 +1,13 @@
 // Imports
 import React from "react";
+import Nav from "./Nav";
 
 // Component
 const Header = () => (
     <header className="header">
         <div className="bounds">
             <h1 className="header--logo">Courses</h1>
-            {/* TODO: Add nav */}
+            <Nav />
         </div>
     </header>
 );
