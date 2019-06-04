@@ -16,26 +16,22 @@ class App extends React.Component {
         // Pass props to base class
         super(props);
 
-        // Initialize state
-        this.state = {
-            // Data for the currently authenticated user
-            user: null,
-        }
-
         /*
             Declare variable to hold user credentials.
             We DO NOT want to store user credentials in state
             because users with React Dev Tools could inspect state
             and get the credentials, thereby defeating the purpose of authentication.
         */
-        this.credentials = null;
+       this.credentials = null;
 
-        // Define data to pass to context
-        this.authData = {
-            getCredentials: this.getCredentials,
-            signIn: this.signIn,
-            signOut: this.signOut,
-            user: this.state.user,
+        // Initialize state
+        this.state = {
+            authData: {
+                getCredentials: this.getCredentials.bind(this),
+                signIn: this.signIn.bind(this),
+                signOut: this.signOut.bind(this),
+                user: null,
+            },
         };
     }
 
@@ -61,8 +57,14 @@ class App extends React.Component {
         this.credentials = credentials;
 
         // Update state with user data
-        this.setState({
-            user: response.data,
+        this.setState(prevState => {
+            return {
+                ...prevState,
+                authData: {
+                    ...prevState.authData,
+                    user: response.data,
+                }
+            };
         });
     }
 
@@ -75,7 +77,7 @@ class App extends React.Component {
     // Render to DOM
     render() {
         return (
-            <AuthContext.Provider value={this.authData}>                
+            <AuthContext.Provider value={this.state.authData}>                
                 <BrowserRouter>
                     <Layout>
                         <Switch>
