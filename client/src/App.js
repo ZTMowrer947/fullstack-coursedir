@@ -8,6 +8,7 @@ import AuthContext from "./context/AuthContext";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
 import UserSignIn from "./pages/UserSignIn";
+import UserSignOut from "./pages/UserSignOut";
 
 // Component
 class App extends React.Component {
@@ -29,7 +30,6 @@ class App extends React.Component {
             authData: {
                 getCredentials: this.getCredentials.bind(this),
                 signIn: this.signIn.bind(this),
-                signOut: this.signOut.bind(this),
                 user: null,
             },
         };
@@ -82,7 +82,7 @@ class App extends React.Component {
                     user: null,
                 },
             };
-        })
+        });
     }
 
     // Render to DOM
@@ -95,6 +95,10 @@ class App extends React.Component {
                             <Route path="/" exact={true} component={Courses} />
                             <Route path="/courses/:id" exact={true} component={CourseDetail} />
                             <Route path="/signin" exact={true} component={UserSignIn} />
+                            <Route path="/signout" exact={true} render={() => (
+                                // Pass signOut function to UserSignOut component
+                                <UserSignOut signOut={this.signOut.bind(this)} />
+                            )} />
                         </Switch>
                     </Layout>
                 </BrowserRouter>
