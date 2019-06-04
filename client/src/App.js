@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import AuthContext from "./context/AuthContext";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
+import UserSignIn from "./pages/UserSignIn";
 
 // Component
 class App extends React.Component {
@@ -68,6 +69,7 @@ class App extends React.Component {
                         <Switch>
                             <Route path="/" exact={true} component={Courses} />
                             <Route path="/courses/:id" exact={true} component={CourseDetail} />
+                            <Route path="/signin" exact={true} component={UserSignIn} />
                         </Switch>
                     </BrowserRouter>
                 </Layout>
