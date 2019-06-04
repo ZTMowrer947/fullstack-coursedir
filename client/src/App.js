@@ -72,6 +72,17 @@ class App extends React.Component {
     signOut() {
         // Clear credentials
         this.credentials = null;
+
+        // Remove user from state
+        this.setState(prevState => {
+            return {
+                ...prevState,
+                authData: {
+                    ...prevState.authData,
+                    user: null,
+                },
+            };
+        })
     }
 
     // Render to DOM
