@@ -36,6 +36,37 @@ class UserSignUp extends React.Component {
     handleFormSubmit(event) {
         // Prevent default behavior
         event.preventDefault();
+
+        // Get form values
+        const {
+            firstName,
+            lastName,
+            emailAddress,
+            password,
+            confirmPassword,
+        } = this.state;
+
+        // TODO: Validate form data
+
+        // If the password and confirm password fields match
+        if (password === confirmPassword) {
+            // Create user through API
+            axios.post("http://localhost:5000/api/users", {
+                firstName,
+                lastName,
+                emailAddress,
+                password,
+            }).then(response => {
+                if (response.status === 201) {
+                    // Sign in the user
+                    this.context.signIn(emailAddress, password);
+                    
+                    // Redirect to home page
+                    this.props.history.push("/");
+                }
+            })
+            // TODO: Handle validation errors
+        }
     }
 
     render() {
