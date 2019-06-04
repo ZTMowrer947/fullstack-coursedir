@@ -10,6 +10,8 @@ import CourseDetail from "./pages/CourseDetail";
 import UserSignIn from "./pages/UserSignIn";
 import UserSignOut from "./pages/UserSignOut";
 import UserSignUp from "./pages/UserSignUp";
+import PrivateRoute from "./components/PrivateRoute";
+import CreateCourse from "./pages/CreateCourse";
 
 // Component
 class App extends React.Component {
@@ -94,6 +96,7 @@ class App extends React.Component {
                     <Layout>
                         <Switch>
                             <Route path="/" exact={true} component={Courses} />
+                            <PrivateRoute path="/courses/create" exact={true} component={CreateCourse} />
                             <Route path="/courses/:id" exact={true} component={CourseDetail} />
                             <Route path="/signup" exact={true} component={UserSignUp} />
                             <Route path="/signin" exact={true} component={UserSignIn} />
