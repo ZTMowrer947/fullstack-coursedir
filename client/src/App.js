@@ -20,9 +20,6 @@ class App extends React.Component {
         // Pass props to base class
         super(props);
 
-        // Declare variables to hold credentials
-        this.credentials = null;
-
         // Initialize state
         this.state = {
             authData: {
@@ -34,7 +31,7 @@ class App extends React.Component {
     }
 
     // Function to get credentials
-    getCredentials() { return this.credentials; }
+    getCredentials() { return localStorage.getItem("credentials"); }
 
     // Get user with credentials
     async getUserWithCredentials(credentials) {
@@ -61,7 +58,7 @@ class App extends React.Component {
         const user = await this.getUserWithCredentials(credentials);
 
         // If the request succeeds, store credentials for later use
-        this.credentials = credentials;
+        localStorage.setItem("credentials", credentials);
 
         // Update state with user data
         this.setState(prevState => {
@@ -78,7 +75,7 @@ class App extends React.Component {
     // Sign-out function
     signOut() {
         // Clear credentials
-        this.credentials = null;
+        localStorage.removeItem("credentials");
 
         // Remove user from state
         this.setState(prevState => {
@@ -90,6 +87,31 @@ class App extends React.Component {
                 },
             };
         });
+    }
+
+    // Run when component has mounted
+    componentDidMount() {
+        // Get credentials
+        const credentials = this.getCredentials();
+
+        // If credentials are present but the user in state is not,
+        if (credentials && this.state.authData.user === null) {
+            // Get user with credentials
+            this.getUserWithCredentials(credentials)
+                // If successful,
+                .then(user => {
+                    // Update state with new user
+                    this.setState(prevState => {
+                        return {
+                            ...prevState,
+                            authData: {
+                                ...prevState.authData,
+                                user,
+                            },
+                        };
+                    });
+                });
+        }
     }
 
     // Render to DOM
