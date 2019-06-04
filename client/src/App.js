@@ -16,6 +16,12 @@ class App extends React.Component {
         // Pass props to base class
         super(props);
 
+        // Initialize state
+        this.state = {
+            // Data for the currently authenticated user
+            user: null,
+        }
+
         /*
             Declare variable to hold user credentials.
             We DO NOT want to store user credentials in state
@@ -24,11 +30,12 @@ class App extends React.Component {
         */
         this.credentials = null;
 
-        // Define service object to pass to context
-        this.authService = {
+        // Define data to pass to context
+        this.authData = {
             getCredentials: this.getCredentials,
             signIn: this.signIn,
             signOut: this.signOut,
+            user: this.state.user,
         };
     }
 
@@ -44,7 +51,7 @@ class App extends React.Component {
         credentials = Buffer.from(credentials).toString("base64");
 
         // Get user from API with credentials to verify correctness
-        await axios.get("http://localhost:5000/api/users", {
+        const response = await axios.get("http://localhost:5000/api/users", {
             headers: {
                 authorization: `Basic ${credentials}`,
             },
@@ -52,6 +59,11 @@ class App extends React.Component {
 
         // If the request succeeds, store credentials for later use
         this.credentials = credentials;
+
+        // Update state with user data
+        this.setState({
+            user: response.data,
+        });
     }
 
     // Sign-out function
@@ -63,7 +75,7 @@ class App extends React.Component {
     // Render to DOM
     render() {
         return (
-            <AuthContext.Provider value={this.authService}>
+            <AuthContext.Provider value={this.authData}>
                 <Layout>
                     <BrowserRouter>
                         <Switch>
