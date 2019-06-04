@@ -7,20 +7,20 @@ class UserSignIn extends React.Component {
     // Render to DOM
     render() {
         return (
-            <div class="bounds">
-                <div class="grid-33 centered signin">
+            <div className="bounds">
+                <div className="grid-33 centered signin">
                     <h1>Sign In</h1>
                     <div>
                         <form>
                             <div>
-                                <input id="emailAddress" name="emailAddress" type="text" class="" placeholder="Email Address" />
+                                <input id="emailAddress" name="emailAddress" type="text" className="" placeholder="Email Address" />
                             </div>
                             <div>
-                                <input id="password" name="password" type="password" class="" placeholder="Password" />
+                                <input id="password" name="password" type="password" className="" placeholder="Password" />
                             </div>
-                            <div class="grid-100 pad-bottom">
-                                <button class="button" type="submit">Sign In</button>
-                                <Link to="/" class="button button-secondary">Cancel</Link>
+                            <div className="grid-100 pad-bottom">
+                                <button className="button" type="submit">Sign In</button>
+                                <Link to="/" className="button button-secondary">Cancel</Link>
                             </div>
                         </form>
                     </div>
