@@ -12,6 +12,7 @@ import UserSignOut from "./pages/UserSignOut";
 import UserSignUp from "./pages/UserSignUp";
 import PrivateRoute from "./components/PrivateRoute";
 import CreateCourse from "./pages/CreateCourse";
+import DeleteCourse from "./pages/DeleteCourse";
 
 // Component
 class App extends React.Component {
@@ -124,6 +125,7 @@ class App extends React.Component {
                             <Route path="/" exact={true} component={Courses} />
                             <PrivateRoute path="/courses/create" exact={true} component={CreateCourse} />
                             <Route path="/courses/:id" exact={true} component={CourseDetail} />
+                            <PrivateRoute path="/courses/:id/delete" exact={true} component={DeleteCourse} />
                             <Route path="/signup" exact={true} component={UserSignUp} />
                             <Route path="/signin" exact={true} component={UserSignIn} />
                             <Route path="/signout" exact={true} render={() => (
