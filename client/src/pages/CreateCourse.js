@@ -1,5 +1,6 @@
 // Imports
 import axios from "axios";
+import PropTypes from "prop-types";
 import React from "react";
 import ModifyCourseForm from "../components/ModifyCourseForm";
 
@@ -37,6 +38,15 @@ class CreateCourse extends React.Component {
             </div>
         );
     }
+}
+
+// Prop Types
+CreateCourse.propTypes = {
+    getCredentials: PropTypes.func.isRequired,
+    user: PropTypes.shape({
+        firstName: PropTypes.string.isRequired,
+        lastName: PropTypes.string.isRequired,
+    }).isRequired,
 }
 
 // Export
