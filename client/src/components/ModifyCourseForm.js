@@ -30,6 +30,17 @@ class ModifyCourseForm extends React.Component {
         });
     }
 
+    // Handle form submisson
+    handleFormSubmit(event) {
+        // Prevent default behavior
+        event.preventDefault();
+
+        // TODO: Validate form
+
+        // Call submit handler from props with form values
+        this.props.onSubmit(this.state);
+    }
+
     // Render to DOM
     render() {
         return (
@@ -43,7 +54,7 @@ class ModifyCourseForm extends React.Component {
                         </ul>
                     </div>
                 </div> */}
-                <form onSubmit={this.props.handleSubmit}>
+                <form onSubmit={this.handleFormSubmit.bind(this)}>
                     <div className="grid-66">
                         <div className="course--header">
                             <h4 className="course--label">Course</h4>
@@ -126,7 +137,7 @@ ModifyCourseForm.propTypes = {
     description: PropTypes.string.isRequired,
     estimatedTime: PropTypes.string.isRequired,
     materialsNeeded: PropTypes.string.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
 }
 
 // Default props
