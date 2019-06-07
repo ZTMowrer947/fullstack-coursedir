@@ -15,6 +15,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import CreateCourse from "./pages/CreateCourse";
 import DeleteCourse from "./pages/DeleteCourse";
 import LoadingIndicator from "./components/LoadingIndicator";
+import UpdateCourse from "./pages/UpdateCourse";
 
 // Component
 class App extends React.Component {
@@ -165,6 +166,7 @@ class App extends React.Component {
                                 <Route path="/" exact={true} component={Courses} />
                                 <PrivateRoute path="/courses/create" exact={true} component={CreateCourse} />
                                 <Route path="/courses/:id" exact={true} component={CourseDetail} />
+                                <PrivateRoute path="/courses/:id/update" exact={true} component={UpdateCourse} />
                                 <PrivateRoute path="/courses/:id/delete" exact={true} component={DeleteCourse} />
                                 <Route path="/signup" exact={true} component={UserSignUp} />
                                 <Route path="/signin" exact={true} component={UserSignIn} />
