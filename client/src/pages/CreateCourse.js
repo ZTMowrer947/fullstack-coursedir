@@ -6,28 +6,27 @@ import ModifyCourseForm from "../components/ModifyCourseForm";
 
 // Component
 class CreateCourse extends React.Component {
-    handleSubmit(formData) {
+    async handleSubmit(formData) {
         // Get authorization credentials
         const credentials = this.props.getCredentials();
 
         // Create course using form data
-        axios.post("http://localhost:5000/api/courses", formData, {
+        const response = await axios.post("http://localhost:5000/api/courses", formData, {
             // Set request headers
             headers: {
                 // Attach authorization credentials
                 authorization: `Basic ${credentials}`,
             },
         })
-            .then(response => {
-                // Get location of new course
-                const { location } = response.headers;
 
-                // Trim /api prefix from location
-                const frontendLocation = location.replace("/api", "");
+        // Get location of new course
+        const { location } = response.headers;
 
-                // Redirect to newly created course
-                this.props.history.push(frontendLocation);
-            })
+        // Trim /api prefix from location
+        const frontendLocation = location.replace("/api", "");
+
+        // Redirect to newly created course
+        this.props.history.push(frontendLocation);
     }
 
     render() {
