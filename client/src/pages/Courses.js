@@ -3,6 +3,7 @@ import axios from "axios";
 import React from "react";
 import { Link } from "react-router-dom";
 import CourseLink from "../components/CourseLink";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 // Components
 class Courses extends React.Component {
@@ -15,6 +16,7 @@ class Courses extends React.Component {
         this.state = {
             courses: [],
             error: null,
+            isLoading: true,
         };
     }
 
@@ -28,6 +30,7 @@ class Courses extends React.Component {
                 // Update state with course listing
                 this.setState({
                     courses: response.data,
+                    isLoading: false,
                 });
             });
         // TODO: Handle errors
@@ -35,6 +38,11 @@ class Courses extends React.Component {
 
     // Render to DOM
     render() {
+        // If we are still loading,
+        if (this.state.isLoading)
+            // Render LoadingIndicator
+            return <LoadingIndicator size={40} />;
+
         // Map courses to Course components
         const courseList = this.state.courses.map(course => {
             return <CourseLink id={course.id} title={course.title} key={course.id} />

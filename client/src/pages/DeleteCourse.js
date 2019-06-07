@@ -3,6 +3,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "react-router-dom";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 // Component
 class DeleteCourse extends React.Component {
@@ -79,7 +80,7 @@ class DeleteCourse extends React.Component {
         // If we are still loading
         if (this.state.isLoading)
             // Render loading indicator
-            return <h1>Loading...</h1>;
+            return <LoadingIndicator size={40} />;
 
         // Otherwise, render delete confirmation form
         return (

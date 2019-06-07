@@ -2,6 +2,7 @@
 import axios from "axios";
 import React from "react";
 import Course from "../components/Course";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 // Components
 class CourseDetail extends React.Component {
@@ -48,8 +49,8 @@ class CourseDetail extends React.Component {
             );
         }
 
-        // Otherwise, render loading message
-        return <h1>Loading...</h1>;
+        // Otherwise, render loading indicator
+        return <LoadingIndicator size={40} />;
     }
 }
 

@@ -13,6 +13,7 @@ import UserSignUp from "./pages/UserSignUp";
 import PrivateRoute from "./components/PrivateRoute";
 import CreateCourse from "./pages/CreateCourse";
 import DeleteCourse from "./pages/DeleteCourse";
+import LoadingIndicator from "./components/LoadingIndicator";
 
 // Component
 class App extends React.Component {
@@ -28,6 +29,7 @@ class App extends React.Component {
                 signIn: this.signIn.bind(this),
                 user: null,
             },
+            isLoading: true,
         };
     }
 
@@ -109,9 +111,15 @@ class App extends React.Component {
                                 ...prevState.authData,
                                 user,
                             },
+                            isLoading: false,
                         };
                     });
                 });
+        } else {
+            // Otherwise, update state to indicate that we are finished loading
+            this.setState({
+                isLoading: false,
+            })
         }
     }
 
@@ -121,18 +129,21 @@ class App extends React.Component {
             <AuthContext.Provider value={this.state.authData}>                
                 <BrowserRouter>
                     <Layout>
-                        <Switch>
-                            <Route path="/" exact={true} component={Courses} />
-                            <PrivateRoute path="/courses/create" exact={true} component={CreateCourse} />
-                            <Route path="/courses/:id" exact={true} component={CourseDetail} />
-                            <PrivateRoute path="/courses/:id/delete" exact={true} component={DeleteCourse} />
-                            <Route path="/signup" exact={true} component={UserSignUp} />
-                            <Route path="/signin" exact={true} component={UserSignIn} />
-                            <Route path="/signout" exact={true} render={() => (
-                                // Pass signOut function to UserSignOut component
-                                <UserSignOut signOut={this.signOut.bind(this)} />
-                            )} />
-                        </Switch>
+                        {/* If we are still loading, render LoadingIndicator, otherwise render routes */}
+                        {this.state.isLoading ? <LoadingIndicator /> : (
+                            <Switch>
+                                <Route path="/" exact={true} component={Courses} />
+                                <PrivateRoute path="/courses/create" exact={true} component={CreateCourse} />
+                                <Route path="/courses/:id" exact={true} component={CourseDetail} />
+                                <PrivateRoute path="/courses/:id/delete" exact={true} component={DeleteCourse} />
+                                <Route path="/signup" exact={true} component={UserSignUp} />
+                                <Route path="/signin" exact={true} component={UserSignIn} />
+                                <Route path="/signout" exact={true} render={() => (
+                                    // Pass signOut function to UserSignOut component
+                                    <UserSignOut signOut={this.signOut.bind(this)} />
+                                )} />
+                            </Switch>
+                        )}
                     </Layout>
                 </BrowserRouter>
             </AuthContext.Provider>
