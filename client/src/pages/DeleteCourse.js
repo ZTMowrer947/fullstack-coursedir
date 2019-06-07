@@ -108,7 +108,7 @@ class DeleteCourse extends React.Component {
                         </div>
                         <div className="grid-100 pad-bottom">
                             <button className="button" type="submit">DELETE Course</button>
-                            <Link to="/" className="button button-secondary">Cancel</Link>
+                            <Link to={`/${this.props.match.params.id}`} className="button button-secondary">Cancel</Link>
                         </div>
                     </form>
                 </div>

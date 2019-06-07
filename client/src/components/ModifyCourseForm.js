@@ -119,7 +119,7 @@ class ModifyCourseForm extends React.Component {
                     </div>
                     <div className="grid-100 pad-bottom">
                         <button className="button" type="submit">Create Course</button>
-                        <Link to="/" className="button button-secondary">Cancel</Link>
+                        <Link to={this.props.id ? `/courses/${this.props.id}` : "/"} className="button button-secondary">Cancel</Link>
                     </div>
                 </form>
             </div>
@@ -133,6 +133,7 @@ ModifyCourseForm.propTypes = {
         firstName: PropTypes.string.isRequired,
         lastName: PropTypes.string.isRequired,
     }).isRequired,
+    id: PropTypes.number,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     estimatedTime: PropTypes.string.isRequired,
