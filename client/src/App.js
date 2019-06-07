@@ -2,6 +2,7 @@
 import axios from "axios";
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import CookieContext from "universal-cookie";
 import "./App.css";
 import Layout from "./components/Layout";
 import AuthContext from "./context/AuthContext";
@@ -22,6 +23,9 @@ class App extends React.Component {
         // Pass props to base class
         super(props);
 
+        // Create cookie context
+        this.cookieContext = new CookieContext();
+
         // Initialize state
         this.state = {
             authData: {
@@ -34,7 +38,7 @@ class App extends React.Component {
     }
 
     // Function to get credentials
-    getCredentials() { return localStorage.getItem("credentials"); }
+    getCredentials() { return this.cookieContext.get("sdbc-credentials"); }
 
     // Get user with credentials
     async getUserWithCredentials(credentials) {
@@ -61,7 +65,20 @@ class App extends React.Component {
         const user = await this.getUserWithCredentials(credentials);
 
         // If the request succeeds, store credentials for later use
-        localStorage.setItem("credentials", credentials);
+        this.cookieContext.set("sdbc-credentials", credentials, {
+            // Set domain and path
+            domain: "localhost",
+            path: "/",
+
+            // Expire after 2 hours
+            maxAge: 60 * 60 * 2,
+
+            // Set secure flag when in production
+            secure: process.env.NODE_ENV === "production",
+
+            // Strict Same-Site policy
+            sameSite: "strict",
+        });
 
         // Update state with user data
         this.setState(prevState => {
@@ -78,7 +95,20 @@ class App extends React.Component {
     // Sign-out function
     signOut() {
         // Clear credentials
-        localStorage.removeItem("credentials");
+        this.cookieContext.remove("sdbc-credentials", {
+            // Set domain and path
+            domain: "localhost",
+            path: "/",
+
+            // Expire after 2 hours
+            maxAge: 60 * 60 * 2,
+
+            // Set secure flag when in production
+            secure: process.env.NODE_ENV === "production",
+
+            // Strict Same-Site policy
+            sameSite: "strict",
+        });
 
         // Remove user from state
         this.setState(prevState => {
