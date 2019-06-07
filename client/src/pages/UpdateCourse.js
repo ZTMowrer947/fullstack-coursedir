@@ -21,7 +21,22 @@ class UpdateCourse extends React.Component {
 
     // Handle form submission
     handleSubmit(formData) {
-        // TODO: Update course
+        // Get credentials and course ID
+        const credentials = this.props.getCredentials();
+        const { id } = this.state.course;
+
+        // Update course
+        axios.put(`http://localhost:5000/api/courses/${id}`, formData, {
+            headers: {
+                authorization: `Basic ${credentials}`,
+            },
+        })
+            // If this is successful,
+            .then(() => {
+                // Redirect to course page
+                this.props.history.push(`/courses/${id}`);
+            });
+        // TODO: Handle errors
     }
 
     // Run after component has been mounted to the DOM
