@@ -18,6 +18,7 @@ class ModifyCourseForm extends React.Component {
                 estimatedTime: this.props.estimatedTime || "",
                 materialsNeeded: this.props.materialsNeeded || "",
             },
+            errors: [],
         };
     }
 
@@ -43,6 +44,11 @@ class ModifyCourseForm extends React.Component {
         // Prevent default behavior
         event.preventDefault();
 
+        // Reset validation errors
+        this.setState({
+            errors: [],
+        });
+
         // TODO: Validate form
 
         // Map state data to form data
@@ -61,22 +67,46 @@ class ModifyCourseForm extends React.Component {
         }, {});
 
         // Call submit handler from props with form values
-        this.props.onSubmit(formData);
+        this.props.onSubmit(formData).catch(error => {
+            if (error.response) {
+                // console.log(error.response.status, error.response.data.message);
+                if (error.response.status === 400) {
+                    // Get validation errors
+                    const validationErrors = error.response.data.message.split(",\n").map(message => {
+                        // Get index of prefix
+                        const prefixIndex = message.indexOf(": ");
+
+                        // Return actual error message
+                        return message.substring(prefixIndex + 2);
+                    });
+                    
+                    // Add validation errors to state
+                    this.setState({
+                        errors: validationErrors,
+                    });
+                }
+            }
+        });
     }
 
     // Render to DOM
     render() {
+        const validationErrors = this.state.errors.map((error, index) => (
+            <li key={index}>{error}</li>
+        ));
+
         return (
             <div>
-                {/* <div>
-                    <h2 className="validation--errors--label">Validation errors</h2>
-                    <div className="validation-errors">
-                        <ul>
-                            <li>Please provide a value for "Title"</li>
-                            <li>Please provide a value for "Description"</li>
-                        </ul>
+                {this.state.errors.length === 0 || (
+                    <div>
+                        <h2 className="validation--errors--label">Validation errors</h2>
+                        <div className="validation-errors">
+                            <ul>
+                                {validationErrors}
+                            </ul>
+                        </div>
                     </div>
-                </div> */}
+                ) }
                 <form onSubmit={this.handleFormSubmit.bind(this)}>
                     <div className="grid-66">
                         <div className="course--header">
