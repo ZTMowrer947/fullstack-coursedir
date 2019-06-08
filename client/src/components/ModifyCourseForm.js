@@ -12,10 +12,12 @@ class ModifyCourseForm extends React.Component {
 
         // Initialize state
         this.state = {
-            title: this.props.title,
-            description: this.props.description,
-            estimatedTime: this.props.estimatedTime,
-            materialsNeeded: this.props.materialsNeeded,
+            form: {
+                title: this.props.title,
+                description: this.props.description,
+                estimatedTime: this.props.estimatedTime || "",
+                materialsNeeded: this.props.materialsNeeded || "",
+            },
         };
     }
 
@@ -25,8 +27,14 @@ class ModifyCourseForm extends React.Component {
         const { name, value } = event.target;
 
         // Update state for input field
-        this.setState({
-            [name]: value,
+        this.setState(prevState => {
+            return {
+                ...prevState,
+                form: {
+                    ...prevState.form,
+                    [name]: value,
+                },
+            };
         });
     }
 
@@ -37,8 +45,23 @@ class ModifyCourseForm extends React.Component {
 
         // TODO: Validate form
 
+        // Map state data to form data
+        const formData = Object.keys(this.state.form).reduce((data, key) => {
+            // Get the value with the given key.
+            // Get value from state if value is not empty, otherwise store null
+            let value = this.state.form[key] !== "" ?
+                this.state.form[key] :
+                null;
+
+            // Return updated form data
+            return {
+                ...data,
+                [key]: value,
+            }
+        }, {});
+
         // Call submit handler from props with form values
-        this.props.onSubmit(this.state);
+        this.props.onSubmit(formData);
     }
 
     // Render to DOM
@@ -66,7 +89,7 @@ class ModifyCourseForm extends React.Component {
                                     className="input-title course--title--input"
                                     placeholder="Course title..."
                                     onChange={this.handleInputChange.bind(this)}
-                                    value={this.state.title}
+                                    value={this.state.form.title}
                                 />
                             </div>
                             <p>By {this.props.user.firstName} {this.props.user.lastName}</p>
@@ -79,7 +102,7 @@ class ModifyCourseForm extends React.Component {
                                     className=""
                                     placeholder="Course description..."
                                     onChange={this.handleInputChange.bind(this)}
-                                    value={this.state.description}
+                                    value={this.state.form.description}
                                 ></textarea>
                             </div>
                         </div>
@@ -97,7 +120,7 @@ class ModifyCourseForm extends React.Component {
                                             className="course--time--input"
                                             placeholder="Hours"
                                             onChange={this.handleInputChange.bind(this)}
-                                            value={this.state.estimatedTime}
+                                            value={this.state.form.estimatedTime}
                                         />
                                     </div>
                                 </li>
@@ -110,7 +133,7 @@ class ModifyCourseForm extends React.Component {
                                             className=""
                                             placeholder="List materials..."
                                             onChange={this.handleInputChange.bind(this)}
-                                            value={this.state.materialsNeeded}
+                                            value={this.state.form.materialsNeeded}
                                         ></textarea>
                                     </div>
                                 </li>
@@ -118,7 +141,7 @@ class ModifyCourseForm extends React.Component {
                         </div>
                     </div>
                     <div className="grid-100 pad-bottom">
-                        <button className="button" type="submit">Create Course</button>
+                        <button className="button" type="submit">{this.props.id ? "Update" : "Create"} Course</button>
                         <Link to={this.props.id ? `/courses/${this.props.id}` : "/"} className="button button-secondary">Cancel</Link>
                     </div>
                 </form>
@@ -136,8 +159,8 @@ ModifyCourseForm.propTypes = {
     id: PropTypes.number,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    estimatedTime: PropTypes.string.isRequired,
-    materialsNeeded: PropTypes.string.isRequired,
+    estimatedTime: PropTypes.string,
+    materialsNeeded: PropTypes.string,
     onSubmit: PropTypes.func.isRequired,
 }
 
