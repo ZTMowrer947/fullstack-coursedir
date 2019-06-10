@@ -12,6 +12,7 @@ class UserSignIn extends React.Component {
 
         // Initialize state
         this.state = {
+            formErrors: [],
             emailAddress: "",
             password: "",
         };
@@ -33,6 +34,11 @@ class UserSignIn extends React.Component {
         // Prevent default behavior
         event.preventDefault();
 
+        // Remove form errors from state
+        this.setState({
+            formErrors: [],
+        })
+
         // Get data from form inputs
         const { emailAddress, password } = this.state;
 
@@ -42,15 +48,48 @@ class UserSignIn extends React.Component {
             .then(() => {
                 // Redirect to home page
                 this.props.history.push("/");
+            })
+            // If sign-in fails,
+            .catch(error => {
+                // If the error has an attached response,
+                if (error.response) {
+                    // Get the status code
+                    const { status } = error.response;
+                    
+                    // If the status code is in the 400 series,
+                    if (status >= 400 && status < 500) {
+                        // Add error message to state
+                        this.setState(prevState => {
+                            return {
+                                ...prevState,
+                                formErrors: [...prevState.formErrors, error.response.data.message],
+                            };
+                        });
+                    }
+                }
             });
     }
 
     // Render to DOM
     render() {
+        const errors = this.state.formErrors.map((error, index) => (
+            <li key={index}>{error}</li>
+        ));
+
         return (
             <div className="bounds">
                 <div className="grid-33 centered signin">
                     <h1>Sign In</h1>
+                    {this.state.formErrors.length === 0 || (
+                        <div>
+                            <h2 className="validation--errors--label">Login errors:</h2>
+                            <div className="validation-errors">
+                                <ul>
+                                    {errors}
+                                </ul>
+                            </div>
+                        </div>
+                    ) }
                     <div>
                         <form method="POST" onSubmit={this.handleFormSubmit.bind(this)}>
                             <div>
