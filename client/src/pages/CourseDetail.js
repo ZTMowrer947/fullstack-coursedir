@@ -34,8 +34,25 @@ class CourseDetail extends React.Component {
                     isLoading: false,
                     course: response.data,
                 });
+            })
+            // If an error occurs,
+            .catch(error => {
+                // If a response is included,
+                if (error.response) {
+                    // Consider the response status
+                    switch (error.response.status) {
+                        // Not Found
+                        case 404:
+                            // Redirect to not found page
+                            this.props.history.push("/notfound", { error: error.response.data });
+                            break;
+
+                        // Any other error
+                        default:
+                            break;
+                    }
+                };
             });
-        // TODO: Handle error
     }
 
     // Render to DOM
