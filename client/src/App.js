@@ -1,7 +1,7 @@
 // Imports
 import axios from "axios";
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import CookieContext from "universal-cookie";
 import "./App.css";
 import Layout from "./components/Layout";
@@ -16,6 +16,7 @@ import CreateCourse from "./pages/CreateCourse";
 import DeleteCourse from "./pages/DeleteCourse";
 import LoadingIndicator from "./components/LoadingIndicator";
 import UpdateCourse from "./pages/UpdateCourse";
+import NotFound from "./pages/NotFound";
 
 // Component
 class App extends React.Component {
@@ -174,6 +175,8 @@ class App extends React.Component {
                                     // Pass signOut function to UserSignOut component
                                     <UserSignOut signOut={this.signOut.bind(this)} />
                                 )} />
+                                <Route path="/notfound" component={NotFound} />
+                                <Redirect to="/notfound" />
                             </Switch>
                         )}
                     </Layout>
