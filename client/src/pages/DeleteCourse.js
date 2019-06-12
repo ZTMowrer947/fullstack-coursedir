@@ -16,6 +16,7 @@ class DeleteCourse extends React.Component {
         this.state = {
             course: null,
             confirmTitle: "",
+            errors: [],
             isLoading: true,
         }
     }
@@ -36,6 +37,11 @@ class DeleteCourse extends React.Component {
         // Prevent default behavior
         event.preventDefault();
 
+        // Remove errors from state
+        this.setState({
+            errors: [],
+        });
+
         // Get form data
         const { confirmTitle } = this.state;
 
@@ -54,7 +60,35 @@ class DeleteCourse extends React.Component {
                 .then(() => {
                     // Redirect to home page
                     this.props.history.push("/");
+                })
+                // If an error occurs,
+                .catch(error => {
+                    // If a response is included,
+                    if (error.response) {
+                        // Consider the response status
+                        switch (error.response.status) {
+                            // Not Found
+                            case 404:
+                                // Redirect to not found page
+                                this.props.history.push("/notfound", { error: error.response.data });
+                                break;
+
+                            // Any other error
+                            default:
+                                break;
+                        }
+                    };
                 });
+        } else {
+            // Otherwise, add error message to state
+            const error = `The "confirm title" value "${confirmTitle}" does not match the course title "${this.state.course.title}".`;
+
+            this.setState(prevState => {
+                return {
+                    ...prevState,
+                    errors: [...prevState.errors, error],
+                };
+            });
         }
     }
 
@@ -71,8 +105,25 @@ class DeleteCourse extends React.Component {
                     course: response.data,
                     isLoading: false,
                 });
+            })
+            // If an error occurs,
+            .catch(error => {
+                // If a response is included,
+                if (error.response) {
+                    // Consider the response status
+                    switch (error.response.status) {
+                        // Not Found
+                        case 404:
+                            // Redirect to not found page
+                            this.props.history.push("/notfound", { error: error.response.data });
+                            break;
+
+                        // Any other error
+                        default:
+                            break;
+                    }
+                };
             });
-        // TODO: Handle errors
     }
 
     // Render to DOM

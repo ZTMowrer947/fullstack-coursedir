@@ -25,12 +25,35 @@ class UpdateCourse extends React.Component {
         const credentials = this.props.getCredentials();
         const { id } = this.state.course;
 
-        // Update course
-        await axios.put(`http://localhost:5000/api/courses/${id}`, formData, {
-            headers: {
-                authorization: `Basic ${credentials}`,
-            },
-        })
+        try {
+            // Update course
+            await axios.put(`http://localhost:5000/api/courses/${id}`, formData, {
+                headers: {
+                    authorization: `Basic ${credentials}`,
+                },
+            })
+        } catch (error) {
+            // If the response status is a 404
+            // If a response is included,
+            if (error.response) {
+                // Consider the response status
+                switch (error.response.status) {
+                    // Not Found
+                    case 404:
+                        // Redirect to not found page
+                        this.props.history.push("/notfound", { error: error.response.data });
+                        break;
+
+                    // Any other error
+                    default:
+                        // Rethrow error
+                        throw error;
+                }
+            } else {
+                // Otherwise, Rethrow error
+                throw error;
+            }
+        }
 
         // Redirect to course page
         this.props.history.push(`/courses/${id}`);
@@ -50,8 +73,25 @@ class UpdateCourse extends React.Component {
                     course: response.data,
                     isLoading: false,
                 });
+            })
+            // If an error occurs,
+            .catch(error => {
+                // If a response is included,
+                if (error.response) {
+                    // Consider the response status
+                    switch (error.response.status) {
+                        // Not Found
+                        case 404:
+                            // Redirect to not found page
+                            this.props.history.push("/notfound", { error: error.response.data });
+                            break;
+
+                        // Any other error
+                        default:
+                            break;
+                    }
+                };
             });
-        // TODO: Handle errors
     }
 
     // Render to DOM
