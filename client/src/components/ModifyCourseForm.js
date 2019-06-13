@@ -49,8 +49,6 @@ class ModifyCourseForm extends React.Component {
             errors: [],
         });
 
-        // TODO: Validate form
-
         // Map state data to form data
         const formData = Object.keys(this.state.form).reduce((data, key) => {
             // Get the value with the given key.
@@ -69,7 +67,7 @@ class ModifyCourseForm extends React.Component {
         // Call submit handler from props with form values
         this.props.onSubmit(formData).catch(error => {
             if (error.response) {
-                // console.log(error.response.status, error.response.data.message);
+                // If the error is a 400 error,
                 if (error.response.status === 400) {
                     // Get validation errors
                     const validationErrors = error.response.data.message.split(",\n").map(message => {
@@ -84,6 +82,10 @@ class ModifyCourseForm extends React.Component {
                     this.setState({
                         errors: validationErrors,
                     });
+                } else if (error.response.status === 500) {
+                    // If the error is a 500 error,
+                    // Redirect to unhandled error page
+                    this.props.history.push("/error");
                 }
             }
         });

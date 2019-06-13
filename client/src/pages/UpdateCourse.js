@@ -34,7 +34,6 @@ class UpdateCourse extends React.Component {
                 },
             })
         } catch (error) {
-            // If the response status is a 404
             // If a response is included,
             if (error.response) {
                 // Consider the response status
@@ -42,7 +41,7 @@ class UpdateCourse extends React.Component {
                     // Not Found
                     case 404:
                         // Redirect to not found page
-                        this.props.history.push("/notfound", { error: error.response.data });
+                        this.props.history.push("/notfound");
                         break;
 
                     // Any other error
@@ -84,7 +83,7 @@ class UpdateCourse extends React.Component {
                         // Not Found
                         case 404:
                             // Redirect to not found page
-                            this.props.history.push("/notfound", { error: error.response.data });
+                            this.props.history.push("/notfound");
                             break;
 
                         // Forbidden
@@ -95,6 +94,8 @@ class UpdateCourse extends React.Component {
 
                         // Any other error
                         default:
+                            // Redirect to unhandled error page
+                            this.props.history.push("/error");
                             break;
                     }
                 };

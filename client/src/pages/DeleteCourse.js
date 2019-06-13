@@ -70,11 +70,13 @@ class DeleteCourse extends React.Component {
                             // Not Found
                             case 404:
                                 // Redirect to not found page
-                                this.props.history.push("/notfound", { error: error.response.data });
+                                this.props.history.push("/notfound");
                                 break;
 
                             // Any other error
                             default:
+                                // Redirect to unhandled error page
+                                this.props.history.push("/error");
                                 break;
                         }
                     };
@@ -115,7 +117,7 @@ class DeleteCourse extends React.Component {
                         // Not Found
                         case 404:
                             // Redirect to not found page
-                            this.props.history.push("/notfound", { error: error.response.data });
+                            this.props.history.push("/notfound");
                             break;
 
                         // Forbidden
@@ -126,6 +128,8 @@ class DeleteCourse extends React.Component {
 
                         // Any other error
                         default:
+                            // Redirect to unhandled error page
+                            this.props.history.push("/error");
                             break;
                     }
                 };

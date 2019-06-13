@@ -49,6 +49,8 @@ class CourseDetail extends React.Component {
 
                         // Any other error
                         default:
+                            // Redirect to unhandled error page
+                            this.props.history.push("/error");
                             break;
                     }
                 };
@@ -59,7 +61,6 @@ class CourseDetail extends React.Component {
     render() {
         // If the loading process has finished
         if (!this.state.isLoading) {
-            // TODO: Handle error
             // Render course data
             return (
                 <Course {...this.state.course} />

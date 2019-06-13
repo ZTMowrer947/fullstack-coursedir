@@ -68,6 +68,10 @@ class UserSignIn extends React.Component {
                                 formErrors: [...prevState.formErrors, error.response.data.message],
                             };
                         });
+                    } else {
+                        // Otherwise,
+                        // Redirect to unhandled error page
+                        this.props.history.push("/error");
                     }
                 }
             });

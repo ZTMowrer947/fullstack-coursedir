@@ -32,8 +32,12 @@ class Courses extends React.Component {
                     courses: response.data,
                     isLoading: false,
                 });
+            })
+            .catch(() => {
+                // If any error occurs,
+                // Redirect to unhandled error page
+                this.props.history.push("/error");
             });
-        // TODO: Handle errors
     }
 
     // Render to DOM
