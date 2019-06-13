@@ -18,7 +18,10 @@ const PrivateRoute = ({ component, ...rest }) => (
                     return <Component {...routeProps} user={user} getCredentials={getCredentials} />
                 else
                     // Otherwise, redirect to the sign-in page
-                    return <Redirect to="/signin" />
+                    return <Redirect to={{
+                        pathname: "/signin",
+                        state: { prevUrl: rest.path }
+                    }} />
             }}
         </AuthContext.Consumer>
     )} />

@@ -46,8 +46,11 @@ class UserSignIn extends React.Component {
         this.context.signIn(emailAddress, password)
             // If sign-in succeeds,
             .then(() => {
-                // Redirect to home page
-                this.props.history.push("/");
+                // Get previous URL from location state
+                const { prevUrl } = this.props.location.state;
+
+                // If a previous URL was defined in location state, redirect back there. Otherwise, redirect to home page
+                this.props.history.push(prevUrl ? prevUrl : "/");
             })
             // If sign-in fails,
             .catch(error => {
