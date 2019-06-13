@@ -2,7 +2,7 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import LoadingIndicator from "../components/LoadingIndicator";
 
 // Component
@@ -118,6 +118,12 @@ class DeleteCourse extends React.Component {
                             this.props.history.push("/notfound", { error: error.response.data });
                             break;
 
+                        // Forbidden
+                        case 403:
+                            // Redirect to forbidden error page
+                            this.props.history.push("/forbidden", { courseId: this.state.course.id });
+                            break;
+
                         // Any other error
                         default:
                             break;
@@ -132,6 +138,10 @@ class DeleteCourse extends React.Component {
         if (this.state.isLoading)
             // Render loading indicator
             return <LoadingIndicator size={40} />;
+        else if (this.state.course.user.emailAddress !== this.props.user.emailAddress)
+            // If the email of the currently logged in user differs from that of the course's creator,
+            // Redirect to the forbidden error page
+            return <Redirect to={{ pathname: "/forbidden", state: { courseId: this.state.course.id }}} />
 
         // Otherwise, render delete confirmation form
         return (

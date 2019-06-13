@@ -17,6 +17,7 @@ import DeleteCourse from "./pages/DeleteCourse";
 import LoadingIndicator from "./components/LoadingIndicator";
 import UpdateCourse from "./pages/UpdateCourse";
 import NotFound from "./pages/NotFound";
+import Forbidden from "./pages/Forbidden";
 
 // Component
 class App extends React.Component {
@@ -175,6 +176,7 @@ class App extends React.Component {
                                     // Pass signOut function to UserSignOut component
                                     <UserSignOut signOut={this.signOut.bind(this)} />
                                 )} />
+                                <Route path="/forbidden" component={Forbidden} />
                                 <Route path="/notfound" component={NotFound} />
                                 <Redirect to="/notfound" />
                             </Switch>
