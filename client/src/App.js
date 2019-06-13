@@ -18,6 +18,7 @@ import LoadingIndicator from "./components/LoadingIndicator";
 import UpdateCourse from "./pages/UpdateCourse";
 import NotFound from "./pages/NotFound";
 import Forbidden from "./pages/Forbidden";
+import UnhandledError from "./pages/UnhandledError";
 
 // Component
 class App extends React.Component {
@@ -178,6 +179,7 @@ class App extends React.Component {
                                 )} />
                                 <Route path="/forbidden" component={Forbidden} />
                                 <Route path="/notfound" component={NotFound} />
+                                <Route path="/error" component={UnhandledError} />
                                 <Redirect to="/notfound" />
                             </Switch>
                         )}
