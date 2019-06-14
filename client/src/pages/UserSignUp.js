@@ -131,6 +131,17 @@ class UserSignUp extends React.Component {
                     this.props.history.push("/error");
                 }
             });
+        } else {
+            // Otherwise, create new error
+            const error = "password and confirm password fields must match.";
+
+            // Update state with error
+            this.setState(prevState => {
+                return {
+                    ...prevState,
+                    errors: [error],
+                };
+            });
         }
     }
 
