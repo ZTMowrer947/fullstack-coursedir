@@ -745,6 +745,11 @@ input:focus {
 .validation-errors ul {
     color: #7c689b;
     padding: 15px 0 40px 10px;
+    list-style: initial;
+}
+
+.validation-errors li {
+    margin: 0.25rem auto;
 }
 
 /* reduce bottom margin on the course description textarea element */
