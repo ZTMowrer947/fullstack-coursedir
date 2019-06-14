@@ -20,7 +20,7 @@ const PrivateRoute = ({ component, ...rest }) => (
                     // Otherwise, redirect to the sign-in page
                     return <Redirect to={{
                         pathname: "/signin",
-                        state: { prevUrl: rest.path }
+                        state: { prevUrl: rest.location.pathname }
                     }} />
             }}
         </AuthContext.Consumer>
