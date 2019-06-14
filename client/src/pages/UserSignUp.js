@@ -13,11 +13,14 @@ class UserSignUp extends React.Component {
 
         // Initialize state
         this.state = {
-            firstName: "",
-            lastName: "",
-            emailAddress: "",
-            password: "",
-            confirmPassword: "",
+            errors: [],
+            formData: {
+                firstName: "",
+                lastName: "",
+                emailAddress: "",
+                password: "",
+                confirmPassword: "",
+            },
         }
     }
 
@@ -27,8 +30,14 @@ class UserSignUp extends React.Component {
         const {name, value} = event.target;
 
         // Update state with new input value
-        this.setState({
-            [name]: value,
+        this.setState(prevState => {
+            return {
+                ...prevState,
+                formData: {
+                    ...prevState.formData,
+                    [name]: value,
+                },
+            };
         });
     }
 
@@ -37,6 +46,29 @@ class UserSignUp extends React.Component {
         // Prevent default behavior
         event.preventDefault();
 
+        // Remove errors from state
+        this.setState(prevState => {
+            return {
+                ...prevState,
+                errors: [],
+            };
+        });
+
+        // Map state data to form data
+        const formData = Object.keys(this.state.formData).reduce((data, key) => {
+            // Get the value with the given key.
+            // Get value from state if value is not empty, otherwise store null
+            let value = this.state.formData[key] !== "" ?
+                this.state.formData[key] :
+                null;
+
+            // Return updated form data
+            return {
+                ...data,
+                [key]: value,
+            }
+        }, {});
+
         // Get form values
         const {
             firstName,
@@ -44,11 +76,9 @@ class UserSignUp extends React.Component {
             emailAddress,
             password,
             confirmPassword,
-        } = this.state;
+        } = formData;
 
-        // TODO: Validate form data
-
-        // If the password and confirm password fields match
+        // If the password and confirm password fields match,
         if (password === confirmPassword) {
             // Create user through API
             axios.post("http://localhost:5000/api/users", {
@@ -64,17 +94,67 @@ class UserSignUp extends React.Component {
                     // Redirect to home page
                     this.props.history.push("/");
                 }
-            })
-            // TODO: Handle validation errors
+            }).catch(error => {
+                // If the errror has an attached response,
+                if (error.response) {
+                    // If the response status is 400 (Bad Request),
+                    if (error.response.status === 400) {
+                        // Get message from response body
+                        const { message } = error.response.data;
+
+                        // Split message into array of validation errors
+                        const errors = message.split(",")
+                            // Remove error prefix from validation errors
+                            .map(error => {
+                                // Get index of prefix terminator
+                                const prefixIndex = error.indexOf(": ");
+
+                                // Return error excluding error prefix
+                                return error.substring(prefixIndex + 2);
+                            });
+
+                        // Update state with form errors
+                        this.setState(prevState => {
+                            return {
+                                ...prevState,
+                                errors,
+                            };
+                        })
+                    } else {
+                        // Otherwise,
+                        // Redirect to unhandled error page
+                        this.props.history.push("/error");
+                    }
+                } else {
+                    // Otherwise,
+                    // Redirect to unhandled error page
+                    this.props.history.push("/error");
+                }
+            });
         }
     }
 
     render() {
+        // Map validation errors to list items
+        const validationErrors = this.state.errors.map((error, index) => (
+            <li key={index}>{error}</li>
+        ));
+
         return (
             <div className="bounds">
                 <div className="grid-33 centered signin">
                     <h1>Sign Up</h1>
                     <div>
+                        {this.state.errors.length === 0 || (
+                            <div>
+                                <h2 className="validation--errors--label">Validation errors</h2>
+                                <div className="validation-errors">
+                                    <ul>
+                                        {validationErrors}
+                                    </ul>
+                                </div>
+                            </div>
+                        ) }
                         <form method="POST" onSubmit={this.handleFormSubmit.bind(this)}>
                             <div>
                                 <input
