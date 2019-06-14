@@ -117,7 +117,7 @@ class UpdateCourse extends React.Component {
         return (
             <div className="bounds course--detail">
                 <h1>Update Course</h1>
-                <ModifyCourseForm user={this.props.user} onSubmit={this.handleSubmit.bind(this)} {...this.state.course} />
+                <ModifyCourseForm onSubmit={this.handleSubmit.bind(this)} {...this.state.course} />
             </div>
         )
     }
