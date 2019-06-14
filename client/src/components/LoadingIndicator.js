@@ -2,6 +2,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { CircularProgress } from "@material-ui/core";
+import "./LoadingIndicator.css";
 
 // Component
 const LoadingIndicator = props => (
