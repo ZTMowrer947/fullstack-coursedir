@@ -44,6 +44,13 @@ class UpdateCourse extends React.Component {
                         this.props.history.push("/notfound");
                         break;
 
+
+                    // Forbidden
+                    case 403:
+                        // Redirect to forbidden error page
+                        this.props.history.push("/forbidden", { courseId: this.state.course.id });
+                        break;
+
                     // Any other error
                     default:
                         // Rethrow error
@@ -86,19 +93,16 @@ class UpdateCourse extends React.Component {
                             this.props.history.push("/notfound");
                             break;
 
-                        // Forbidden
-                        case 403:
-                            // Redirect to forbidden error page
-                            this.props.history.push("/forbidden", { courseId: this.state.course.id });
-                            break;
-
                         // Any other error
                         default:
                             // Redirect to unhandled error page
                             this.props.history.push("/error");
                             break;
-                    }
-                };
+                    } 
+                } else {
+                    // Otherwise, redirect to unhandled error page
+                    this.props.history.push("/error");
+                }
             });
     }
 
