@@ -1,0 +1,31 @@
+{
+  "name": "school-database-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon .",
+    "seed": "cross-env DB_ENABLE_LOGGING=true node './seed'",
+    "test": "cross-env NODE_ENV=test jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^24.8.0",
+    "nodemon": "^1.18.3",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "basic-auth": "^2.0.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "cross-env": "^5.2.0",
+    "express": "^4.16.3",
+    "express-async-handler": "^1.1.4",
+    "morgan": "^1.9.0",
+    "promise.prototype.finally": "^3.1.0",
+    "sequelize": "^5.8.6",
+    "sqlite3": "^4.0.2"
+  }
+}
