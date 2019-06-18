@@ -1,10 +1,10 @@
 // Imports
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 // Component
-const Nav = () => (
+const Nav = props => (
     /* Get auth service from context */
     <AuthContext.Consumer>
         {({ user }) => {
@@ -24,7 +24,7 @@ const Nav = () => (
                 return (
                     <nav>
                         <Link className="signup" to="/signup">Sign Up</Link>
-                        <Link className="signin" to="/signin">Sign In</Link>
+                        <Link className="signin" to={{ pathname: "/signin", state: { prevUrl: props.location.pathname } }}>Sign In</Link>
                     </nav>
                 ) 
             }
@@ -33,4 +33,4 @@ const Nav = () => (
 );
 
 // Export
-export default Nav;
+export default withRouter(Nav);
