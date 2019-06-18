@@ -145,6 +145,15 @@ class UserSignUp extends React.Component {
         }
     }
 
+    // Run when component has mounted
+    componentDidMount() {
+        // If a user has already been signed in,
+        if (this.context.user !== null) {
+            // Redirect to home page
+            this.props.history.push("/");
+        }
+    }
+
     render() {
         // Map validation errors to list items
         const validationErrors = this.state.errors.map((error, index) => (
