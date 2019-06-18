@@ -42,15 +42,22 @@ class UserSignIn extends React.Component {
         // Get data from form inputs
         const { emailAddress, password } = this.state;
 
+        console.log("rfgjfkd");
+
         // Attempt to sign in using credentials
         this.context.signIn(emailAddress, password)
             // If sign-in succeeds,
             .then(() => {
-                // Get previous URL from location state
-                const { prevUrl } = this.props.location.state;
+                // Define previous url, defaulting to home page
+                let prevUrl = "/";
 
-                // If a previous URL was defined in location state, redirect back there. Otherwise, redirect to home page
-                this.props.history.push(prevUrl ? prevUrl : "/");
+                // If the location state is defined and contains a prevUrl key,
+                if (this.props.location.state && this.props.location.state.prevUrl) 
+                    // Get previous URL from location state and set previous URL to that
+                    prevUrl = this.props.location.state.prevUrl;
+
+                // Redirect to previous page
+                this.props.history.push(prevUrl);
             })
             // If sign-in fails,
             .catch(error => {
@@ -75,6 +82,15 @@ class UserSignIn extends React.Component {
                     }
                 }
             });
+    }
+
+    // Run when component has mounted
+    componentDidMount() {
+        // If a user has already been signed in,
+        if (this.context.user !== null) {
+            // Redirect to home page
+            this.props.history.push("/");
+        }
     }
 
     // Render to DOM
