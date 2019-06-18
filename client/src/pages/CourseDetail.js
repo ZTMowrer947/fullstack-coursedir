@@ -3,6 +3,7 @@ import axios from "axios";
 import React from "react";
 import Course from "../components/Course";
 import LoadingIndicator from "../components/LoadingIndicator";
+import AuthContext from "../context/AuthContext";
 
 // Components
 class CourseDetail extends React.Component {
@@ -63,7 +64,7 @@ class CourseDetail extends React.Component {
         if (!this.state.isLoading) {
             // Render course data
             return (
-                <Course {...this.state.course} />
+                <Course {...this.state.course} authUser={this.context.user} />
             );
         }
 
@@ -71,6 +72,9 @@ class CourseDetail extends React.Component {
         return <LoadingIndicator size={40} />;
     }
 }
+
+// Content
+CourseDetail.contextType = AuthContext;
 
 // Export
 export default CourseDetail;

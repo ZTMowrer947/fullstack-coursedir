@@ -10,10 +10,13 @@ const Course = props => (
         <div className="actions--bar">
             <div className="bounds">
                 <div className="grid-100">
-                    <span>
-                        <Link className="button" to={`/courses/${props.id}/update`}>Update Course</Link>
-                        <Link className="button" to={`/courses/${props.id}/delete`}>Delete Course</Link>
-                    </span>
+                    {/* Display links to course update and delete pages if user owning this course is currently signed in */}
+                    {props.authUser && props.authUser.emailAddress === props.user.emailAddress &&
+                        <span>
+                            <Link className="button" to={`/courses/${props.id}/update`}>Update Course</Link>
+                            <Link className="button" to={`/courses/${props.id}/delete`}>Delete Course</Link>
+                        </span>
+                    }
                     <Link className="button button-secondary" to="/">Return to List</Link>
                 </div>
             </div>
@@ -64,7 +67,11 @@ Course.propTypes = {
     user: PropTypes.shape({
         firstName: PropTypes.string.isRequired,
         lastName: PropTypes.string.isRequired,
+        emailAddress: PropTypes.string.isRequired,
     }).isRequired,
+    authUser: PropTypes.shape({
+        emailAddress: PropTypes.string.isRequired,
+    }),
 }
 
 
