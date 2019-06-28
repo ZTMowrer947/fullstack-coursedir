@@ -13,5 +13,13 @@ export default (() => {
             // Return course listing
             return response.data;
         },
+
+        getById: async id => {
+            // Get course from API
+            const response = await axios.get(`${baseUrl}/${id}`);
+
+            // Return course data
+            return response.data;
+        },
     };
 })();
