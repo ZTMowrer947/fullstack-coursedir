@@ -11,11 +11,11 @@ const initialState = {
         error: null,
         isFetching: false,
     },
-    // course: {
-    //     data: null,
-    //     error: null,
-    //     isFetching: false,
-    // },
+    course: {
+        data: null,
+        error: null,
+        isFetching: false,
+    },
 };
 
 // Export
