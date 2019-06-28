@@ -1,8 +1,9 @@
 // Imports
 import { types } from "../actions/courses";
+import initialState from "../initialState";
 
 // Reducer
-export default function courses(state, action) {
+export default function courses(state = initialState.courses, action) {
     // Consider action type
     switch (action.type) {
         // Starting course list fetch
