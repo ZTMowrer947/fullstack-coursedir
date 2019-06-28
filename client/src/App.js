@@ -1,6 +1,6 @@
 // Imports
 import axios from "axios";
-import { ConnectedRouter } from "connected-react-router";
+import { ConnectedRouter } from "connected-react-router/immutable";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import CookieContext from "universal-cookie";

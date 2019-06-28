@@ -1,6 +1,7 @@
 // Imports
 import React from "react";
 import { connect } from "react-redux";
+import withImmutablePropsToJS from "with-immutable-props-to-js";
 import Course from "../components/Course";
 import LoadingIndicator from "../components/LoadingIndicator";
 import AuthContext from "../context/AuthContext";
@@ -74,12 +75,12 @@ CourseDetail.contextType = AuthContext;
 
 // Redux mapping to React props
 const mapStateToProps = state => {
-    const courseState = state.course;
+    const courseState = state.get("course");
 
     return {
-        course: courseState.data,
-        error: courseState.error,
-        isFetching: courseState.isFetching,
+        course: courseState.get("data"),
+        error: courseState.get("error"),
+        isFetching: courseState.get("isFetching"),
     };
 }
 
@@ -93,4 +94,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(CourseDetail);
+)(withImmutablePropsToJS(CourseDetail));

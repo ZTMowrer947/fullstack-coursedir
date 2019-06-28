@@ -2,6 +2,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import withImmutablePropsToJS from "with-immutable-props-to-js";
 import CourseLink from "../components/CourseLink";
 import LoadingIndicator from "../components/LoadingIndicator";
 import { coursesFetchStart } from "../store/actions/courses";
@@ -53,12 +54,12 @@ class Courses extends React.Component {
 
 // Redux mapping to React props
 const mapStateToProps = state => {
-    const courseState = state.courses;
+    const courseState = state.get("courses");
 
     return {
-        courses: courseState.data,
-        error: courseState.error,
-        isFetching: courseState.isFetching,
+        courses: courseState.get("data"),
+        error: courseState.get("error"),
+        isFetching: courseState.get("isFetching"),
     }
 };
 
@@ -72,4 +73,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Courses);
+)(withImmutablePropsToJS(Courses));

@@ -1,3 +1,6 @@
+// Imports
+import { fromJS } from "immutable";
+
 // State
 const initialState = {
     // auth: {
@@ -19,4 +22,4 @@ const initialState = {
 };
 
 // Export
-export default initialState;
+export default fromJS(initialState);
