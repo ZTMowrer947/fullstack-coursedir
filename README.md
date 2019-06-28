@@ -23,7 +23,13 @@ To use this project, you must first set up the REST API that this project uses t
 First, clone this repository:
 ```git clone https://github.com/ZTMowrer947/SchoolDatabaseAPI```
 
-Next, install dependencies for both the rest API and the frontend app:
+Next, in the repository root, initialize the api submodule:
+```
+git submodule init
+git submodule update
+```
+
+Then, install dependencies for both the rest API and the frontend app:
 ```
 cd api
 yarn install
