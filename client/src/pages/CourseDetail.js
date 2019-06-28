@@ -58,7 +58,7 @@ class CourseDetail extends React.Component {
         }
 
         // If the loading process has finished,
-        if (!this.props.isFetching) {
+        if (!this.props.isFetching && this.props.course !== null) {
             // Otherwise, render course data
             return (
                 <Course {...this.props.course} authUser={this.context.user} />
