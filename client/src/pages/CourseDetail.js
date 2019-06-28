@@ -1,9 +1,10 @@
 // Imports
-import axios from "axios";
 import React from "react";
+import { connect } from "react-redux";
 import Course from "../components/Course";
 import LoadingIndicator from "../components/LoadingIndicator";
 import AuthContext from "../context/AuthContext";
+import { courseFetchStart } from "../store/actions/course";
 
 // Components
 class CourseDetail extends React.Component {
@@ -25,46 +26,41 @@ class CourseDetail extends React.Component {
         // Get ID from route params
         const id = this.props.match.params.id;
 
-        // Get course data from API
-        axios
-            .get(`http://localhost:5000/api/courses/${id}`)
-            // If this is successful,
-            .then(response => {
-                // Update state with course data
-                this.setState({
-                    isLoading: false,
-                    course: response.data,
-                });
-            })
-            // If an error occurs,
-            .catch(error => {
-                // If a response is included,
-                if (error.response) {
-                    // Consider the response status
-                    switch (error.response.status) {
-                        // Not Found
-                        case 404:
-                            // Redirect to not found page
-                            this.props.history.push("/notfound", { error: error.response.data });
-                            break;
-
-                        // Any other error
-                        default:
-                            // Redirect to unhandled error page
-                            this.props.history.push("/error");
-                            break;
-                    }
-                };
-            });
+        // Get course data
+        this.props.fetchCourseById(id);
     }
 
     // Render to DOM
     render() {
-        // If the loading process has finished
-        if (!this.state.isLoading) {
-            // Render course data
+        // If an error occurred,
+        if (this.props.error) {
+            // Get error from props
+            const { error } = this.props;
+
+            // If a response is included,
+            if (error.response) {
+                // Consider the response status
+                switch (error.response.status) {
+                    // Not Found
+                    case 404:
+                        // Redirect to not found page
+                        this.props.history.push("/notfound", { error: error.response.data });
+                        break;
+
+                    // Any other error
+                    default:
+                        // Redirect to unhandled error page
+                        this.props.history.push("/error");
+                        break;
+                }
+            };
+        }
+
+        // If the loading process has finished,
+        if (!this.props.isFetching) {
+            // Otherwise, render course data
             return (
-                <Course {...this.state.course} authUser={this.context.user} />
+                <Course {...this.props.course} authUser={this.context.user} />
             );
         }
 
@@ -73,8 +69,28 @@ class CourseDetail extends React.Component {
     }
 }
 
-// Content
+// Context
 CourseDetail.contextType = AuthContext;
 
+// Redux mapping to React props
+const mapStateToProps = state => {
+    const courseState = state.course;
+
+    return {
+        course: courseState.data,
+        error: courseState.error,
+        isFetching: courseState.isFetching,
+    };
+}
+
+const mapDispatchToProps = dispatch => ({
+    fetchCourseById: id => {
+        dispatch(courseFetchStart(id));
+    },
+})
+
 // Export
-export default CourseDetail;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(CourseDetail);
