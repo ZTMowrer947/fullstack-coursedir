@@ -1,6 +1,7 @@
 // Imports
 import React from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import withImmutablePropsToJS from "with-immutable-props-to-js";
 import Course from "../components/Course";
 import LoadingIndicator from "../components/LoadingIndicator";
@@ -38,23 +39,33 @@ class CourseDetail extends React.Component {
             // Get error from props
             const { error } = this.props;
 
+            // Declare variable for redirection data
+            let redirectProps;
+
             // If a response is included,
             if (error.response) {
+
                 // Consider the response status
                 switch (error.response.status) {
                     // Not Found
                     case 404:
-                        // Redirect to not found page
-                        this.props.history.push("/notfound", { error: error.response.data });
+                        // Set not found redirect data
+                        redirectProps = { pathname: "/notfound" };
                         break;
 
                     // Any other error
                     default:
-                        // Redirect to unhandled error page
-                        this.props.history.push("/error");
+                        // Set error redirect data
+                        redirectProps = { pathname: "/error" };
                         break;
                 }
-            };
+            } else {
+                // Set error redirect data
+                redirectProps = { pathname: "/error" };
+            }
+
+            // Redirect using redirect data
+            return <Redirect to={redirectProps} />
         }
 
         // If the loading process has finished,
