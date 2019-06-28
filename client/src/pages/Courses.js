@@ -1,53 +1,28 @@
 // Imports
 import React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import CourseLink from "../components/CourseLink";
 import LoadingIndicator from "../components/LoadingIndicator";
-import CourseService from "../services/CourseService";
+import { coursesFetchStart } from "../store/actions/courses";
 
 // Components
 class Courses extends React.Component {
-    // Constructor
-    constructor(props) {
-        // Pass props to base class
-        super(props);
-
-        // Initialize state
-        this.state = {
-            courses: [],
-            error: null,
-            isLoading: true,
-        };
-    }
-
     // Run after component has been mounted to the DOM
     componentDidMount() {
-        // Get course listing
-        CourseService.getList()
-            // If successful,
-            .then(courses => {
-                // Update state with course listing
-                this.setState({
-                    courses,
-                    isLoading: false,
-                });
-            })
-            .catch(() => {
-                // If any error occurs,
-                // Redirect to unhandled error page
-                this.props.history.push("/error");
-            });
+        // Fetch courses
+        this.props.requestCourses();
     }
 
     // Render to DOM
     render() {
         // If we are still loading,
-        if (this.state.isLoading)
+        if (this.props.isFetching)
             // Render LoadingIndicator
             return <LoadingIndicator size={40} />;
 
         // Map courses to Course components
-        const courseList = this.state.courses.map(course => {
+        const courseList = this.props.courses.map(course => {
             return <CourseLink id={course.id} title={course.title} key={course.id} />
         });
 
@@ -76,5 +51,25 @@ class Courses extends React.Component {
     }
 }
 
+// Redux mapping to React props
+const mapStateToProps = state => {
+    const courseState = state.courses;
+
+    return {
+        courses: courseState.data,
+        error: courseState.error,
+        isFetching: courseState.isFetching,
+    }
+};
+
+const mapDispatchToProps = dispatch => ({
+    requestCourses: () => {
+        dispatch(coursesFetchStart());
+    },
+});
+
 // Export
-export default Courses;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Courses);
