@@ -9,12 +9,12 @@ const initialState = {
     courses: {
         data: [],
         error: null,
-        isFetching: false,
+        isFetching: true,
     },
     course: {
         data: null,
         error: null,
-        isFetching: false,
+        isFetching: true,
     },
 };
 
