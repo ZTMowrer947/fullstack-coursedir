@@ -1,7 +1,8 @@
 // Imports
 import axios from "axios";
+import { ConnectedRouter } from "connected-react-router";
 import React from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import CookieContext from "universal-cookie";
 import "./App.css";
 import Layout from "./components/Layout";
@@ -19,6 +20,7 @@ import UpdateCourse from "./pages/UpdateCourse";
 import NotFound from "./pages/NotFound";
 import Forbidden from "./pages/Forbidden";
 import UnhandledError from "./pages/UnhandledError";
+import { history } from "./store";
 
 // Component
 class App extends React.Component {
@@ -161,7 +163,7 @@ class App extends React.Component {
     render() {
         return (
             <AuthContext.Provider value={this.state.authData}>                
-                <BrowserRouter>
+                <ConnectedRouter history={history}>
                     <Layout>
                         {/* If we are still loading, render LoadingIndicator, otherwise render routes */}
                         {this.state.isLoading ? <LoadingIndicator /> : (
@@ -184,7 +186,7 @@ class App extends React.Component {
                             </Switch>
                         )}
                     </Layout>
-                </BrowserRouter>
+                </ConnectedRouter>
             </AuthContext.Provider>
         );
     }
