@@ -1,5 +1,5 @@
 // Imports
-import { call, put, take } from "redux-saga/effects";
+import { cancel, call, fork, put, take } from "redux-saga/effects";
 import { types, courseFetchDone } from "../actions/course";
 import CourseService from "../../services/CourseService";
 
@@ -18,9 +18,17 @@ function* fetchCourse(id) {
 }
 
 export default function* courseFetchFlow() {
-    // Wait for COURSE_FETCH_START and get ID from payload
-    const { payload: id } = yield take(types.COURSE_FETCH_START);
+    // Declare variable to hold previous task
+    let prevTask = null;
 
-    // Retrieve course
-    yield call(fetchCourse, id);
+    while (true) {
+        // Wait for COURSE_FETCH_START and get ID from payload
+        const { payload: id } = yield take(types.COURSE_FETCH_START);
+
+        // If the previous task has been defined, cancel it if it isn't finished already
+        if (prevTask) yield cancel(prevTask);
+
+        // Retrieve course and store task for next run
+        prevTask = yield fork(fetchCourse, id);
+    }
 }
