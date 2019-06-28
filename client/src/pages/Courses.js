@@ -1,9 +1,9 @@
 // Imports
-import axios from "axios";
 import React from "react";
 import { Link } from "react-router-dom";
 import CourseLink from "../components/CourseLink";
 import LoadingIndicator from "../components/LoadingIndicator";
+import CourseService from "../services/CourseService";
 
 // Components
 class Courses extends React.Component {
@@ -22,14 +22,13 @@ class Courses extends React.Component {
 
     // Run after component has been mounted to the DOM
     componentDidMount() {
-        // Request course listing from API
-        axios
-            .get("http://localhost:5000/api/courses")
+        // Get course listing
+        CourseService.getList()
             // If successful,
-            .then(response => {
+            .then(courses => {
                 // Update state with course listing
                 this.setState({
-                    courses: response.data,
+                    courses,
                     isLoading: false,
                 });
             })
