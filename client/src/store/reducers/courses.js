@@ -1,5 +1,5 @@
 // Imports
-import { fromJS } from "immutable";
+import { fromJS, List } from "immutable";
 import { types } from "../actions/courses";
 import initialState from "../initialState";
 
@@ -7,6 +7,17 @@ import initialState from "../initialState";
 export default function courses(state = initialState.get("courses"), action) {
     // Consider action type
     switch (action.type) {
+        // Router navigation
+        case "@@router/LOCATION_CHANGE":
+            // Get pathname
+            const { pathname } = action.payload.location;
+            
+            // If we are on the home page, don't change the state
+            if (/^\/$/.test(pathname)) return state;
+
+            // Otherwise, clear the course data
+            return state.set("data", List([]));
+
         // Starting course list fetch
         case types.COURSES_FETCH_START:
             // Clear error and set fetching flag

@@ -7,6 +7,17 @@ import initialState from "../initialState";
 export default function course(state = initialState.get("course"), action) {
     // Consider action type
     switch (action.type) {
+        // Router navigation
+        case "@@router/LOCATION_CHANGE":
+            // Get pathname
+            const { pathname } = action.payload.location;
+            
+            // If we are on the course detail page, don't change the state
+            if (/^\/courses\/\d+/.test(pathname)) return state;
+
+            // Otherwise, clear the course data
+            return state.set("data", null);
+
         // Starting course list fetch
         case types.COURSE_FETCH_START:
             // Clear error and set fetching flag
