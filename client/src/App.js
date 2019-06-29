@@ -173,12 +173,12 @@ class App extends React.Component {
                                 <Route path="/courses/:id" exact={true} component={CourseDetail} />
                                 <PrivateRoute path="/courses/:id/update" exact={true} component={UpdateCourse} />
                                 <PrivateRoute path="/courses/:id/delete" exact={true} component={DeleteCourse} />
-                                <Route path="/signup" exact={true} component={UserSignUp} />
+                                {/* <Route path="/signup" exact={true} component={UserSignUp} />
                                 <Route path="/signin" exact={true} component={UserSignIn} />
                                 <Route path="/signout" exact={true} render={() => (
                                     // Pass signOut function to UserSignOut component
                                     <UserSignOut signOut={this.signOut.bind(this)} />
-                                )} />
+                                )} /> */}
                                 <Route path="/forbidden" component={Forbidden} />
                                 <Route path="/notfound" component={NotFound} />
                                 <Route path="/error" component={UnhandledError} />
