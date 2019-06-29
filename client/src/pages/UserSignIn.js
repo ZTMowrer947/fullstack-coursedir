@@ -42,8 +42,6 @@ class UserSignIn extends React.Component {
         // Get data from form inputs
         const { emailAddress, password } = this.state;
 
-        console.log("rfgjfkd");
-
         // Attempt to sign in using credentials
         this.context.signIn(emailAddress, password)
             // If sign-in succeeds,
