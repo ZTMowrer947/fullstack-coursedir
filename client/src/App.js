@@ -24,6 +24,7 @@ import Forbidden from "./pages/Forbidden";
 import UnhandledError from "./pages/UnhandledError";
 import { history } from "./store";
 import { signInStart, signOut } from "./store/actions/auth";
+import { getCookie } from "redux-cookie";
 
 // Component
 class App extends React.Component {
@@ -64,7 +65,8 @@ class App extends React.Component {
     // Run when component has mounted
     componentDidMount() {
         // Get credentials and user
-        const { credentials, user } = this.props;
+        const credentials = this.props.getCredentials();
+        const { user } = this.props;
 
         // If credentials are present, but the user isn't,
         if (credentials && user === null) {
@@ -128,6 +130,8 @@ const mapDispatchToProps = dispatch => ({
     signOut: () => {
         dispatch(signOut());
     },
+    getCredentials: () =>
+        dispatch(getCookie("sdbc-credentials")),
 });
 
 // Export
