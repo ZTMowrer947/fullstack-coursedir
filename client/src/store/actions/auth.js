@@ -6,11 +6,12 @@ export const types = {
 };
 
 // Action Creators
-export const signInStart = (emailAddress, password) => ({
+export const signInStart = (emailAddress, password, prevUrl) => ({
     type: types.SIGN_IN_START,
     payload: {
         emailAddress,
         password,
+        prevUrl,
     },
 });
 
