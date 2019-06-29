@@ -28,6 +28,8 @@ export default (() => {
 
     // Export functions
     return {
+        getCredentials: () => cookieContext.get("sdbc-credentials") || null,
+
         signIn: async (emailAddress, password) => {
             // Declare variable to hold credentials
             let credentials = `${emailAddress}:${password}`;
