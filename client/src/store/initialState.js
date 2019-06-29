@@ -8,7 +8,7 @@ const initialState = {
         credentials: AuthService.getCredentials(),
         user: null,
         error: null,
-        isFetching: false,
+        isFetching: true,
     },
     courses: {
         data: [],
