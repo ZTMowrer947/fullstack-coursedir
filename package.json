@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "redux-cookie": "^0.5.9"
+  }
+}
