@@ -1,11 +1,10 @@
 // Imports
 import { fromJS } from "immutable";
-import AuthService from "../services/AuthService";
 
 // State
 const initialState = {
     auth: {
-        credentials: AuthService.getCredentials(),
+        credentials: null,
         user: null,
         error: null,
         isFetching: true,
