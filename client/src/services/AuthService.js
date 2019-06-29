@@ -24,7 +24,7 @@ export default (() => {
     };
 
     // Set base URL for request
-    const baseUrl = "http://localhost:5000/api/courses";
+    const baseUrl = "http://localhost:5000/api/users";
 
     // Export functions
     return {
