@@ -2,8 +2,10 @@
 import axios from "axios";
 import { ConnectedRouter } from "connected-react-router/immutable";
 import React from "react";
+import { connect } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import CookieContext from "universal-cookie";
+import withImmutablePropsToJS from "with-immutable-props-to-js";
 import "./App.css";
 import Layout from "./components/Layout";
 import AuthContext from "./context/AuthContext";
@@ -21,6 +23,7 @@ import NotFound from "./pages/NotFound";
 import Forbidden from "./pages/Forbidden";
 import UnhandledError from "./pages/UnhandledError";
 import { history } from "./store";
+import { signInStart, signOut } from "./store/actions/auth";
 
 // Component
 class App extends React.Component {
@@ -36,7 +39,6 @@ class App extends React.Component {
         this.state = {
             authData: {
                 getCredentials: this.getCredentials.bind(this),
-                signIn: this.signIn.bind(this),
                 user: null,
             },
             isLoading: true,
@@ -59,104 +61,24 @@ class App extends React.Component {
         return response.data;
     }
 
-    // Sign-in function
-    async signIn(emailAddress, password) {
-        // Declare variable to hold credentials
-        let credentials = `${emailAddress}:${password}`;
-
-        // Encode credentials using Base64
-        credentials = Buffer.from(credentials).toString("base64");
-
-        // Get user from API with credentials to verify correctness
-        const user = await this.getUserWithCredentials(credentials);
-
-        // If the request succeeds, store credentials for later use
-        this.cookieContext.set("sdbc-credentials", credentials, {
-            // Set domain and path
-            domain: "localhost",
-            path: "/",
-
-            // Expire after 2 hours
-            maxAge: 60 * 60 * 2,
-
-            // Set secure flag when in production
-            secure: process.env.NODE_ENV === "production",
-
-            // Strict Same-Site policy
-            sameSite: "strict",
-        });
-
-        // Update state with user data
-        this.setState(prevState => {
-            return {
-                ...prevState,
-                authData: {
-                    ...prevState.authData,
-                    user,
-                }
-            };
-        });
-    }
-
-    // Sign-out function
-    signOut() {
-        // Clear credentials
-        this.cookieContext.remove("sdbc-credentials", {
-            // Set domain and path
-            domain: "localhost",
-            path: "/",
-
-            // Expire after 2 hours
-            maxAge: 60 * 60 * 2,
-
-            // Set secure flag when in production
-            secure: process.env.NODE_ENV === "production",
-
-            // Strict Same-Site policy
-            sameSite: "strict",
-        });
-
-        // Remove user from state
-        this.setState(prevState => {
-            return {
-                ...prevState,
-                authData: {
-                    ...prevState.authData,
-                    user: null,
-                },
-            };
-        });
-    }
-
     // Run when component has mounted
     componentDidMount() {
-        // Get credentials
-        const credentials = this.getCredentials();
+        // Get credentials and user
+        const { credentials, user } = this.props;
 
-        // If credentials are present but the user in state is not,
-        if (credentials && this.state.authData.user === null) {
-            // Get user with credentials
-            this.getUserWithCredentials(credentials)
-                // If successful,
-                .then(user => {
-                    // Update state with new user
-                    this.setState(prevState => {
-                        return {
-                            ...prevState,
-                            authData: {
-                                ...prevState.authData,
-                                user,
-                            },
-                            isLoading: false,
-                        };
-                    });
-                });
-        } else {
-            // Otherwise, update state to indicate that we are finished loading
-            this.setState({
-                isLoading: false,
-            })
+        // If credentials are present, but the user isn't,
+        if (credentials && user === null) {
+            // Decode the credentials
+            const decoded = Buffer.from(credentials, "base64").toString();
+
+            // Sign in the user
+            this.props.signIn(...decoded.split(":"));
         }
+
+        // Otherwise, update state to indicate that we are finished loading
+        this.setState({
+            isLoading: false,
+        });
     }
 
     // Render to DOM
@@ -192,5 +114,27 @@ class App extends React.Component {
     }
 }
 
+// Redux mapping to React props
+const mapStateToProps = state => {
+    const authState = state.get("auth");
+    return {
+        isFetching: authState.get("isFetching"),
+        user: authState.get("user"),
+        credentials: authState.get("credentials"),
+    };
+};
+
+const mapDispatchToProps = dispatch => ({
+    signIn: (emailAddress, password) => {
+        dispatch(signInStart(emailAddress, password));
+    },
+    signOut: () => {
+        dispatch(signOut());
+    },
+});
+
 // Export
-export default App;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(withImmutablePropsToJS(App));
