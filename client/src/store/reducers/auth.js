@@ -25,9 +25,13 @@ export default function auth(state = initialState.get("auth"), action) {
                     isFetching: false,
                 });
             } else {
-                // Otherwise, add authentication data to state
+                // Otherwise, get payload data
+                const immutablePayload = fromJS(action.payload);
+
+                // Add authentication data to state
                 return state.merge({
-                    ...fromJS(action.payload),
+                    user: immutablePayload.get("user"),
+                    credentials: immutablePayload.get("credentials"),
                     isFetching: false,
                 });
             }
