@@ -23,7 +23,7 @@ import NotFound from "./pages/NotFound";
 import Forbidden from "./pages/Forbidden";
 import UnhandledError from "./pages/UnhandledError";
 import { history } from "./store";
-import { signInStart, signOut } from "./store/actions/auth";
+import { signInStart, signOut, resetSignInFlag } from "./store/actions/auth";
 import { getCookie } from "redux-cookie";
 
 // Component
@@ -42,7 +42,6 @@ class App extends React.Component {
                 getCredentials: this.getCredentials.bind(this),
                 user: null,
             },
-            isLoading: true,
         };
     }
 
@@ -75,12 +74,10 @@ class App extends React.Component {
 
             // Sign in the user
             this.props.signIn(...decoded.split(":"));
+        } else {
+            // Otherwise, reset sign-in flag
+            this.props.resetSignInFlag();
         }
-
-        // Otherwise, update state to indicate that we are finished loading
-        this.setState({
-            isLoading: false,
-        });
     }
 
     // Render to DOM
@@ -90,7 +87,7 @@ class App extends React.Component {
                 <ConnectedRouter history={history}>
                     <Layout>
                         {/* If we are still loading, render LoadingIndicator, otherwise render routes */}
-                        {this.state.isLoading ? <LoadingIndicator /> : (
+                        {this.props.isFetching ? <LoadingIndicator /> : (
                             <Switch>
                                 <Route path="/" exact={true} component={Courses} />
                                 <PrivateRoute path="/courses/create" exact={true} component={CreateCourse} />
@@ -132,6 +129,9 @@ const mapDispatchToProps = dispatch => ({
     },
     getCredentials: () =>
         dispatch(getCookie("sdbc-credentials")),
+    resetSignInFlag: () => {
+        dispatch(resetSignInFlag());
+    },
 });
 
 // Export

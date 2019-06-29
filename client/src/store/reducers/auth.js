@@ -44,6 +44,13 @@ export default function auth(state = initialState.get("auth"), action) {
                 credentials: null,
             });
 
+        // Reset Sign-in fetching flag
+        case types.RESET_SIGN_IN_FLAG:
+            // Set fetching flag to false
+            return state.merge({
+                isFetching: false,
+            });
+
         default:
             return state;
     }

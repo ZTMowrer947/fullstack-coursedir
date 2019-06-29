@@ -1,7 +1,7 @@
 // Imports
 import { push } from "connected-react-router";
-import { all, cancel, call, fork, put, spawn, take } from "redux-saga/effects";
-import { signInDone, types } from "../actions/auth";
+import { all, cancel, cancelled, call, fork, put, spawn, take } from "redux-saga/effects";
+import { signInDone, types, resetSignInFlag } from "../actions/auth";
 import AuthService from "../../services/AuthService";
 import { setCookie, removeCookie } from "redux-cookie";
 
@@ -26,6 +26,12 @@ function* authenticate(emailAddress, password, prevUrl) {
     } catch (error) {
         // If an error occurs, dispatch failed SIGN_IN_DONE action
         yield put(signInDone(null, null, error));
+    } finally {
+        // If the task was cancelled
+        if (yield cancelled()) {
+            // Reset fetching flag
+            yield put(resetSignInFlag());
+        }
     }
 }
 
