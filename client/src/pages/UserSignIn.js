@@ -1,7 +1,9 @@
 // Imports
 import React from "react";
-import { Link } from "react-router-dom";
-import AuthContext from "../context/AuthContext";
+import { connect } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
+import withImmutablePropsToJS from "with-immutable-props-to-js";
+import { signInStart } from "../store/actions/auth";
 
 // Component
 class UserSignIn extends React.Component {
@@ -43,49 +45,13 @@ class UserSignIn extends React.Component {
         const { emailAddress, password } = this.state;
 
         // Attempt to sign in using credentials
-        this.context.signIn(emailAddress, password)
-            // If sign-in succeeds,
-            .then(() => {
-                // Define previous url, defaulting to home page
-                let prevUrl = "/";
-
-                // If the location state is defined and contains a prevUrl key,
-                if (this.props.location.state && this.props.location.state.prevUrl) 
-                    // Get previous URL from location state and set previous URL to that
-                    prevUrl = this.props.location.state.prevUrl;
-
-                // Redirect to previous page
-                this.props.history.push(prevUrl);
-            })
-            // If sign-in fails,
-            .catch(error => {
-                // If the error has an attached response,
-                if (error.response) {
-                    // Get the status code
-                    const { status } = error.response;
-                    
-                    // If the status code is in the 400 series,
-                    if (status >= 400 && status < 500) {
-                        // Add error message to state
-                        this.setState(prevState => {
-                            return {
-                                ...prevState,
-                                formErrors: [...prevState.formErrors, error.response.data.message],
-                            };
-                        });
-                    } else {
-                        // Otherwise,
-                        // Redirect to unhandled error page
-                        this.props.history.push("/error");
-                    }
-                }
-            });
+        this.props.signIn(emailAddress, password, this.props.location.state ? this.props.location.state.prevUrl : "/");
     }
 
     // Run when component has mounted
     componentDidMount() {
         // If a user has already been signed in,
-        if (this.context.user !== null) {
+        if (this.props.user !== null) {
             // Redirect to home page
             this.props.history.push("/");
         }
@@ -93,20 +59,22 @@ class UserSignIn extends React.Component {
 
     // Render to DOM
     render() {
-        const errors = this.state.formErrors.map((error, index) => (
-            <li key={index}>{error}</li>
-        ));
+        // If the error doesn't have an attached response,
+        if (this.props.error && !this.props.error.response) {
+            // Redirect to error page
+            return <Redirect to="/error" />
+        }
 
         return (
             <div className="bounds">
                 <div className="grid-33 centered signin">
                     <h1>Sign In</h1>
-                    {this.state.formErrors.length === 0 || (
+                    {this.props.error === null || (
                         <div>
                             <h2 className="validation--errors--label">Login errors:</h2>
                             <div className="validation-errors">
                                 <ul>
-                                    {errors}
+                                    <li>{this.props.error.response.data.message}</li>
                                 </ul>
                             </div>
                         </div>
@@ -147,8 +115,24 @@ class UserSignIn extends React.Component {
     }
 }
 
-// Context
-UserSignIn.contextType = AuthContext;
+// Redux mapping to React props
+const mapStateToProps = state => {
+    const authState = state.get("auth");
+
+    return {
+        user: authState.get("user"),
+        error: authState.get("error"),
+    };
+}
+
+const mapDispatchToProps = dispatch => ({
+    signIn: (emailAddress, password, prevUrl) => {
+        dispatch(signInStart(emailAddress, password, prevUrl));
+    },
+});
 
 // Export
-export default UserSignIn;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(withImmutablePropsToJS(UserSignIn));
