@@ -3,6 +3,7 @@ import { push } from "connected-react-router";
 import { all, cancel, call, fork, put, spawn, take } from "redux-saga/effects";
 import { signInDone, types } from "../actions/auth";
 import AuthService from "../../services/AuthService";
+import { setCookie, removeCookie } from "redux-cookie";
 
 // Sagas
 function* authenticate(emailAddress, password, prevUrl) {
@@ -10,7 +11,14 @@ function* authenticate(emailAddress, password, prevUrl) {
         // Sign in user, getting their data and the sign-in credentials
         const [user, credentials] = yield call(AuthService.signIn, emailAddress, password);
 
-        // If successful, dispatch successful SIGN_IN_DONE action
+        // If successful, store encoded credentials in cookie
+        yield put(setCookie("sdbc-credentials", credentials, {
+            path: "/",
+            domain: "localhost",
+            maxAge: 2 * (60 ** 2),
+        }));
+
+        // Store credentials and user into state
         yield put(signInDone(user, credentials));
 
         // Redirect to previous URL
@@ -30,14 +38,21 @@ function* signInFlow() {
         // Perform sign-in operation
         const task = yield fork(authenticate, payload.emailAddress, payload.password, payload.prevUrl);
 
-        // Wait for either SIGN_IN_DONE or SIGN_OUT
-        const action = yield take([types.SIGN_IN_DONE, types.SIGN_OUT]);
+        // Wait for either SIGN_OUT or failed SIGN_IN_DONE
+        const action = yield take([
+            types.SIGN_OUT,
+            action => action.type === types.SIGN_IN_DONE && action.error,
+        ]);
 
         // If SIGN_OUT was dispatched, cancel sign-in process if not already finished
         if (action.type === types.SIGN_OUT) yield cancel(task);
 
-        // Clear user and credential data
-        yield call(AuthService.signOut);
+        // Clear credential cookie data
+        yield put(removeCookie("sdbc-credentials", {
+            path: "/",
+            domain: "localhost",
+            maxAge: 2 * (60 ** 2),
+        }));
     }
 }
 
