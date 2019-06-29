@@ -5,8 +5,9 @@ import coursesSaga from "./courses";
 
 // Root saga
 export default function* rootSaga() {
-    yield all([
-        spawn(courseSaga),
-        spawn(coursesSaga),
-    ]);
+    // List of sagas to spawn
+    const sagas = [courseSaga, coursesSaga];
+
+    // Spawn each saga in parallel
+    yield all(sagas.map(saga => spawn(saga)));
 };
