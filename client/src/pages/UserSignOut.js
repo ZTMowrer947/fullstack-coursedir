@@ -1,7 +1,9 @@
 // Imports
 import PropTypes from "prop-types";
 import React from "react";
+import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { signOut } from "../store/actions/auth";
 
 // Component
 const UserSignOut = props => {
@@ -17,5 +19,15 @@ UserSignOut.propTypes = {
     signOut: PropTypes.func.isRequired,
 };
 
+// Redux mapping to react props
+const mapDispatchToProps = dispatch => ({
+    signOut: () => {
+        dispatch(signOut());
+    },
+});
+
 // Export
-export default UserSignOut;
+export default connect(
+    undefined,
+    mapDispatchToProps
+)(UserSignOut);
