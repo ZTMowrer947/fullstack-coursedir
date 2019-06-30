@@ -1,5 +1,6 @@
 // Imports
 import axios from "axios";
+import ValidationError from "../ValidationError";
 
 // Module
 export default (() => {
@@ -27,8 +28,22 @@ export default (() => {
         },
 
         createUser: async (userData) => {
-            // Create user through API
-            await axios.post(baseUrl, userData);
+            try {
+                // Create user through API
+                await axios.post(baseUrl, userData);
+            } catch (error) {
+                // If a response is attached and is of status code 400,
+                if (error.response && error.response.status === 400) {
+                    // Create validation error for user data
+                    const validationError = new ValidationError(error.response.data.message, userData);
+
+                    // Throw error
+                    throw validationError
+                }
+
+                // Otherwise, rethrow error
+                throw error;
+            }
         },
     };
 })();
