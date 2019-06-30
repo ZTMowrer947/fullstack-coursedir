@@ -1,9 +1,10 @@
 // Imports
 import { push } from "connected-react-router";
+import { setCookie, removeCookie } from "redux-cookie";
 import { all, cancel, cancelled, call, fork, put, spawn, take } from "redux-saga/effects";
 import { signInDone, types, resetSignInFlag, createUserDone, signInStart } from "../actions/auth";
 import AuthService from "../../services/AuthService";
-import { setCookie, removeCookie } from "redux-cookie";
+import ValidationError from "../../ValidationError";
 
 // Sagas
 function* authenticate(emailAddress, password, prevUrl) {
@@ -66,8 +67,7 @@ function* createUser(userData) {
     // If the password and confirm password don't match,
     if (userData.password !== userData.confirmPassword) {
         // Create error
-        const error = new Error("Password and Confirm Password fields must match.");
-        error.name = "PasswordConfirmFailedError";
+        const error = new ValidationError("Password and Confirm Password fields must match.", userData);
 
         // Dispatch failed CREATE_USER
         yield put(createUserDone(error));
