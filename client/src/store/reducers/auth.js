@@ -1,5 +1,5 @@
 // Imports
-import { fromJS } from "immutable";
+import { fromJS, List } from "immutable";
 import { types } from "../actions/auth";
 import initialState from "../initialState";
 
@@ -64,11 +64,37 @@ export default function auth(state = initialState.get("auth"), action) {
         case types.CREATE_USER_DONE: {
             // If the action contains an error,
             if (action.error) {
-                // Add it to state
-                return state.merge({
-                    validationErrors: fromJS(action.payload),
-                    isFetching: false,
-                });
+                // Get error from action
+                const { payload: error } = action;
+
+                // If a response is attached and its status is 400,
+                if (error.response && error.response.status === 400) {
+                    // Get error message from response
+                    const { message } = error.response.data;
+
+                    // Split message into array of validation errors
+                    const validationErrors = List(message.split(","))
+                        // Remove error prefix from validation errors
+                        .map(error => {
+                            // Get index of prefix terminator
+                            const prefixIndex = error.indexOf(": ");
+
+                            // Return error excluding error prefix
+                            return error.substring(prefixIndex + 2);
+                        });
+
+                    // Add validation errors to state
+                    return state.merge({
+                        validationErrors,
+                        isFetching: false,
+                    })
+                } else {
+                    // Otherwise, add error directly to state
+                    return state.merge({
+                        error,
+                        isFetching: false,
+                    });
+                }
             } else {
                 // Otherwise, just unset error
                 return state.merge({
