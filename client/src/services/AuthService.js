@@ -25,10 +25,5 @@ export default (() => {
             // Return the recieved user and credentials
             return [response.data, credentials];
         },
-
-        signOut: () => {
-            // Clear credential cookie
-            // cookieContext.remove("sdbc-credentials", cookieOptions);
-        },
     };
 })();
