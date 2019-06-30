@@ -36,8 +36,8 @@ export const createUserStart = (userData) => ({
     payload: userData,
 });
 
-export const createUserDone = (errors = []) => ({
+export const createUserDone = (error = null) => ({
     type: types.CREATE_USER_DONE,
-    error: errors.length > 0,
-    payload: errors.length > 0 ? errors : undefined,
+    error: error !== null,
+    payload: error !== null ? error : undefined,
 });
