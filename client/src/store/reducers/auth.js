@@ -50,6 +50,33 @@ export default function auth(state = initialState.get("auth"), action) {
             return state.merge({
                 isFetching: false,
             });
+        
+        // Starting user creation
+        case types.CREATE_USER_START:
+            // Clear errors and set fetching flag
+            return state.merge({
+                isFetching: true,
+                error: null,
+                validationErrors: undefined,
+            });
+
+        // Finishing user creation
+        case types.CREATE_USER_DONE: {
+            // If the action contains an error,
+            if (action.error) {
+                // Add it to state
+                return state.merge({
+                    validationErrors: fromJS(action.payload),
+                    isFetching: false,
+                });
+            } else {
+                // Otherwise, just unset error
+                return state.merge({
+                    validationErrors: undefined,
+                    isFetching: false,
+                });
+            }
+        }
 
         default:
             return state;
