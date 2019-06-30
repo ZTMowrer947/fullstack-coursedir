@@ -8629,6 +8629,11 @@ recursive-readdir@2.2.2:
   dependencies:
     minimatch "3.0.4"
 
+redux-cookie@^0.5.9:
+  version "0.5.9"
+  resolved "https://registry.yarnpkg.com/redux-cookie/-/redux-cookie-0.5.9.tgz#e3cc97cd16240252f0b43938358c26fb28015f64"
+  integrity sha1-48yXzRYkAlLwtDk4NYwm+ygBX2Q=
+
 redux-devtools-extension@^2.13.8:
   version "2.13.8"
   resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.8.tgz#37b982688626e5e4993ff87220c9bbb7cd2d96e1"
