@@ -63,18 +63,28 @@ function* signInFlow() {
 }
 
 function* createUser(userData) {
-    try {
-        // Attempt to create user
-        yield call(AuthService.createUser, userData);
+    // If the password and confirm password don't match,
+    if (userData.password !== userData.confirmPassword) {
+        // Create error
+        const error = new Error("Password and Confirm Password fields must match.");
+        error.name = "PasswordConfirmFailedError";
 
-        // If successful, dispatch successful CREATE_USER_DONE
-        yield put(createUserDone());
-
-        // Sign-in the created user
-        yield put(signInStart(userData.emailAddress, userData.password, "/"));
-    } catch (error) {
-        // If an error occurred, dispatch failed CREATE_USER_DONE
+        // Dispatch failed CREATE_USER
         yield put(createUserDone(error));
+    } else {
+        try {
+            // Attempt to create user
+            yield call(AuthService.createUser, userData);
+    
+            // If successful, dispatch successful CREATE_USER_DONE
+            yield put(createUserDone());
+    
+            // Sign-in the created user
+            yield put(signInStart(userData.emailAddress, userData.password, "/"));
+        } catch (error) {
+            // If an error occurred, dispatch failed CREATE_USER_DONE
+            yield put(createUserDone(error));
+        }
     }
 }
 

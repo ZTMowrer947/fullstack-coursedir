@@ -67,8 +67,15 @@ export default function auth(state = initialState.get("auth"), action) {
                 // Get error from action
                 const { payload: error } = action;
 
-                // If a response is attached and its status is 400,
-                if (error.response && error.response.status === 400) {
+                // If the password fields did not match,
+                if (error.name === "PasswordConfirmFailedError") {
+                    // Add validation errors to state
+                    return state.merge({
+                        validationErrors: List([ error.message ]),
+                        isFetching: false,
+                    })
+                } else if (error.response && error.response.status === 400) {
+                    // If a response is attached and its status is 400,
                     // Get error message from response
                     const { message } = error.response.data;
 
