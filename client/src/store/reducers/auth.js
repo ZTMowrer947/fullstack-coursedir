@@ -1,5 +1,5 @@
 // Imports
-import { fromJS, List } from "immutable";
+import { fromJS } from "immutable";
 import { types } from "../actions/auth";
 import initialState from "../initialState";
 
@@ -57,7 +57,6 @@ export default function auth(state = initialState.get("auth"), action) {
             return state.merge({
                 isFetching: true,
                 error: null,
-                validationErrors: undefined,
             });
 
         // Finishing user creation
@@ -67,45 +66,15 @@ export default function auth(state = initialState.get("auth"), action) {
                 // Get error from action
                 const { payload: error } = action;
 
-                // If the password fields did not match,
-                if (error.name === "PasswordConfirmFailedError") {
-                    // Add validation errors to state
-                    return state.merge({
-                        validationErrors: List([ error.message ]),
-                        isFetching: false,
-                    })
-                } else if (error.response && error.response.status === 400) {
-                    // If a response is attached and its status is 400,
-                    // Get error message from response
-                    const { message } = error.response.data;
-
-                    // Split message into array of validation errors
-                    const validationErrors = List(message.split(","))
-                        // Remove error prefix from validation errors
-                        .map(error => {
-                            // Get index of prefix terminator
-                            const prefixIndex = error.indexOf(": ");
-
-                            // Return error excluding error prefix
-                            return error.substring(prefixIndex + 2);
-                        });
-
-                    // Add validation errors to state
-                    return state.merge({
-                        validationErrors,
-                        isFetching: false,
-                    })
-                } else {
-                    // Otherwise, add error directly to state
-                    return state.merge({
-                        error,
-                        isFetching: false,
-                    });
-                }
-            } else {
-                // Otherwise, just unset error
+                // Add error to state
                 return state.merge({
-                    validationErrors: undefined,
+                    error,
+                    isFetching: false,
+                });
+            } else {
+                // Otherwise, unset error
+                return state.merge({
+                    error: null,
                     isFetching: false,
                 });
             }
