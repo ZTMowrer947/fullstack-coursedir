@@ -26,13 +26,9 @@ export default (() => {
             return [response.data, credentials];
         },
 
-        createUser: async (credentials, userData) => {
+        createUser: async (userData) => {
             // Create user through API
-            await axios.post(baseUrl, userData, {
-                headers: {
-                    authorization: `Basic ${credentials}`,
-                },
-            });
+            await axios.post(baseUrl, userData);
         },
     };
 })();
