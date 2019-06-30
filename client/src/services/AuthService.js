@@ -25,5 +25,14 @@ export default (() => {
             // Return the recieved user and credentials
             return [response.data, credentials];
         },
+
+        createUser: async (credentials, userData) => {
+            // Create user through API
+            await axios.post(baseUrl, userData, {
+                headers: {
+                    authorization: `Basic ${credentials}`,
+                },
+            });
+        },
     };
 })();
