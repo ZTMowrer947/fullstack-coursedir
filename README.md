@@ -20,8 +20,7 @@ The final project of the Treehouse Full-Stack JavaScript Techdegree program, thi
 ## Running the project
 To use this project, you must first set up the REST API that this project uses to perform operations.
 
-First, clone this repository:
-```git clone https://github.com/ZTMowrer947/SchoolDatabaseAPI```
+First, clone this repository.
 
 Next, in the repository root, initialize the api submodule:
 ```
