@@ -1,8 +1,10 @@
 // Imports
-import axios from "axios";
 import React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import AuthContext from "../context/AuthContext";
+import { compose } from "redux";
+import withImmutablePropsToJS from "with-immutable-props-to-js";
+import { createUserStart } from "../store/actions/auth";
 
 // Component
 class UserSignUp extends React.Component {
@@ -13,7 +15,7 @@ class UserSignUp extends React.Component {
 
         // Initialize state
         this.state = {
-            errors: [],
+            passMismatch: false,
             formData: {
                 firstName: "",
                 lastName: "",
@@ -50,7 +52,7 @@ class UserSignUp extends React.Component {
         this.setState(prevState => {
             return {
                 ...prevState,
-                errors: [],
+                passMismatch: false,
             };
         });
 
@@ -69,86 +71,14 @@ class UserSignUp extends React.Component {
             }
         }, {});
 
-        // Get form values
-        const {
-            firstName,
-            lastName,
-            emailAddress,
-            password,
-            confirmPassword,
-        } = formData;
-
-        // If the password and confirm password fields match,
-        if (password === confirmPassword) {
-            // Create user through API
-            axios.post("http://localhost:5000/api/users", {
-                firstName,
-                lastName,
-                emailAddress,
-                password,
-            }).then(response => {
-                if (response.status === 201) {
-                    // Sign in the user
-                    this.context.signIn(emailAddress, password);
-                    
-                    // Redirect to home page
-                    this.props.history.push("/");
-                }
-            }).catch(error => {
-                // If the errror has an attached response,
-                if (error.response) {
-                    // If the response status is 400 (Bad Request),
-                    if (error.response.status === 400) {
-                        // Get message from response body
-                        const { message } = error.response.data;
-
-                        // Split message into array of validation errors
-                        const errors = message.split(",")
-                            // Remove error prefix from validation errors
-                            .map(error => {
-                                // Get index of prefix terminator
-                                const prefixIndex = error.indexOf(": ");
-
-                                // Return error excluding error prefix
-                                return error.substring(prefixIndex + 2);
-                            });
-
-                        // Update state with form errors
-                        this.setState(prevState => {
-                            return {
-                                ...prevState,
-                                errors,
-                            };
-                        })
-                    } else {
-                        // Otherwise,
-                        // Redirect to unhandled error page
-                        this.props.history.push("/error");
-                    }
-                } else {
-                    // Otherwise,
-                    // Redirect to unhandled error page
-                    this.props.history.push("/error");
-                }
-            });
-        } else {
-            // Otherwise, create new error
-            const error = "password and confirm password fields must match.";
-
-            // Update state with error
-            this.setState(prevState => {
-                return {
-                    ...prevState,
-                    errors: [error],
-                };
-            });
-        }
+        // Create user
+        this.props.signUp(formData);
     }
 
     // Run when component has mounted
     componentDidMount() {
         // If a user has already been signed in,
-        if (this.context.user !== null) {
+        if (this.props.user !== null) {
             // Redirect to home page
             this.props.history.push("/");
         }
@@ -156,16 +86,16 @@ class UserSignUp extends React.Component {
 
     render() {
         // Map validation errors to list items
-        const validationErrors = this.state.errors.map((error, index) => (
+        const validationErrors = this.props.validationErrors ? this.props.validationErrors.map((error, index) => (
             <li key={index}>{error}</li>
-        ));
+        )) : [];
 
         return (
             <div className="bounds">
                 <div className="grid-33 centered signin">
                     <h1>Sign Up</h1>
                     <div>
-                        {this.state.errors.length === 0 || (
+                        {validationErrors.length > 0 && (
                             <div>
                                 <h2 className="validation--errors--label">Validation errors</h2>
                                 <div className="validation-errors">
@@ -245,8 +175,27 @@ class UserSignUp extends React.Component {
     }
 }
 
-// Context
-UserSignUp.contextType = AuthContext;
+// Redux mapping to React props
+const mapStateToProps = state => ({
+    validationErrors: state.getIn(["auth", "validationErrors"]),
+    error: state.getIn(["auth", "error"]),
+    user: state.getIn(["auth", "user"]),
+});
+
+const mapDispatchToProps = dispatch => ({
+    signUp: userData => {
+        dispatch(createUserStart(userData));
+    },
+});
+
+// HOC composition
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    withImmutablePropsToJS,
+);
 
 // Export
-export default UserSignUp;
+export default enhance(UserSignUp);
