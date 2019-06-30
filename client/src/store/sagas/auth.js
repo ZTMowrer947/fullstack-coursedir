@@ -1,7 +1,7 @@
 // Imports
 import { push } from "connected-react-router";
 import { all, cancel, cancelled, call, fork, put, spawn, take } from "redux-saga/effects";
-import { signInDone, types, resetSignInFlag } from "../actions/auth";
+import { signInDone, types, resetSignInFlag, createUserDone, signInStart } from "../actions/auth";
 import AuthService from "../../services/AuthService";
 import { setCookie, removeCookie } from "redux-cookie";
 
@@ -62,9 +62,41 @@ function* signInFlow() {
     }
 }
 
+function* createUser(userData) {
+    try {
+        // Attempt to create user
+        yield call(AuthService.createUser, userData);
+
+        // If successful, dispatch successful CREATE_USER_DONE
+        yield put(createUserDone());
+
+        // Sign-in the created user
+        yield put(signInStart(userData.emailAddress, userData.password, "/"));
+    } catch (error) {
+        // If an error occurred, dispatch failed CREATE_USER_DONE
+        yield put(createUserDone(error));
+    }
+}
+
+function* signUp() {
+    // Declare variable to hold previous task
+    let prevTask = null;
+
+    while (true) {
+        // Wait for COURSE_FETCH_START and get ID from payload
+        const { payload: userData } = yield take(types.CREATE_USER_START);
+
+        // If the previous task has been defined, cancel it if it isn't finished already
+        if (prevTask) yield cancel(prevTask);
+
+        // Retrieve course and store task for next run
+        prevTask = yield fork(createUser, userData);
+    }
+}
+
 export default function* authSaga() {
     // Define list of sagas to spawn
-    const sagas = [signInFlow];
+    const sagas = [signInFlow, signUp];
 
     // Spawn sagas in parallel
     yield all(sagas.map(saga => spawn(saga)));
