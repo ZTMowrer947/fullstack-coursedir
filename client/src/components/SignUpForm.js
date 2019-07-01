@@ -2,6 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { reduxForm, Field } from "redux-form/immutable";
+import { signUp } from "../store/actions/auth";
 
 // Component
 const SignUpForm = props => {
@@ -10,7 +11,7 @@ const SignUpForm = props => {
             <div className="grid-33 centered signin">
                 <h1>Sign Up</h1>
                 <div>
-                    <form method="POST" onSubmit={props.handleSubmit}>
+                    <form method="POST" onSubmit={props.handleSubmit(signUp)}>
                         <div>
                             <Field
                                 id="firstName"
