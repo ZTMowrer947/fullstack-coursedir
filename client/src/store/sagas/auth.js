@@ -86,7 +86,7 @@ function* createUser(action) {
             yield put(signUp.success());
     
             // Sign-in the created user
-            yield put(signInStart(userData.emailAddress, userData.password, "/"));
+            yield put(signInStart(userData.get("emailAddress"), userData.get("password"), "/"));
         } catch (error) {
             // If a error is a validation error
             if (error instanceof ValidationError) {
