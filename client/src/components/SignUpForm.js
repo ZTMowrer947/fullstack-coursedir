@@ -3,6 +3,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { reduxForm, Field } from "redux-form/immutable";
 import { signUp } from "../store/actions/auth";
+import renderFormField from "./renderFormField";
+import "./SignUpForm.css";
 
 // Component
 const SignUpForm = props => {
@@ -12,11 +14,12 @@ const SignUpForm = props => {
                 <h1>Sign Up</h1>
                 <div>
                     <form method="POST" onSubmit={props.handleSubmit(signUp)}>
+                        {props.error && <p className="form-error">{props.error}</p>}
                         <div>
                             <Field
                                 id="firstName"
                                 name="firstName"
-                                component="input"
+                                component={renderFormField}
                                 type="text"
                                 className=""
                                 placeholder="First Name"
@@ -26,7 +29,7 @@ const SignUpForm = props => {
                             <Field
                                 id="lastName"
                                 name="lastName"
-                                component="input"
+                                component={renderFormField}
                                 type="text"
                                 className=""
                                 placeholder="Last Name"
@@ -36,7 +39,7 @@ const SignUpForm = props => {
                             <Field
                                 id="emailAddress"
                                 name="emailAddress"
-                                component="input"
+                                component={renderFormField}
                                 type="text"
                                 className=""
                                 placeholder="Email Address"
@@ -46,7 +49,7 @@ const SignUpForm = props => {
                             <Field
                                 id="password"
                                 name="password"
-                                component="input"
+                                component={renderFormField}
                                 type="password"
                                 className=""
                                 placeholder="Password"
@@ -56,14 +59,14 @@ const SignUpForm = props => {
                             <Field
                                 id="confirmPassword"
                                 name="confirmPassword"
-                                component="input"
+                                component={renderFormField}
                                 type="password"
                                 className=""
                                 placeholder="Confirm Password"
                             />
                         </div>
                         <div className="grid-100 pad-bottom">
-                            <button className="button" type="submit">Sign Up</button>
+                            <button className="button" type="submit" disabled={props.submitting}>Sign Up</button>
                             <Link to="/" className="button button-secondary">Cancel</Link>
                         </div>
                     </form>
