@@ -37,7 +37,21 @@
         "eject": "react-scripts eject"
     },
     "eslintConfig": {
-        "extends": "react-app"
+        "parser": "@typescript-eslint/parser",
+        "plugins": [
+            "react-hooks"
+        ],
+        "extends": [
+            "plugin:@typescript-eslint/recommended",
+            "plugin:import/errors",
+            "plugin:import/warnings",
+            "plugin:import/typescript",
+            "plugin:react/recommended",
+            "plugin:jsx-a11y/recommended",
+            "plugin:prettier/recommended",
+            "prettier/@typescript-eslint",
+            "prettier/react"
+        ]
     },
     "browserslist": {
         "production": [
