@@ -4,6 +4,7 @@ import User from "./User";
 interface Course {
     id: string;
     title: string;
+    description: string;
     estimatedTime: string | null;
     materialsNeeded: string | null;
     creator: User;
