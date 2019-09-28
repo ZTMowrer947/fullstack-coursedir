@@ -9,4 +9,12 @@ export default class CourseService {
 
         return response.data;
     }
+
+    public static async getById(id: string): Promise<Course> {
+        const response = await axios.get(
+            `http://localhost:5000/api/courses/${id}`
+        );
+
+        return response.data;
+    }
 }
