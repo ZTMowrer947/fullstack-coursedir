@@ -6,7 +6,7 @@ module.exports = {
     // Parser options
     parserOptions: {
         // tsconfig file path
-        project: "./tsconfig.json",
+        project: "./client/tsconfig.json",
 
         // Parse ES2018 features
         ecmaVersion: 2018,
