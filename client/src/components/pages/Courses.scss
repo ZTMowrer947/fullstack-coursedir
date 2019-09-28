@@ -25,37 +25,3 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
-/* line 133, ../sass/global.sass */
-.course--add--module {
-    background: #eee;
-    text-align: center;
-}
-/* line 137, ../sass/global.sass */
-.course--add--module:hover .course--add--title {
-    color: #444;
-}
-/* line 139, ../sass/global.sass */
-.course--add--module:hover .add {
-    fill: #444;
-}
-/* line 141, ../sass/global.sass */
-.course--add--title {
-    color: #999;
-    display: inline-block;
-    font-size: 18px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -55%);
-    -moz-transform: translate(-50%, -55%);
-    -ms-transform: translate(-50%, -55%);
-    transform: translate(-50%, -55%);
-}
-/* line 149, ../sass/global.sass */
-.course--add--title .add {
-    width: 13px;
-    height: auto;
-    margin: 0 5px 0 0;
-    fill: #999;
-}
