@@ -4,54 +4,6 @@ body {
     background: #fff;
 }
 
-/* line 13, ../sass/global.sass */
-.header {
-    background: #57496e;
-    padding: 20px 0;
-    margin-bottom: 30px;
-}
-/* line 17, ../sass/global.sass */
-.header--logo {
-    color: #fff;
-    font-size: 24px;
-    padding: 0 15px;
-    margin: 0;
-    display: inline-block;
-}
-/* line 23, ../sass/global.sass */
-.header--logo a {
-    color: rgba(255, 255, 255, 0.5);
-}
-/* line 25, ../sass/global.sass */
-.header--logo a:hover {
-    color: #fff;
-}
-/* line 27, ../sass/global.sass */
-.header--logo .selected {
-    color: #fff;
-}
-/* line 29, ../sass/global.sass */
-.header--logo .chevron {
-    fill: rgba(255, 255, 255, 0.3);
-    width: 7px;
-    height: auto;
-    margin: 0 10px;
-}
-/* line 34, ../sass/global.sass */
-.header nav {
-    float: right;
-    margin-top: 3px;
-}
-/* line 37, ../sass/global.sass */
-.header nav a {
-    color: rgba(255, 255, 255, 0.5);
-    margin-left: 20px;
-}
-/* line 40, ../sass/global.sass */
-.header nav a:hover {
-    color: #fff;
-}
-
 /* line 44, ../sass/global.sass */
 .actions--bar {
     border-bottom: 1px solid #d5f9fe;
