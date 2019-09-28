@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Course from "../../models/Course";
 import CourseService from "../../services/Course.service";
 import CourseLink from "../CourseLink";
+import "./Courses.scss";
 
 // Component
 const Courses: React.FC = () => {
