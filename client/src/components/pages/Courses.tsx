@@ -1,5 +1,7 @@
 // Imports
 import React, { useState, useEffect } from "react";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import { Link } from "react-router-dom";
 import Course from "../../models/Course";
 import CourseService from "../../services/Course.service";
@@ -45,9 +47,9 @@ const Courses: React.FC = () => {
         ));
 
         return (
-            <div className="bounds">
+            <Row>
                 {courseList}
-                <div className="grid-33">
+                <Col xs={12} sm={6} md={4} xl={3}>
                     <Link
                         to="/courses/create"
                         className="course--module course--add--module"
@@ -66,8 +68,8 @@ const Courses: React.FC = () => {
                             New Course
                         </h3>
                     </Link>
-                </div>
-            </div>
+                </Col>
+            </Row>
         );
     }
 };
