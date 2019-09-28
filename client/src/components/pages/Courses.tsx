@@ -4,8 +4,9 @@ import Row from "react-bootstrap/Row";
 import Course from "../../models/Course";
 import CourseService from "../../services/Course.service";
 import CourseLink from "../CourseLink";
-import "./Courses.scss";
 import AddCourseLink from "../AddCourseLink";
+import LoadingIndicator from "../LoadingIndicator";
+import "./Courses.scss";
 
 // Component
 const Courses: React.FC = () => {
@@ -39,7 +40,7 @@ const Courses: React.FC = () => {
 
     // If we are loading,
     if (loading) {
-        return <h1>Loading...</h1>;
+        return <LoadingIndicator />;
     } else {
         // Otherwise, map courses to CourseLink components
         const courseList = courses.map(course => (
