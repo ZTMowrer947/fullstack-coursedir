@@ -51,7 +51,36 @@
             "plugin:prettier/recommended",
             "prettier/@typescript-eslint",
             "prettier/react"
-        ]
+        ],
+        "rules": {
+            "@typescript-eslint/explicit-function-return-type": [
+                "warn",
+                {
+                    "allowExpressions": true,
+                    "allowTypedFunctionExpressions": true
+                }
+            ],
+            "import/order": [
+                "error"
+            ],
+            "no-unused-vars": [
+                "off"
+            ],
+            "no-undef": [
+                "off"
+            ],
+            "import/default": [
+                "off"
+            ],
+            "import/named": [
+                "off"
+            ],
+            "react/prop-types": [
+                "off"
+            ],
+            "react-hooks/rules-of-hooks": "error",
+            "react-hooks/exhaustive-deps": "warn"
+        }
     },
     "browserslist": {
         "production": [
@@ -70,7 +99,6 @@
         "@typescript-eslint/parser": "^2.3.1",
         "eslint": "5.x",
         "eslint-config-prettier": "^6.3.0",
-        "eslint-import-resolver-webpack": "^0.11.1",
         "eslint-plugin-import": "^2.18.2",
         "eslint-plugin-prettier": "^3.1.1",
         "eslint-plugin-react": "^7.14.3",
