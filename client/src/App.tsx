@@ -1,11 +1,15 @@
 import React from "react";
 import "./App.scss";
 import Layout from "./components/Layout";
+import { Switch, Route } from "react-router-dom";
+import Courses from "./components/pages/Courses";
 
 const App: React.FC = () => {
     return (
         <Layout>
-            <h1>Testing</h1>
+            <Switch>
+                <Route path="/" exact component={Courses} />
+            </Switch>
         </Layout>
     );
 };
