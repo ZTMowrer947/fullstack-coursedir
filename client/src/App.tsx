@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import LoadingIndicator from "./components/LoadingIndicator";
@@ -17,26 +17,37 @@ const App: React.FC = () => {
     const [user, setUser] = useState<User | undefined>(undefined);
     const [loading, setLoading] = useState(true);
 
-    // Construct AuthState
-    const authState: AuthState = {
-        user,
-        loading,
-        getCredentials: UserService.getCredentials,
-        signIn: async (emailAddress: string, password: string) => {
+    // Construct signIn and signOut callback
+    const signIn = useCallback(
+        async (emailAddress: string, password: string) => {
             // Attempt to sign in user
             const authUser = await UserService.signIn(emailAddress, password);
 
             // Set user state
             setUser(authUser);
         },
-        signOut: () => {
-            // Sign out user
-            UserService.signOut();
+        [setUser]
+    );
 
-            // Clear user state
-            setUser(undefined);
-        },
-    };
+    const signOut = useCallback(() => {
+        // Sign out user
+        UserService.signOut();
+
+        // Clear user state
+        setUser(undefined);
+    }, [setUser]);
+
+    // Construct AuthState
+    const authState = useMemo<AuthState>(
+        () => ({
+            user,
+            loading,
+            getCredentials: UserService.getCredentials,
+            signIn,
+            signOut,
+        }),
+        [signIn, signOut, user, loading]
+    );
 
     useEffect(() => {
         // Attempt to get credentials from cookie data
