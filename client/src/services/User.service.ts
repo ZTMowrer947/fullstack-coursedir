@@ -27,7 +27,7 @@ export default class UserService {
         // Store credentials in cookie data
         Cookies.set("sdbc-credentials", encodedCredentials, {
             // Expire in 2 hours
-            expires: new Date(Date.now() + 2 * 3600),
+            expires: new Date(Date.now() + 2000 * 3600),
         });
 
         return response.data;
