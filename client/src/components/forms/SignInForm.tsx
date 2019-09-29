@@ -3,6 +3,7 @@ import { Formik, FormikActions } from "formik";
 import React from "react";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
+import * as Yup from "yup";
 
 // Form values
 interface SignInFormValues {
@@ -18,12 +19,21 @@ interface PropTypes {
     ) => void;
 }
 
+// Validation Schema
+const SignInSchema = Yup.object().shape({
+    emailAddress: Yup.string()
+        .email("Email Address must be in the form of a valid email address.")
+        .required("Email Address is required."),
+    password: Yup.string().required("Password is required."),
+});
+
 // Component
 const SignInForm: React.FC<PropTypes> = ({ onSubmit }) => {
     return (
         <Formik
             initialValues={{ emailAddress: "", password: "" }}
             onSubmit={onSubmit}
+            validationSchema={SignInSchema}
         >
             {({
                 values,
