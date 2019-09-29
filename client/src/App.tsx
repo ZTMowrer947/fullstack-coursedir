@@ -4,6 +4,7 @@ import Layout from "./components/Layout";
 import Courses from "./components/pages/Courses";
 import CourseDetail from "./components/pages/CourseDetail";
 import LoadingIndicator from "./components/LoadingIndicator";
+import UserSignIn from "./components/pages/UserSignIn";
 import AuthContext from "./context/AuthContext";
 import AuthState from "./models/AuthState";
 import User from "./models/User";
@@ -21,22 +22,11 @@ const App: React.FC = () => {
         loading,
         getCredentials: UserService.getCredentials,
         signIn: async (emailAddress: string, password: string) => {
-            // Set loading flag
-            setLoading(true);
+            // Attempt to sign in user
+            const authUser = await UserService.signIn(emailAddress, password);
 
-            try {
-                // Attempt to sign in user
-                const authUser = await UserService.signIn(
-                    emailAddress,
-                    password
-                );
-
-                // Set user state
-                setUser(authUser);
-            } finally {
-                // In any case, unset loading flag
-                setLoading(false);
-            }
+            // Set user state
+            setUser(authUser);
         },
         signOut: () => {
             // Sign out user
@@ -61,6 +51,7 @@ const App: React.FC = () => {
                             exact
                             component={CourseDetail}
                         />
+                        <Route path="/signin" component={UserSignIn} />
                     </Switch>
                 )}
             </Layout>
