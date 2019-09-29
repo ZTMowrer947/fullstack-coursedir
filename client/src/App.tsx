@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Courses from "./components/pages/Courses";
@@ -14,7 +14,7 @@ import "./App.scss";
 const App: React.FC = () => {
     // Initialize state
     const [user, setUser] = useState<User | undefined>(undefined);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     // Construct AuthState
     const authState: AuthState = {
@@ -36,6 +36,34 @@ const App: React.FC = () => {
             setUser(undefined);
         },
     };
+
+    useEffect(() => {
+        // Attempt to get credentials from cookie data
+        const credentials = authState.getCredentials();
+
+        // If there are persisted credentials, but the user hasn't been signed in,
+        // and we are not currently loading,
+        if (!!credentials && !user && !loading) {
+            // Decode credentials
+            const decodedCredentials = atob(credentials);
+            const [emailAddress, password] = decodedCredentials.split(":");
+
+            // Sign in user
+            authState
+                .signIn(emailAddress, password)
+                .catch(() => {
+                    // If credentials were invalid, sign out user
+                    authState.signOut();
+                })
+                .finally(() => {
+                    // In any case, unset loading flag
+                    setLoading(false);
+                });
+        } else {
+            // Otherwise, just unset loading flag
+            setLoading(false);
+        }
+    }, [authState, user, loading]);
 
     return (
         <AuthContext.Provider value={authState}>
