@@ -2,6 +2,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import User from "../models/User";
+import CreateUserDTO from "../models/CreateUserDTO";
 
 // Service
 export default class UserService {
@@ -31,6 +32,11 @@ export default class UserService {
         });
 
         return response.data;
+    }
+
+    public static async signUp(userData: CreateUserDTO): Promise<void> {
+        // Create user
+        await axios.post("http://localhost:5000/api/users", userData);
     }
 
     public static signOut(): void {

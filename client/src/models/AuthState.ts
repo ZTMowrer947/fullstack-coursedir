@@ -1,4 +1,5 @@
 import User from "./User";
+import CreateUserDTO from "./CreateUserDTO";
 
 // State
 interface AuthState {
@@ -6,6 +7,7 @@ interface AuthState {
     loading: boolean;
     getCredentials: () => string | undefined;
     signIn: (emailAddress: string, password: string) => Promise<void>;
+    signUp: (userData: CreateUserDTO) => Promise<void>;
     signOut: () => void;
 }
 

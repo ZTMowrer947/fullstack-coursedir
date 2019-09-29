@@ -8,6 +8,7 @@ const AuthContext = React.createContext<AuthState>({
     loading: false,
     getCredentials: () => "",
     signIn: async () => {},
+    signUp: async () => {},
     signOut: () => {},
 });
 

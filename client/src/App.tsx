@@ -11,6 +11,8 @@ import AuthState from "./models/AuthState";
 import User from "./models/User";
 import UserService from "./services/User.service";
 import "./App.scss";
+import UserSignUp from "./components/pages/UserSignUp";
+import CreateUserDTO from "./models/CreateUserDTO";
 
 const App: React.FC = () => {
     // Initialize state
@@ -44,6 +46,7 @@ const App: React.FC = () => {
             loading,
             getCredentials: UserService.getCredentials,
             signIn,
+            signUp: UserService.signUp,
             signOut,
         }),
         [signIn, signOut, user, loading]
@@ -92,6 +95,7 @@ const App: React.FC = () => {
                             component={CourseDetail}
                         />
                         <Route path="/signin" component={UserSignIn} />
+                        <Route path="/signup" component={UserSignUp} />
                         <Route path="/signout" component={UserSignOut} />
                     </Switch>
                 )}
