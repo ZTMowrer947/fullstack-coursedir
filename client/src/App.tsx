@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import Courses from "./components/pages/Courses";
-import CourseDetail from "./components/pages/CourseDetail";
 import LoadingIndicator from "./components/LoadingIndicator";
+import CourseDetail from "./components/pages/CourseDetail";
+import Courses from "./components/pages/Courses";
 import UserSignIn from "./components/pages/UserSignIn";
+import UserSignOut from "./components/pages/UserSignOut";
 import AuthContext from "./context/AuthContext";
 import AuthState from "./models/AuthState";
 import User from "./models/User";
@@ -80,6 +81,7 @@ const App: React.FC = () => {
                             component={CourseDetail}
                         />
                         <Route path="/signin" component={UserSignIn} />
+                        <Route path="/signout" component={UserSignOut} />
                     </Switch>
                 )}
             </Layout>
