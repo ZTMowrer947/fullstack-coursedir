@@ -29,81 +29,67 @@ const UserSignUp: React.FC<RouteComponentProps> = () => {
                             values,
                             { setErrors, setFieldError, setSubmitting }
                         ) => {
-                            // If password and confirm password fields do not match,
-                            if (values.password !== values.confirmPassword) {
-                                // Set validation error on confirm password field
-                                setFieldError(
-                                    "confirmPassword",
-                                    "Password and Confirm Password fields do not match."
-                                );
+                            // Attempt to sign up user
+                            signUp(values)
+                                .then(() => {
+                                    // If successful, sign in user
+                                    return signIn(
+                                        values.emailAddress,
+                                        values.password
+                                    );
+                                })
+                                .catch((error: AxiosError) => {
+                                    // If an error was thrown
+                                    // If a response is attached, and the status code is 400,
+                                    if (
+                                        error.response &&
+                                        error.response.status === 400
+                                    ) {
+                                        // If there are validation errors,
+                                        if (error.response.data.errors) {
+                                            // Map validation errors to the format expected by Formik
+                                            const validationErrors = error.response.data.errors.reduce(
+                                                (acc: object, error: any) => {
+                                                    // Get "required" message if present, or else get first error message
+                                                    const errorMessage: string =
+                                                        error.constraints
+                                                            .isNotEmpty ||
+                                                        Object.values(
+                                                            error.contraints
+                                                        )[0];
 
-                                // Stop submission
-                                setSubmitting(false);
-                            } else {
-                                signUp(values)
-                                    .then(() => {
-                                        // If successful, sign in user
-                                        return signIn(
-                                            values.emailAddress,
-                                            values.password
-                                        );
-                                    })
-                                    .catch((error: AxiosError) => {
-                                        // If an error was thrown
-                                        // If a response is attached, and the status code is 400,
-                                        if (
-                                            error.response &&
-                                            error.response.status === 400
-                                        ) {
-                                            // If there are validation errors,
-                                            if (error.response.data.errors) {
-                                                // Map validation errors to the format expected by Formik
-                                                const validationErrors = error.response.data.errors.reduce(
-                                                    (
-                                                        acc: object,
-                                                        error: any
-                                                    ) => {
-                                                        // Get "required" message if present, or else get first error message
-                                                        const errorMessage: string =
-                                                            error.constraints
-                                                                .isNotEmpty ||
-                                                            Object.values(
-                                                                error.contraints
-                                                            )[0];
+                                                    return {
+                                                        ...acc,
+                                                        [error.property]: errorMessage
+                                                            .replace(
+                                                                "firstName",
+                                                                "FirstName"
+                                                            )
+                                                            .replace(
+                                                                "lastName",
+                                                                "Last Name"
+                                                            )
+                                                            .replace(
+                                                                "emailAddress",
+                                                                "Email Address"
+                                                            )
+                                                            .replace(
+                                                                "password",
+                                                                "Password"
+                                                            ),
+                                                    };
+                                                },
+                                                {}
+                                            );
 
-                                                        return {
-                                                            ...acc,
-                                                            [error.property]: errorMessage
-                                                                .replace(
-                                                                    "firstName",
-                                                                    "FirstName"
-                                                                )
-                                                                .replace(
-                                                                    "lastName",
-                                                                    "Last Name"
-                                                                )
-                                                                .replace(
-                                                                    "emailAddress",
-                                                                    "Email Address"
-                                                                )
-                                                                .replace(
-                                                                    "password",
-                                                                    "Password"
-                                                                ),
-                                                        };
-                                                    },
-                                                    {}
-                                                );
-
-                                                // Set validation errors for form fields
-                                                setErrors(validationErrors);
-                                            }
+                                            // Set validation errors for form fields
+                                            setErrors(validationErrors);
                                         }
+                                    }
 
-                                        // Stop submission
-                                        setSubmitting(false);
-                                    });
-                            }
+                                    // Stop submission
+                                    setSubmitting(false);
+                                });
                         }}
                     />
                 </div>

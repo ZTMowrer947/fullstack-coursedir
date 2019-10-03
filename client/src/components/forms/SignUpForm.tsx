@@ -19,6 +19,24 @@ interface PropTypes {
     ) => void;
 }
 
+// Validation Schema
+const SignUpSchema = Yup.object().shape({
+    firstName: Yup.string().required("First Name is required."),
+    lastName: Yup.string().required("Last Name is required."),
+    emailAddress: Yup.string()
+        .email("Email Address must be in the form of a valid email address.")
+        .required("Email Address is required."),
+    password: Yup.string()
+        .min(8, "Password must be at least 8 characters in length.")
+        .required("Password is required."),
+    confirmPassword: Yup.string()
+        .oneOf(
+            [Yup.ref("password"), null],
+            "Password and Confirm Password fields must match."
+        )
+        .required("Password Confirmation is required."),
+});
+
 // Component
 const SignUpForm: React.FC<PropTypes> = ({ onSubmit }) => {
     return (
@@ -31,6 +49,7 @@ const SignUpForm: React.FC<PropTypes> = ({ onSubmit }) => {
                 confirmPassword: "",
             }}
             onSubmit={onSubmit}
+            validationSchema={SignUpSchema}
         >
             {({
                 values,
