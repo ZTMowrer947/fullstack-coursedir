@@ -84,6 +84,12 @@ const UserSignUp: React.FC<RouteComponentProps> = () => {
 
                                             // Set validation errors for form fields
                                             setErrors(validationErrors);
+                                        } else {
+                                            // Otherwise, set validation error on email address
+                                            setFieldError(
+                                                "emailAddress",
+                                                error.response.data.message
+                                            );
                                         }
                                     }
 
