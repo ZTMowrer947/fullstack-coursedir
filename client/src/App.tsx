@@ -2,16 +2,20 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import LoadingIndicator from "./components/LoadingIndicator";
-import CourseDetail from "./components/pages/CourseDetail";
-import Courses from "./components/pages/Courses";
-import UserSignIn from "./components/pages/UserSignIn";
-import UserSignOut from "./components/pages/UserSignOut";
-import UserSignUp from "./components/pages/UserSignUp";
 import AuthContext from "./context/AuthContext";
 import AuthState from "./models/AuthState";
 import User from "./models/User";
 import UserService from "./services/User.service";
 import "./App.scss";
+
+// Async Components
+const Courses = React.lazy(() => import("./components/pages/Courses"));
+const CourseDetail = React.lazy(() =>
+    import("./components/pages/CourseDetail")
+);
+const UserSignIn = React.lazy(() => import("./components/pages/UserSignIn"));
+const UserSignUp = React.lazy(() => import("./components/pages/UserSignUp"));
+const UserSignOut = React.lazy(() => import("./components/pages/UserSignOut"));
 
 const App: React.FC = () => {
     // Initialize state
@@ -85,18 +89,20 @@ const App: React.FC = () => {
                 {loading ? (
                     <LoadingIndicator />
                 ) : (
-                    <Switch>
-                        <Redirect from="/" to="/courses" exact />
-                        <Route path="/courses" exact component={Courses} />
-                        <Route
-                            path="/courses/:id"
-                            exact
-                            component={CourseDetail}
-                        />
-                        <Route path="/signin" component={UserSignIn} />
-                        <Route path="/signup" component={UserSignUp} />
-                        <Route path="/signout" component={UserSignOut} />
-                    </Switch>
+                    <React.Suspense fallback={<LoadingIndicator />}>
+                        <Switch>
+                            <Redirect from="/" to="/courses" exact />
+                            <Route path="/courses" exact component={Courses} />
+                            <Route
+                                path="/courses/:id"
+                                exact
+                                component={CourseDetail}
+                            />
+                            <Route path="/signin" component={UserSignIn} />
+                            <Route path="/signup" component={UserSignUp} />
+                            <Route path="/signout" component={UserSignOut} />
+                        </Switch>
+                    </React.Suspense>
                 )}
             </Layout>
         </AuthContext.Provider>
