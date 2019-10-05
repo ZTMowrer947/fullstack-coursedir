@@ -8,7 +8,7 @@ import SignInForm from "../forms/SignInForm";
 import { AxiosError } from "axios";
 
 // Components
-const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
+const UserSignIn: React.FC<RouteComponentProps> = ({ history, location }) => {
     // Get data from AuthContext
     const { user, signIn } = useContext(AuthContext);
 
@@ -38,8 +38,14 @@ const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
                                     // If successful, stop submission
                                     setSubmitting(false);
 
-                                    // Redirect to home page (for now)
-                                    history.push("/");
+                                    // Determine redirection path (prevUrl from location state if defined, home page otherwise)
+                                    const prevUrl =
+                                        (location.state &&
+                                            location.state.prevUrl) ||
+                                        "/";
+
+                                    // Redirect to selected path
+                                    history.push(prevUrl);
                                 })
                                 .catch((error: AxiosError) => {
                                     // If an error occurred, stop submission
