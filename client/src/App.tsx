@@ -6,13 +6,12 @@ import CourseDetail from "./components/pages/CourseDetail";
 import Courses from "./components/pages/Courses";
 import UserSignIn from "./components/pages/UserSignIn";
 import UserSignOut from "./components/pages/UserSignOut";
+import UserSignUp from "./components/pages/UserSignUp";
 import AuthContext from "./context/AuthContext";
 import AuthState from "./models/AuthState";
 import User from "./models/User";
 import UserService from "./services/User.service";
 import "./App.scss";
-import UserSignUp from "./components/pages/UserSignUp";
-import CreateUserDTO from "./models/CreateUserDTO";
 
 const App: React.FC = () => {
     // Initialize state

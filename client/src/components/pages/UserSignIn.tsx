@@ -1,8 +1,8 @@
 // Imports
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import { Link, Redirect, RouteComponentProps } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import SignInForm from "../forms/SignInForm";
 import { AxiosError } from "axios";
@@ -12,11 +12,15 @@ const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
     // Get data from AuthContext
     const { user, signIn } = useContext(AuthContext);
 
-    // If a user is already signed in,
-    if (user) {
-        // Redirect to home page
-        return <Redirect to="/" />;
-    }
+    useEffect(() => {
+        // If a user is already signed in,
+        if (user) {
+            // Redirect to home page
+            history.push("/");
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Otherwise, render form
     return (
@@ -31,12 +35,19 @@ const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
                         ) => {
                             signIn(emailAddress, password)
                                 .then(() => {
-                                    setSubmitting(false);
-                                })
-                                .catch((error: AxiosError) => {
+                                    // If successful, stop submission
                                     setSubmitting(false);
 
+                                    // Redirect to home page (for now)
+                                    history.push("/");
+                                })
+                                .catch((error: AxiosError) => {
+                                    // If an error occurred, stop submission
+                                    setSubmitting(false);
+
+                                    // If a response is attached
                                     if (error.response) {
+                                        // Determine field to set error on
                                         let field = "emailAddress";
 
                                         if (error.response.status === 404) {
@@ -47,6 +58,7 @@ const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
                                             field = "password";
                                         }
 
+                                        // Set error on selected field
                                         setFieldError(
                                             field,
                                             error.response.data.message

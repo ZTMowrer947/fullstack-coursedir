@@ -1,5 +1,5 @@
 // Imports
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { Link, Redirect, RouteComponentProps } from "react-router-dom";
@@ -8,15 +8,19 @@ import SignUpForm from "../forms/SignUpForm";
 import { AxiosError } from "axios";
 
 // Component
-const UserSignUp: React.FC<RouteComponentProps> = () => {
+const UserSignUp: React.FC<RouteComponentProps> = ({ history }) => {
     // Get user data and functions from AuthContext
     const { user, signIn, signUp } = useContext(AuthContext);
 
-    // If a user is already signed in,
-    if (user) {
-        // Redirect to home page
-        return <Redirect to="/" />;
-    }
+    useEffect(() => {
+        // If a user is already signed in,
+        if (user) {
+            // Redirect to home page
+            history.push("/");
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Otherwise, render form
     return (
@@ -37,6 +41,10 @@ const UserSignUp: React.FC<RouteComponentProps> = () => {
                                         values.emailAddress,
                                         values.password
                                     );
+                                })
+                                .then(() => {
+                                    // If sign-in succeeds, redirect to home page
+                                    history.push("/");
                                 })
                                 .catch((error: AxiosError) => {
                                     // If an error was thrown
