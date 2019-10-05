@@ -2,6 +2,7 @@
 import React, { useContext } from "react";
 import Nav from "react-bootstrap/Nav";
 import { LinkContainer } from "react-router-bootstrap";
+import { useLocation } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import "./MainNav.scss";
 
@@ -9,6 +10,13 @@ import "./MainNav.scss";
 const MainNav: React.FC = () => {
     // Get user from context
     const { user } = useContext(AuthContext);
+
+    // Get location data
+    const location = useLocation();
+
+    // Determine previous URL link for signin link (use prevUrl from location state if defined, otherwise current path)
+    const prevUrl =
+        (location.state && location.state.prevUrl) || location.pathname;
 
     return (
         <Nav className="d-inline-flex justify-content-end align-items-center flex-grow-1">
@@ -33,7 +41,15 @@ const MainNav: React.FC = () => {
                         </LinkContainer>
                     </Nav.Item>
                     <Nav.Item>
-                        <LinkContainer to="/signin" exact>
+                        <LinkContainer
+                            to={{
+                                pathname: "/signin",
+                                state: {
+                                    prevUrl,
+                                },
+                            }}
+                            exact
+                        >
                             <Nav.Link className="signin">Sign In</Nav.Link>
                         </LinkContainer>
                     </Nav.Item>
