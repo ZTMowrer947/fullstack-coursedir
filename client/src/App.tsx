@@ -23,6 +23,7 @@ const UserSignOut = React.lazy(() => import("./components/pages/UserSignOut"));
 // State type
 interface AppState {
     readonly auth: Readonly<AuthState>;
+    readonly loading: boolean;
 }
 
 // Component
@@ -32,13 +33,13 @@ class App extends React.Component<{}, AppState> {
 
         this.state = {
             auth: {
-                loading: true,
                 user: undefined,
                 getCredentials: UserService.getCredentials,
                 signIn: this.signIn.bind(this),
                 signUp: UserService.signUp,
                 signOut: this.signOut.bind(this),
             },
+            loading: true,
         };
     }
 
@@ -96,8 +97,8 @@ class App extends React.Component<{}, AppState> {
                         ...prevState,
                         auth: {
                             ...prevState.auth,
-                            loading: false,
                         },
+                        loading: false,
                     }));
                 });
         } else {
@@ -106,8 +107,8 @@ class App extends React.Component<{}, AppState> {
                 ...prevState,
                 auth: {
                     ...prevState.auth,
-                    loading: false,
                 },
+                loading: false,
             }));
         }
     }
@@ -116,7 +117,7 @@ class App extends React.Component<{}, AppState> {
         return (
             <AuthContext.Provider value={this.state.auth}>
                 <Layout>
-                    {this.state.auth.loading ? (
+                    {this.state.loading ? (
                         <LoadingIndicator />
                     ) : (
                         <React.Suspense fallback={<LoadingIndicator />}>
