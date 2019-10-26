@@ -7,6 +7,7 @@ import AuthContext from "./context/AuthContext";
 import AuthState from "./models/AuthState";
 import UserService from "./services/User.service";
 import "./App.scss";
+import UserSignOut from "./components/pages/UserSignOut";
 
 // Dynamically Imported Components
 const Courses = React.lazy(() => import("./components/pages/Courses"));
@@ -18,7 +19,6 @@ const CreateCourse = React.lazy(() =>
 );
 const UserSignIn = React.lazy(() => import("./components/pages/UserSignIn"));
 const UserSignUp = React.lazy(() => import("./components/pages/UserSignUp"));
-const UserSignOut = React.lazy(() => import("./components/pages/UserSignOut"));
 
 // State type
 interface AppState {
