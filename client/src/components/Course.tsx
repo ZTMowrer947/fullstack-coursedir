@@ -1,9 +1,10 @@
 // Imports
-import React from "react";
+import React, { useContext } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 import CourseModel from "../models/Course";
 
 // Prop Types
@@ -13,25 +14,30 @@ interface PropTypes {
 
 // Component
 const Course: React.FC<PropTypes> = ({ course }) => {
+    // Get user from context
+    const { user } = useContext(AuthContext);
+
     return (
         <>
             <div className="actions--bar">
                 <div className="bounds">
                     <div className="w-100">
-                        <span>
-                            <Link
-                                className="button"
-                                to={`/courses/${course.id}/update`}
-                            >
-                                Update Course
-                            </Link>
-                            <Link
-                                className="button"
-                                to={`/courses/${course.id}/delete`}
-                            >
-                                Delete Course
-                            </Link>
-                        </span>
+                        {!!user && user.id === course.creator.id && (
+                            <span>
+                                <Link
+                                    className="button"
+                                    to={`/courses/${course.id}/update`}
+                                >
+                                    Update Course
+                                </Link>
+                                <Link
+                                    className="button"
+                                    to={`/courses/${course.id}/delete`}
+                                >
+                                    Delete Course
+                                </Link>
+                            </span>
+                        )}
                         <Link className="button button-secondary" to="/">
                             Return to List
                         </Link>
