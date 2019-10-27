@@ -20,6 +20,9 @@ const CreateCourse = React.lazy(() =>
 const UpdateCourse = React.lazy(() =>
     import("./components/pages/UpdateCourse")
 );
+const DeleteCourse = React.lazy(() =>
+    import("./components/pages/DeleteCourse")
+);
 const UserSignIn = React.lazy(() => import("./components/pages/UserSignIn"));
 const UserSignUp = React.lazy(() => import("./components/pages/UserSignUp"));
 
@@ -145,6 +148,11 @@ class App extends React.Component<{}, AppState> {
                                     path="/courses/:id/update"
                                     exact
                                     component={UpdateCourse}
+                                />
+                                <PrivateRoute
+                                    path="/courses/:id/delete"
+                                    exact
+                                    component={DeleteCourse}
                                 />
                                 <Route path="/signin" component={UserSignIn} />
                                 <Route path="/signup" component={UserSignUp} />

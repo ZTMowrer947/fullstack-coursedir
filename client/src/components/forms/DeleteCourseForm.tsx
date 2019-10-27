@@ -72,10 +72,10 @@ const DeleteCourseForm: React.FC<PropTypes> = ({ onSubmit, course }) => {
                             onBlur={handleBlur}
                             isInvalid={!!errors.confirmTitle}
                         />
+                        <Form.Control.Feedback type="invalid">
+                            {errors.confirmTitle}
+                        </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                        {errors.confirmTitle}
-                    </Form.Control.Feedback>
                     <div className="p-2 w-100">
                         <button
                             className="button"
