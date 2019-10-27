@@ -29,7 +29,7 @@ export default class CourseService {
 
         // Make API request
         const response = await axios.post(
-            "http://localhost:5000/courses",
+            "http://localhost:5000/api/courses",
             courseData,
             {
                 auth: {
