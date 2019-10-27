@@ -74,9 +74,6 @@ const ModifyCourseForm: React.FC<PropTypes> = ({
                             </div>
                             <div className="course--description">
                                 <Form.Group>
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.description}
-                                    </Form.Control.Feedback>
                                     <Form.Control
                                         as="textarea"
                                         id="description"
@@ -88,6 +85,9 @@ const ModifyCourseForm: React.FC<PropTypes> = ({
                                         onBlur={handleBlur}
                                         isInvalid={!!errors.description}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.description}
+                                    </Form.Control.Feedback>
                                 </Form.Group>
                             </div>
                         </Col>
@@ -118,9 +118,6 @@ const ModifyCourseForm: React.FC<PropTypes> = ({
                                     <li className="course--stats--list--item">
                                         <h4>Materials Needed</h4>
                                         <Form.Group>
-                                            <Form.Control.Feedback type="invalid">
-                                                {errors.materialsNeeded}
-                                            </Form.Control.Feedback>
                                             <Form.Control
                                                 as="textarea"
                                                 id="materialsNeeded"
@@ -134,6 +131,9 @@ const ModifyCourseForm: React.FC<PropTypes> = ({
                                                     !!errors.materialsNeeded
                                                 }
                                             />
+                                            <Form.Control.Feedback type="invalid">
+                                                {errors.materialsNeeded}
+                                            </Form.Control.Feedback>
                                         </Form.Group>
                                     </li>
                                 </ul>
