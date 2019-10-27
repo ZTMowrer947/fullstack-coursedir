@@ -67,4 +67,18 @@ export default class CourseService {
             },
         });
     }
+
+    public static async delete(credentials: string, id: string): Promise<void> {
+        // Decode credentials
+        const decodedCredentials = atob(credentials);
+        const [emailAddress, password] = decodedCredentials.split(":");
+
+        // Make API request
+        await axios.delete(`http://localhost:5000/api/courses/${id}`, {
+            auth: {
+                username: emailAddress,
+                password,
+            },
+        });
+    }
 }
