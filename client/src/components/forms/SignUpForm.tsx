@@ -50,6 +50,7 @@ const SignUpForm: React.FC<PropTypes> = ({ onSubmit }) => {
             }}
             onSubmit={onSubmit}
             validationSchema={SignUpSchema}
+            validateOnChange={false}
         >
             {({
                 values,
