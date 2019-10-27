@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Link } from "react-router-dom";
+import * as Yup from "yup";
 import User from "../../models/User";
 import ModifyCourseDTO from "../../models/ModifyCourseDTO";
 
@@ -22,6 +23,12 @@ interface PropTypes {
     materialsNeeded?: string;
 }
 
+// Validation Schema
+const ModifyCourseSchema = Yup.object().shape({
+    title: Yup.string().required("Title is a required field."),
+    description: Yup.string().required("Description is a required field."),
+});
+
 // Component
 const ModifyCourseForm: React.FC<PropTypes> = ({
     onSubmit,
@@ -38,6 +45,8 @@ const ModifyCourseForm: React.FC<PropTypes> = ({
                 materialsNeeded: form.materialsNeeded || "",
             }}
             onSubmit={onSubmit}
+            validationSchema={ModifyCourseSchema}
+            validateOnChange={false}
         >
             {({
                 values,
