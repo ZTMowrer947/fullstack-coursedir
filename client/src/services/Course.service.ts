@@ -49,4 +49,22 @@ export default class CourseService {
         // Return the course id
         return courseId;
     }
+
+    public static async update(
+        credentials: string,
+        id: string,
+        courseData: ModifyCourseDTO
+    ): Promise<void> {
+        // Decode credentials
+        const decodedCredentials = atob(credentials);
+        const [emailAddress, password] = decodedCredentials.split(":");
+
+        // Make API request
+        await axios.put(`http://localhost:5000/api/courses/${id}`, courseData, {
+            auth: {
+                username: emailAddress,
+                password,
+            },
+        });
+    }
 }
