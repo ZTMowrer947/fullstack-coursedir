@@ -6,20 +6,13 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Link } from "react-router-dom";
 import User from "../../models/User";
-
-// Form values
-interface ModifyCourseFormValues {
-    title: string;
-    description: string;
-    estimatedTime: string;
-    materialsNeeded: string;
-}
+import ModifyCourseDTO from "../../models/ModifyCourseDTO";
 
 // Prop Types
 interface PropTypes {
     onSubmit: (
-        values: ModifyCourseFormValues,
-        formikActions: FormikActions<ModifyCourseFormValues>
+        values: ModifyCourseDTO,
+        formikActions: FormikActions<ModifyCourseDTO>
     ) => void;
     user: User;
     courseId?: string;

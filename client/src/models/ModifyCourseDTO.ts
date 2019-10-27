@@ -2,8 +2,8 @@
 interface ModifyCourseDTO {
     title: string;
     description: string;
-    estimatedTime?: string;
-    materialsNeeded?: string;
+    estimatedTime: string;
+    materialsNeeded: string;
 }
 
 // Export
