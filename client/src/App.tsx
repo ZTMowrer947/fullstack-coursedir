@@ -25,6 +25,11 @@ const DeleteCourse = React.lazy(() =>
 );
 const UserSignIn = React.lazy(() => import("./components/pages/UserSignIn"));
 const UserSignUp = React.lazy(() => import("./components/pages/UserSignUp"));
+const Forbidden = React.lazy(() => import("./components/pages/Forbidden"));
+const NotFound = React.lazy(() => import("./components/pages/NotFound"));
+const UnhandledError = React.lazy(() =>
+    import("./components/pages/UnhandledError")
+);
 
 // State type
 interface AppState {
@@ -160,6 +165,16 @@ class App extends React.Component<{}, AppState> {
                                     path="/signout"
                                     component={UserSignOut}
                                 />
+                                <Route
+                                    path="/forbidden"
+                                    component={Forbidden}
+                                />
+                                <Route path="/notfound" component={NotFound} />
+                                <Route
+                                    path="/error"
+                                    component={UnhandledError}
+                                />
+                                <Redirect to="/notfound" />
                             </Switch>
                         </React.Suspense>
                     )}
