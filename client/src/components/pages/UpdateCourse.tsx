@@ -34,12 +34,23 @@ class UpdateCourse extends React.PureComponent<RouteComponentProps, State> {
         const { id } = this.props.match.params as RouteParams;
 
         // Get course data
-        CourseService.getById(id).then(course => {
-            // Attach course to state
-            this.setState({
-                course,
+        CourseService.getById(id)
+            .then(course => {
+                // Attach course to state
+                this.setState({
+                    course,
+                });
+            })
+            .catch((error: AxiosError) => {
+                // If no response is attached, or if its status is not 404,
+                if (!error.response || error.response.status !== 404) {
+                    // Redirect to unhandled error page
+                    this.props.history.push("/error");
+                } else {
+                    // Otherwise, redirect to not found page
+                    this.props.history.push("/notfound");
+                }
             });
-        });
     }
 
     public render() {
@@ -87,12 +98,20 @@ class UpdateCourse extends React.PureComponent<RouteComponentProps, State> {
                                     // Stop submission
                                     setSubmitting(false);
 
-                                    // If a response is attached, and the status code is 400,
+                                    // If no response is attached, or if its status is not 400, 403, or 404,
                                     if (
-                                        error.response &&
-                                        error.response.status === 400
+                                        !error.response ||
+                                        ![400, 403, 404].includes(
+                                            error.response.status
+                                        )
                                     ) {
-                                        // If there are validation errors,
+                                        // Redirect to unhandled error page
+                                        this.props.history.push("/error");
+                                    } else if (error.response.status === 403) {
+                                        // If status is 403, redirect to forbidden page
+                                        this.props.history.push("/forbidden");
+                                    } else if (error.response.status === 400) {
+                                        // If status is 400, and there are validation errors,
                                         if (error.response.data.errors) {
                                             // Map validation errors to the format expected by Formik
                                             const validationErrors = error.response.data.errors.reduce(
@@ -123,7 +142,13 @@ class UpdateCourse extends React.PureComponent<RouteComponentProps, State> {
 
                                             // Set validation errors for form fields
                                             setErrors(validationErrors);
+                                        } else {
+                                            // Otherwise, redirect to unhandled error page
+                                            this.props.history.push("/error");
                                         }
+                                    } else {
+                                        // Otherwise, redirect to not found page
+                                        this.props.history.push("/notfound");
                                     }
                                 });
                         }}

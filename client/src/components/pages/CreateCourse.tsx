@@ -33,12 +33,18 @@ const CreateCourse: React.FC<RouteComponentProps> = ({ history }) => {
                             // Stop submission
                             setSubmitting(false);
 
-                            // If a response is attached, and the status code is 400,
+                            // If no response is attached, or if its status is not 400, 403, or 404,
                             if (
-                                error.response &&
-                                error.response.status === 400
+                                !error.response ||
+                                ![400, 403, 404].includes(error.response.status)
                             ) {
-                                // If there are validation errors,
+                                // Redirect to unhandled error page
+                                history.push("/error");
+                            } else if (error.response.status === 403) {
+                                // If status is 403, redirect to forbidden page
+                                history.push("/forbidden");
+                            } else if (error.response.status === 400) {
+                                // If status is 400, and there are validation errors,
                                 if (error.response.data.errors) {
                                     // Map validation errors to the format expected by Formik
                                     const validationErrors = error.response.data.errors.reduce(
@@ -65,7 +71,13 @@ const CreateCourse: React.FC<RouteComponentProps> = ({ history }) => {
 
                                     // Set validation errors for form fields
                                     setErrors(validationErrors);
+                                } else {
+                                    // Otherwise, redirect to unhandled error page
+                                    history.push("/error");
                                 }
+                            } else {
+                                // Otherwise, redirect to not found page
+                                history.push("/notfound");
                             }
                         });
                 }}

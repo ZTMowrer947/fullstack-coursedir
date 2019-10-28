@@ -47,65 +47,63 @@ class UserSignUp extends React.PureComponent<RouteComponentProps> {
                                         this.props.history.push("/");
                                     })
                                     .catch((error: AxiosError) => {
-                                        // If an error was thrown
-                                        // If a response is attached, and the status code is 400,
-                                        if (
-                                            error.response &&
-                                            error.response.status === 400
-                                        ) {
-                                            // If there are validation errors,
-                                            if (error.response.data.errors) {
-                                                // Map validation errors to the format expected by Formik
-                                                const validationErrors = error.response.data.errors.reduce(
-                                                    (
-                                                        acc: object,
-                                                        error: any
-                                                    ) => {
-                                                        // Get "required" message if present, or else get first error message
-                                                        const errorMessage: string =
-                                                            error.constraints
-                                                                .isNotEmpty ||
-                                                            Object.values(
-                                                                error.contraints
-                                                            )[0];
-
-                                                        return {
-                                                            ...acc,
-                                                            [error.property]: errorMessage
-                                                                .replace(
-                                                                    "firstName",
-                                                                    "FirstName"
-                                                                )
-                                                                .replace(
-                                                                    "lastName",
-                                                                    "Last Name"
-                                                                )
-                                                                .replace(
-                                                                    "emailAddress",
-                                                                    "Email Address"
-                                                                )
-                                                                .replace(
-                                                                    "password",
-                                                                    "Password"
-                                                                ),
-                                                        };
-                                                    },
-                                                    {}
-                                                );
-
-                                                // Set validation errors for form fields
-                                                setErrors(validationErrors);
-                                            } else {
-                                                // Otherwise, set validation error on email address
-                                                setFieldError(
-                                                    "emailAddress",
-                                                    error.response.data.message
-                                                );
-                                            }
-                                        }
-
+                                        // If an error was thrown,
                                         // Stop submission
                                         setSubmitting(false);
+
+                                        // If no response is attached, or its status is not 400,
+                                        if (
+                                            !error.response ||
+                                            error.response.status !== 400
+                                        ) {
+                                            // Redirect to unhandled error page
+                                            this.props.history.push("/error");
+                                        } else if (error.response.data.errors) {
+                                            // If there are validation errors,
+                                            // Map validation errors to the format expected by Formik
+                                            const validationErrors = error.response.data.errors.reduce(
+                                                (acc: object, error: any) => {
+                                                    // Get "required" message if present, or else get first error message
+                                                    const errorMessage: string =
+                                                        error.constraints
+                                                            .isNotEmpty ||
+                                                        Object.values(
+                                                            error.contraints
+                                                        )[0];
+
+                                                    return {
+                                                        ...acc,
+                                                        [error.property]: errorMessage
+                                                            .replace(
+                                                                "firstName",
+                                                                "FirstName"
+                                                            )
+                                                            .replace(
+                                                                "lastName",
+                                                                "Last Name"
+                                                            )
+                                                            .replace(
+                                                                "emailAddress",
+                                                                "Email Address"
+                                                            )
+                                                            .replace(
+                                                                "password",
+                                                                "Password"
+                                                            ),
+                                                    };
+                                                },
+                                                {}
+                                            );
+
+                                            // Set validation errors for form fields
+                                            setErrors(validationErrors);
+                                        } else {
+                                            // Otherwise, set validation error on email address
+                                            setFieldError(
+                                                "emailAddress",
+                                                error.response.data.message
+                                            );
+                                        }
                                     });
                             }}
                         />

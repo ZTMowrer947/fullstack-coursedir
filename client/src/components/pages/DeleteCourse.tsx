@@ -8,6 +8,7 @@ import Course from "../../models/Course";
 import CourseService from "../../services/Course.service";
 import LoadingIndicator from "../LoadingIndicator";
 import DeleteCourseForm from "../forms/DeleteCourseForm";
+import { AxiosError } from "axios";
 
 // Route params
 interface RouteParams {
@@ -64,13 +65,42 @@ class DeleteCourse extends React.PureComponent<RouteComponentProps, State> {
                                     CourseService.delete(
                                         this.context.getCredentials()!,
                                         this.state.course!.id
-                                    ).then(() => {
-                                        // Stop submission
-                                        setSubmitting(false);
+                                    )
+                                        .then(() => {
+                                            // Stop submission
+                                            setSubmitting(false);
 
-                                        // Redirect to home page
-                                        this.props.history.push("/");
-                                    });
+                                            // Redirect to home page
+                                            this.props.history.push("/");
+                                        })
+                                        .catch((error: AxiosError) => {
+                                            // Stop submission
+                                            setSubmitting(false);
+
+                                            // If no response is attached, or if its status is not 403 or 404,
+                                            if (
+                                                !error.response ||
+                                                (error.response.status < 403 &&
+                                                    error.response.status > 404)
+                                            ) {
+                                                // Redirect to unhandled error page
+                                                this.props.history.push(
+                                                    "/error"
+                                                );
+                                            } else if (
+                                                error.response.status === 403
+                                            ) {
+                                                // If status is 403, redirect to forbidden page
+                                                this.props.history.push(
+                                                    "/forbidden"
+                                                );
+                                            } else {
+                                                // Otherwise, redirect to not found page
+                                                this.props.history.push(
+                                                    "/notfound"
+                                                );
+                                            }
+                                        });
                                 }}
                             />
                         </div>

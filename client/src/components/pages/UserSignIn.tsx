@@ -52,9 +52,17 @@ class UserSignIn extends React.PureComponent<RouteComponentProps> {
                                         // If an error occurred, stop submission
                                         setSubmitting(false);
 
-                                        // If a response is attached
-                                        if (error.response) {
-                                            // Determine field to set error on
+                                        // If no response is attached, or its status is not 404 or 401,
+                                        if (
+                                            !error.response ||
+                                            ![401, 404].includes(
+                                                error.response.status
+                                            )
+                                        ) {
+                                            // Redirect to unhandled error page
+                                            this.props.history.push("/error");
+                                        } else {
+                                            // Otherwise, determine field to set error on
                                             let field = "emailAddress";
 
                                             if (error.response.status === 404) {
