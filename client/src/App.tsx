@@ -1,13 +1,14 @@
 import React from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
+
 import Layout from "./components/Layout";
 import LoadingIndicator from "./components/LoadingIndicator";
 import PrivateRoute from "./components/PrivateRoute";
+import UserSignOut from "./components/pages/UserSignOut";
 import AuthContext from "./context/AuthContext";
 import AuthState from "./models/AuthState";
-import UserService from "./services/User.service";
+import * as authUtils from "./utils/auth";
 import "./App.scss";
-import UserSignOut from "./components/pages/UserSignOut";
 
 // Dynamically Imported Components
 const Courses = React.lazy(() => import("./components/pages/Courses"));
@@ -45,9 +46,9 @@ class App extends React.Component<{}, AppState> {
         this.state = {
             auth: {
                 user: undefined,
-                getCredentials: UserService.getCredentials,
+                getCredentials: authUtils.getCredentials,
                 signIn: this.signIn.bind(this),
-                signUp: UserService.signUp,
+                signUp: authUtils.signUp,
                 signOut: this.signOut.bind(this),
             },
             loading: true,
@@ -56,7 +57,7 @@ class App extends React.Component<{}, AppState> {
 
     public async signIn(emailAddress: string, password: string): Promise<void> {
         // Sign in user
-        const user = await UserService.signIn(emailAddress, password);
+        const user = await authUtils.signIn(emailAddress, password);
 
         // Attach user to state
         this.setState(prevState => ({
@@ -70,7 +71,7 @@ class App extends React.Component<{}, AppState> {
 
     public signOut(): void {
         // Sign out user
-        UserService.signOut();
+        authUtils.signOut();
 
         // Remove user from state
         this.setState(prevState => ({
