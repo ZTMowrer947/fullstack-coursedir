@@ -16,9 +16,12 @@ const CourseLink: React.FC<PropTypes> = ({ course }) => (
         <Link
             to={`/courses/${course.id}`}
             className="course-module course-link"
+            data-testid="course-link"
         >
             <h4 className="course-label">Course</h4>
-            <h3 className="course-title">{course.title}</h3>
+            <h3 className="course-title" data-testid="course-title">
+                {course.title}
+            </h3>
         </Link>
     </Col>
 );
