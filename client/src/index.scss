@@ -1,2 +1,15 @@
 // Imports
 @import "~bootstrap/dist/css/bootstrap.min.css";
+@import url("https://fonts.googleapis.com/css?family=Cousine|Work+Sans:400,700&display=swap");
+
+// Application Styles
+html,
+body,
+#root {
+    height: 100%;
+}
+
+body {
+    font-family: "Work Sans", sans-serif;
+    background: #fff;
+}

@@ -1,8 +1,10 @@
 // Imports
 import React from "react";
 
+import Header from "./components/Header";
+
 // Component
-const App: React.FC = () => <h1>Here we go again...</h1>;
+const App: React.FC = () => <Header />;
 
 // Export
 export default App;
