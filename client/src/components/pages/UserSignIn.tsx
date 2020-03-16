@@ -1,14 +1,18 @@
 // Imports
+import { AxiosError } from "axios";
 import React from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { Link, RouteComponentProps } from "react-router-dom";
-import AuthContext from "../../context/AuthContext";
+
 import SignInForm from "../forms/SignInForm";
-import { AxiosError } from "axios";
+import AuthContext from "../../context/AuthContext";
+import UrlLocationState from "../../models/UrlLocationState";
 
 // Component
-class UserSignIn extends React.PureComponent<RouteComponentProps> {
+class UserSignIn extends React.PureComponent<
+    RouteComponentProps<{}, {}, UrlLocationState>
+> {
     // Context
     public static contextType = AuthContext;
     public context!: React.ContextType<typeof AuthContext>;
@@ -40,10 +44,8 @@ class UserSignIn extends React.PureComponent<RouteComponentProps> {
 
                                         // Determine redirection path (prevUrl from location state if defined, home page otherwise)
                                         const prevUrl =
-                                            (this.props.location.state &&
-                                                this.props.location.state
-                                                    .prevUrl) ||
-                                            "/";
+                                            this.props.location.state
+                                                ?.prevUrl ?? "/";
 
                                         // Redirect to selected path
                                         this.props.history.push(prevUrl);

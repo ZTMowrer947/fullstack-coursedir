@@ -3,7 +3,9 @@ import React, { useContext } from "react";
 import Nav from "react-bootstrap/Nav";
 import { LinkContainer } from "react-router-bootstrap";
 import { useLocation } from "react-router-dom";
+
 import AuthContext from "../context/AuthContext";
+import UrlLocationState from "../models/UrlLocationState";
 import "./MainNav.scss";
 
 // Component
@@ -12,11 +14,10 @@ const MainNav: React.FC = () => {
     const { user } = useContext(AuthContext);
 
     // Get location data
-    const location = useLocation();
+    const location = useLocation<UrlLocationState>();
 
     // Determine previous URL link for signin link (use prevUrl from location state if defined, otherwise current path)
-    const prevUrl =
-        (location.state && location.state.prevUrl) || location.pathname;
+    const prevUrl = location.state?.prevUrl ?? location.pathname;
 
     return (
         <Nav className="d-inline-flex justify-content-end align-items-center flex-grow-1">
