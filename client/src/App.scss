@@ -1,0 +1,36 @@
+@import "variables";
+
+.course-module {
+    background: $primaryColor;
+    border-radius: 8px;
+    min-height: 107px;
+    padding: 30px;
+    margin-bottom: 30px;
+
+    .course-label {
+        font-family: "Cousine";
+        font-size: 14px;
+        color: darken($secondaryColor, 50%);
+    }
+
+    .course-title {
+        font-size: 18px;
+        color: $secondaryColor;
+    }
+}
+
+.course-link {
+    display: block;
+    cursor: pointer;
+    border: 0;
+    transition: background 0.2s;
+
+    &,
+    &:hover {
+        text-decoration: none;
+    }
+
+    &:hover {
+        background: darken($primaryColor, 10%);
+    }
+}

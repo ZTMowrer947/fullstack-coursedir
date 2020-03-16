@@ -1,5 +1,23 @@
 @import "../variables";
 
-header.main-header > .navbar.navbar-dark {
+header.main-header {
     background: $primaryColor;
+    padding: 10px 0;
+    margin-bottom: 30px;
+
+    nav.navbar {
+        margin-top: 3px;
+
+        a.nav-link {
+            color: darken($secondaryColor, 50%);
+            margin-left: 20px;
+        }
+    }
+
+    .navbar-brand {
+        font-size: 24px;
+        padding: 0 15px;
+        margin: 0;
+        display: inline-block;
+    }
 }

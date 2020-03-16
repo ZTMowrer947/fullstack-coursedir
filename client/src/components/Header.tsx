@@ -8,7 +8,7 @@ import "./Header.scss";
 // Component
 const Header: React.FC = () => (
     <header className="main-header w-100">
-        <Navbar variant="dark" className="py-3 mb-4">
+        <Navbar variant="dark">
             <Navbar.Brand className="font-weight-bold">Courses</Navbar.Brand>
             <Nav className="ml-auto">
                 <Nav.Link>Sign In</Nav.Link>
