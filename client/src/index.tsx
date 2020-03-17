@@ -1,4 +1,5 @@
 // Imports
+import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -7,6 +8,9 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import './index.scss';
+
+// Axios configuration
+axios.defaults.baseURL = 'http://localhost:5000';
 
 // Render app
 ReactDOM.render(
