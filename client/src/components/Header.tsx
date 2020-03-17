@@ -2,6 +2,7 @@
 import React from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { LinkContainer } from 'react-router-bootstrap';
 
 import './Header.scss';
 
@@ -11,8 +12,12 @@ const Header: React.FC = () => (
         <Navbar variant="dark">
             <Navbar.Brand className="font-weight-bold">Courses</Navbar.Brand>
             <Nav className="ml-auto">
-                <Nav.Link>Sign In</Nav.Link>
-                <Nav.Link>Sign Up</Nav.Link>
+                <LinkContainer to="/signup" exact>
+                    <Nav.Link data-testid="signup">Sign Up</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to="/signin" exact>
+                    <Nav.Link data-testid="signin">Sign In</Nav.Link>
+                </LinkContainer>
             </Nav>
         </Navbar>
     </header>
