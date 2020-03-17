@@ -1,9 +1,9 @@
 // Imports
-import React from "react";
+import React from 'react';
 
-import Header from "./components/Header";
+import Header from './components/Header';
 
-import "./App.scss";
+import './App.scss';
 
 // Component
 const App: React.FC = () => <Header />;

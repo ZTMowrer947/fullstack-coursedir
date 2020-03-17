@@ -1,13 +1,13 @@
 // Imports
-import { render } from "@testing-library/react";
-import faker from "faker";
-import React from "react";
-import Course from "../models/Course";
-import { StaticRouter } from "react-router-dom";
-import CourseLink from "./CourseLink";
+import { render } from '@testing-library/react';
+import faker from 'faker';
+import React from 'react';
+import Course from '../models/Course';
+import { StaticRouter } from 'react-router-dom';
+import CourseLink from './CourseLink';
 
 // Test Suite
-describe("CourseLink component", () => {
+describe('CourseLink component', () => {
     it("should render a link containing a course's ID and title", () => {
         // Generate course data
         const course: Course = {
@@ -27,10 +27,10 @@ describe("CourseLink component", () => {
         );
 
         // Get course link and title by test ID
-        const courseLink = getByTestId("course-link");
-        const courseTitle = getByTestId("course-title");
+        const courseLink = getByTestId('course-link');
+        const courseTitle = getByTestId('course-title');
 
-        expect(courseLink).toHaveAttribute("href", expectedLink);
+        expect(courseLink).toHaveAttribute('href', expectedLink);
         expect(courseTitle).toHaveTextContent(course.title);
     });
 });

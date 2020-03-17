@@ -1,7 +1,7 @@
 // Imports
-@import "~bootstrap/dist/css/bootstrap.min.css";
-@import url("https://fonts.googleapis.com/css?family=Cousine|Work+Sans:400,700&display=swap");
-@import "variables";
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import url('https://fonts.googleapis.com/css?family=Cousine|Work+Sans:400,700&display=swap');
+@import 'variables';
 
 // Application Styles
 html,
@@ -11,7 +11,7 @@ body,
 }
 
 body {
-    font-family: "Work Sans", sans-serif;
+    font-family: 'Work Sans', sans-serif;
     background: #fff;
 }
 
@@ -23,6 +23,6 @@ a {
 }
 
 p {
-    font-family: "Cousine";
+    font-family: 'Cousine';
     margin-bottom: 30px;
 }

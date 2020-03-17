@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .course-module {
     background: $primaryColor;
@@ -8,7 +8,7 @@
     margin-bottom: 30px;
 
     .course-label {
-        font-family: "Cousine";
+        font-family: 'Cousine';
         font-size: 14px;
         color: darken($secondaryColor, 50%);
     }

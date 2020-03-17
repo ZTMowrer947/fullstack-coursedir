@@ -1,9 +1,9 @@
 // Imports
-import React from "react";
-import Col from "react-bootstrap/Col";
-import { Link } from "react-router-dom";
+import React from 'react';
+import Col from 'react-bootstrap/Col';
+import { Link } from 'react-router-dom';
 
-import Course from "../models/Course";
+import Course from '../models/Course';
 
 // Prop Types
 interface PropTypes {
