@@ -12,7 +12,7 @@ interface PropTypes {
 
 // Component
 const CourseLink: React.FC<PropTypes> = ({ course }) => (
-    <Col xs={4}>
+    <Col xs={12} sm={6} lg={4} xl={3}>
         <Link
             to={`/courses/${course.id}`}
             className="course-module course-link"

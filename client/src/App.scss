@@ -16,6 +16,9 @@
     .course-title {
         font-size: 18px;
         color: $secondaryColor;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 
