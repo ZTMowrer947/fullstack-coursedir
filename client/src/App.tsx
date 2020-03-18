@@ -6,6 +6,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 
 import './App.scss';
+import CourseDetail from './components/pages/CourseDetail';
 import Courses from './components/pages/Courses';
 
 // Component
@@ -16,6 +17,7 @@ const App: React.FC = () => (
             <Switch>
                 <Redirect from="/" to="/courses" exact />
                 <Route path="/courses" exact component={Courses} />
+                <Route path="/courses/:id" exact component={CourseDetail} />
             </Switch>
         </Container>
     </>

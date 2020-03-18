@@ -15,7 +15,7 @@ const CourseLink: React.FC<PropTypes> = ({ course }) => (
     <Col xs={12} sm={6} lg={4} xl={3}>
         <Link
             to={`/courses/${course.id}`}
-            className="course-module course-link"
+            className="course-module course-link bg-primary"
             data-testid="course-link"
         >
             <h4 className="course-label">Course</h4>
