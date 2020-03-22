@@ -1,10 +1,5 @@
 // Import
-import {
-    act,
-    render,
-    waitForElement,
-    waitForDomChange,
-} from '@testing-library/react';
+import { render, waitForDomChange } from '@testing-library/react';
 import faker from 'faker';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';

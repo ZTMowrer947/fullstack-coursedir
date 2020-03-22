@@ -17,13 +17,14 @@ interface PropTypes {
 // Component
 const CourseInfo: React.FC<PropTypes> = ({ course }) => (
     <>
-        <div className="actions-bar">
+        <div className="actions-bar" test-id="action-btns">
             <div className="w-100">
                 <IndexLinkContainer to="/">
                     <Button
                         variant="outline-primary"
                         size="lg"
                         className="mr-3"
+                        data-testid="back-btn"
                     >
                         Return to List
                     </Button>
@@ -35,9 +36,17 @@ const CourseInfo: React.FC<PropTypes> = ({ course }) => (
                 <Col xs={8}>
                     <div className="course-header">
                         <h4 className="course-label">Course</h4>
-                        <h3 className="course-title mb-3">{course.title}</h3>
+                        <h3
+                            className="course-title mb-3"
+                            data-testid="course-title"
+                        >
+                            {course.title}
+                        </h3>
                     </div>
-                    <div className="course-description">
+                    <div
+                        className="course-description"
+                        data-testid="course-description"
+                    >
                         <ReactMarkdown source={course.description} />
                     </div>
                 </Col>
@@ -48,13 +57,18 @@ const CourseInfo: React.FC<PropTypes> = ({ course }) => (
                             {course.estimatedTime && (
                                 <li className="stat-item">
                                     <h4>Estimated Time</h4>
-                                    <h3>{course.estimatedTime}</h3>
+                                    <h3 data-testid="course-esttime">
+                                        {course.estimatedTime}
+                                    </h3>
                                 </li>
                             )}
 
                             {/* Display needed materials only if data is present */}
                             {course.materialsNeeded && (
-                                <li className="stat-item">
+                                <li
+                                    className="stat-item"
+                                    data-testid="course-materials"
+                                >
                                     <h4>Materials Needed</h4>
                                     <ReactMarkdown
                                         source={course.materialsNeeded}
