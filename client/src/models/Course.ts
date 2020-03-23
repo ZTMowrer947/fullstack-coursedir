@@ -1,3 +1,6 @@
+// Imports
+import User from './User';
+
 // Type
 interface Course {
     id: string;
@@ -5,6 +8,7 @@ interface Course {
     description: string;
     estimatedTime?: string;
     materialsNeeded?: string;
+    creator: User;
 }
 
 // Export
