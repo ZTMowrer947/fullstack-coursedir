@@ -4,22 +4,21 @@ import faker from 'faker';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import ReactMarkdown from 'react-markdown';
+import { StaticRouter } from 'react-router-dom';
 
 import CourseInfo from './CourseInfo';
-import Course from '../models/Course';
-import { StaticRouter } from 'react-router-dom';
+import CourseFaker from '../services/__testutils__/CourseFaker';
 
 // Test Suite
 describe('CourseInfo component', () => {
     it('should render the data of the course provided via props', () => {
         // Create course
-        const course: Course = {
-            id: faker.random.alphaNumeric(16).toUpperCase(),
-            title: faker.random.words(3),
-            description: faker.lorem.paragraphs(3),
-            estimatedTime: `${faker.random.number({ min: 1, max: 10 })} hours`,
-            materialsNeeded: faker.random.word(),
-        };
+        const course = CourseFaker.fakeProject();
+        course.estimatedTime = `${faker.random.number({
+            min: 1,
+            max: 10,
+        })} hours`;
+        course.materialsNeeded = faker.random.word();
 
         // Render description and needed materials to markup
         const descriptionMarkup = renderToStaticMarkup(

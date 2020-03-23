@@ -1,20 +1,15 @@
 // Imports
 import { render } from '@testing-library/react';
-import faker from 'faker';
 import React from 'react';
-import Course from '../models/Course';
 import { StaticRouter } from 'react-router-dom';
 import CourseLink from './CourseLink';
+import CourseFaker from '../services/__testutils__/CourseFaker';
 
 // Test Suite
 describe('CourseLink component', () => {
     it("should render a link containing a course's ID and title", () => {
         // Generate course data
-        const course: Course = {
-            id: faker.random.alphaNumeric(16).toUpperCase(),
-            title: faker.random.words(3),
-            description: faker.lorem.paragraphs(3),
-        };
+        const course = CourseFaker.fakeProject();
 
         // Define expected link URL
         const expectedLink = `/courses/${course.id}`;

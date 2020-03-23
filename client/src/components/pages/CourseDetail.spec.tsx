@@ -1,13 +1,12 @@
 // Import
 import { render, waitForDomChange } from '@testing-library/react';
-import faker from 'faker';
 import React from 'react';
 import { StaticRouter, Route } from 'react-router-dom';
 import { mocked } from 'ts-jest/utils';
 
-import Course from '../../models/Course';
-import CourseApi from '../../services/CourseApi';
 import CourseDetail from './CourseDetail';
+import CourseApi from '../../services/CourseApi';
+import CourseFaker from '../../services/__testutils__/CourseFaker';
 
 // Mocks
 jest.mock('../../services/CourseApi');
@@ -16,11 +15,7 @@ jest.mock('../../services/CourseApi');
 describe('CourseDetail page', () => {
     it('should fetch course data from the API and display it', async () => {
         // Generate course
-        const course: Course = {
-            id: faker.random.alphaNumeric(16).toUpperCase(),
-            title: faker.random.words(3),
-            description: faker.lorem.paragraphs(3),
-        };
+        const course = CourseFaker.fakeProject();
 
         // Setup Course API to return mock course data
         mocked(CourseApi.get).mockResolvedValue(course);

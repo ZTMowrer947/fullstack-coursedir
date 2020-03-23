@@ -1,13 +1,12 @@
 // Import
 import { render, waitForDomChange } from '@testing-library/react';
-import faker from 'faker';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { mocked } from 'ts-jest/utils';
 
 import Courses from './Courses';
-import Course from '../../models/Course';
 import CourseApi from '../../services/CourseApi';
+import CourseFaker from '../../services/__testutils__/CourseFaker';
 
 // Mocks
 jest.mock('../../services/CourseApi');
@@ -16,18 +15,7 @@ jest.mock('../../services/CourseApi');
 describe('Courses page', () => {
     it('should fetch a list of courses and display links for each of them', async () => {
         // Generate courses
-        const coursesToGenerate = 10;
-        const courses: Course[] = [];
-
-        for (let i = 0; i < coursesToGenerate; i++) {
-            const course: Course = {
-                id: faker.random.alphaNumeric(16).toUpperCase(),
-                title: faker.random.words(3),
-                description: faker.lorem.paragraphs(3),
-            };
-
-            courses.push(course);
-        }
+        const courses = CourseFaker.fakeProjects();
 
         // Setup Course API to return mock course listing
         mocked(CourseApi.getList).mockResolvedValue(courses);
