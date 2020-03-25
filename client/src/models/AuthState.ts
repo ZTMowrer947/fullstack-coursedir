@@ -5,7 +5,7 @@ import User from './User';
 interface AuthState {
     user?: User;
     getCredentials: () => string | undefined;
-    signIn: (emailAddress: string, password: string) => Promise<User>;
+    signIn: (emailAddress: string, password: string) => Promise<void>;
     signOut: () => void;
 }
 

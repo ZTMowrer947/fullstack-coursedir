@@ -6,9 +6,7 @@ import AuthState from '../models/AuthState';
 const AuthContext = React.createContext<AuthState>({
     user: undefined,
     getCredentials: () => undefined,
-    signIn: async () => {
-        throw new Error();
-    },
+    signIn: async () => {},
     signOut: () => {},
 });
 
