@@ -8,6 +8,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 import CourseDetail from './components/pages/CourseDetail';
 import Courses from './components/pages/Courses';
+import UserSignIn from './components/pages/UserSignIn';
 import AuthContext from './context/AuthContext';
 import AuthState from './models/AuthState';
 import User from './models/User';
@@ -69,6 +70,7 @@ const App: React.FC = () => {
                     <Redirect from="/" to="/courses" exact />
                     <Route path="/courses" exact component={Courses} />
                     <Route path="/courses/:id" exact component={CourseDetail} />
+                    <Route path="/signin" exact component={UserSignIn} />
                 </Switch>
             </Container>
         </AuthContext.Provider>
