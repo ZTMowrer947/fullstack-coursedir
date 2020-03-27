@@ -1,16 +1,45 @@
 // Imports
+import { AxiosError } from 'axios';
 import React, { useContext } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 
-import SignInForm from '../forms/SignInForm';
+import SignInForm, { SignInFormValues } from '../forms/SignInForm';
 import AuthContext from '../../context/AuthContext';
+import { FormikActions } from 'formik';
 
 // Component
 const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
     // Connect to AuthContext
     const context = useContext(AuthContext);
+
+    // Define submit function
+    const handleSubmit = (
+        { emailAddress, password }: SignInFormValues,
+        { setFieldError, setSubmitting }: FormikActions<SignInFormValues>
+    ) => {
+        context
+            .signIn(emailAddress, password)
+            .catch((error: AxiosError) => {
+                // If status is 401,
+                if (error.response?.status === 401) {
+                    // Attach incorrect credentials error to form
+                    setFieldError(
+                        'password',
+                        'Incorrect email/password combination.'
+                    );
+                }
+                // Otherwise, rethrow error
+                else {
+                    throw error;
+                }
+            })
+            .finally(() => {
+                // In any case, stop submission
+                setSubmitting(false);
+            });
+    };
 
     // If user is already signed in,
     if (context.user) {
@@ -24,7 +53,7 @@ const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
                 <Col xs={2} md={3} lg={4} />
                 <Col xs={8} md={6} lg={4}>
                     <h1>Sign In</h1>
-                    <SignInForm />
+                    <SignInForm onSubmit={handleSubmit} />
                 </Col>
                 <Col xs={2} md={3} lg={4} />
             </Row>
