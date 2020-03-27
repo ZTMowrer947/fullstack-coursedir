@@ -3,7 +3,7 @@ import { AxiosError } from 'axios';
 import React, { useContext } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { RouteComponentProps, Redirect } from 'react-router-dom';
+import { Link, RouteComponentProps, Redirect } from 'react-router-dom';
 
 import SignInForm, { SignInFormValues } from '../forms/SignInForm';
 import AuthContext from '../../context/AuthContext';
@@ -54,6 +54,11 @@ const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
                 <Col xs={8} md={6} lg={4}>
                     <h1>Sign In</h1>
                     <SignInForm onSubmit={handleSubmit} />
+                    <p>&nbsp;</p>
+                    <p>
+                        Don't have a user account?&nbsp;
+                        <Link to="/signup">Click here</Link> to sign up!
+                    </p>
                 </Col>
                 <Col xs={2} md={3} lg={4} />
             </Row>
