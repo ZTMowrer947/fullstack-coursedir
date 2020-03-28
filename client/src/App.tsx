@@ -1,5 +1,4 @@
 // Imports
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import React, { useState, useMemo, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
@@ -12,6 +11,7 @@ import UserSignIn from './components/pages/UserSignIn';
 import AuthContext from './context/AuthContext';
 import AuthState from './models/AuthState';
 import User from './models/User';
+import UserApi from './services/UserApi';
 
 import './App.scss';
 
@@ -24,15 +24,11 @@ const App: React.FC = () => {
     // Generate memoized auth data for context
     const authData = useMemo((): AuthState => {
         // Define functions for context
-        const getCredentials = () => Cookies.get('sdbc-credentials');
+        const { getCredentials, signOut } = UserApi;
+
         const signIn = async (emailAddress: string, password: string) => {
-            // Make request to API to validate credentials
-            const response = await axios.get<User>('/api/users', {
-                auth: {
-                    username: emailAddress,
-                    password,
-                },
-            });
+            // Use API to verify credentials
+            const user = await UserApi.signIn(emailAddress, password);
 
             // If successful, store credentials in cookie data
             Cookies.set(
@@ -47,13 +43,8 @@ const App: React.FC = () => {
             );
 
             // Attach user data to state
-            setUser(response.data);
+            setUser(user);
         };
-        const signOut = () =>
-            Cookies.remove('sdbc-credentials', {
-                domain: document.domain,
-                sameSite: 'strict',
-            });
 
         return {
             user,
