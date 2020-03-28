@@ -1,7 +1,7 @@
 // Imports
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -19,6 +19,7 @@ import './App.scss';
 const App: React.FC = () => {
     // Initialize state
     const [user, setUser] = useState<User | undefined>(undefined);
+    const [isReady, setIsReady] = useState(false);
 
     // Generate memoized auth data for context
     const authData = useMemo((): AuthState => {
@@ -62,17 +63,56 @@ const App: React.FC = () => {
         };
     }, [user]);
 
+    // Sign in user if credentials are persisted in cookie
+    useEffect(() => {
+        // If we are already ready, do nothing
+        if (isReady) return;
+
+        // Get credentials from cookie data
+        const credentials = authData.getCredentials();
+
+        // If credentials are not present or user is present, stop here
+        if (!credentials || authData.user) return setIsReady(true);
+
+        // Otherwise, decode credentials
+        const [emailAddress, password] = atob(credentials).split(':');
+
+        // Sign in using credentials
+        authData
+            .signIn(emailAddress, password)
+            .catch(() => {
+                // If error occurred, remove credentials from cookie data
+                authData.signOut();
+            })
+            .finally(() => {
+                // In any case, we are now ready
+                setIsReady(true);
+            });
+    }, [authData, isReady]);
+
     return (
         <AuthContext.Provider value={authData}>
-            <Header />
-            <Container fluid>
-                <Switch>
-                    <Redirect from="/" to="/courses" exact />
-                    <Route path="/courses" exact component={Courses} />
-                    <Route path="/courses/:id" exact component={CourseDetail} />
-                    <Route path="/signin" exact component={UserSignIn} />
-                </Switch>
-            </Container>
+            {isReady && (
+                <>
+                    <Header />
+                    <Container fluid>
+                        <Switch>
+                            <Redirect from="/" to="/courses" exact />
+                            <Route path="/courses" exact component={Courses} />
+                            <Route
+                                path="/courses/:id"
+                                exact
+                                component={CourseDetail}
+                            />
+                            <Route
+                                path="/signin"
+                                exact
+                                component={UserSignIn}
+                            />
+                        </Switch>
+                    </Container>
+                </>
+            )}
         </AuthContext.Provider>
     );
 };
