@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Header from './components/Header';
+import Loading from './components/Loading';
 import CourseDetail from './components/pages/CourseDetail';
 import Courses from './components/pages/Courses';
 import UserSignIn from './components/pages/UserSignIn';
@@ -83,7 +84,7 @@ const App: React.FC = () => {
 
     return (
         <AuthContext.Provider value={authData}>
-            {isReady && (
+            {isReady ? (
                 <>
                     <Header />
                     <Container fluid>
@@ -103,6 +104,8 @@ const App: React.FC = () => {
                         </Switch>
                     </Container>
                 </>
+            ) : (
+                <Loading />
             )}
         </AuthContext.Provider>
     );
