@@ -1,5 +1,4 @@
 // Imports
-import Cookies from 'js-cookie';
 import React, { useState, useMemo, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -30,18 +29,6 @@ const App: React.FC = () => {
         const signIn = async (emailAddress: string, password: string) => {
             // Use API to verify credentials
             const user = await UserApi.signIn(emailAddress, password);
-
-            // If successful, store credentials in cookie data
-            Cookies.set(
-                'sdbc-credentials',
-                btoa(`${emailAddress}:${password}`),
-                {
-                    domain: document.domain,
-                    sameSite: 'strict',
-                    // Expire in two hours
-                    expires: new Date(Date.now() + 7200000),
-                }
-            );
 
             // Attach user data to state
             setUser(user);
