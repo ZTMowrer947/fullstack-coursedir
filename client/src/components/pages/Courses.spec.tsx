@@ -1,5 +1,5 @@
 // Import
-import { render, waitForDomChange } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { mocked } from 'ts-jest/utils';
@@ -13,6 +13,10 @@ jest.mock('../../services/CourseApi');
 
 // Test Suite
 describe('Courses page', () => {
+    afterEach(() => {
+        mocked(CourseApi.getList).mockClear();
+    });
+
     it('should fetch a list of courses and display links for each of them', async () => {
         // Generate courses
         const courses = CourseFaker.fakeProjects();
@@ -27,11 +31,8 @@ describe('Courses page', () => {
             </StaticRouter>
         );
 
-        // Expect component to have fetched course listing from API
-        expect(CourseApi.getList).toHaveBeenCalled();
-
-        // Wait for DOM changes
-        await waitForDomChange();
+        // Wait until course listing is fetched from API
+        await wait(() => expect(CourseApi.getList).toHaveBeenCalled());
 
         // Get all course links
         const courseLinks = getAllByTestId('course-link');
