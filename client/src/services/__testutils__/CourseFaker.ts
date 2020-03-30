@@ -18,7 +18,7 @@ export default class CourseFaker {
     public static fakeProjects(num = 10): Course[] {
         const projects: Course[] = [];
 
-        for (let i = 0; i > 10; i++) projects.push(this.fakeProject());
+        for (let i = 0; i < num; i++) projects.push(this.fakeProject());
 
         return projects;
     }
