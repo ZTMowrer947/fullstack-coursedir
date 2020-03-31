@@ -27,3 +27,10 @@ export class ServerValidationError extends Error {
         this.name = 'ServerValidationError';
     }
 }
+
+export class UnexpectedServerError extends Error {
+    constructor() {
+        super('An unexpected error occurred on the server.');
+        this.name = 'UnexpectedServerError';
+    }
+}
