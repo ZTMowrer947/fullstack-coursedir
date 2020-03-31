@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import CourseLink from '../CourseLink';
 import Course from '../../models/Course';
 import CourseApi from '../../services/CourseApi';
+import AddCourseLink from '../AddCourseLink';
 
 // Component
 const Courses: React.FC = () => {
@@ -26,6 +27,7 @@ const Courses: React.FC = () => {
             {courses.map(course => (
                 <CourseLink course={course} key={course.id} />
             ))}
+            <AddCourseLink />
         </Row>
     );
 };

@@ -1,0 +1,29 @@
+.course-module.course-add-module {
+    text-align: center;
+    padding: 42px 30px;
+
+    &:hover {
+        .course-add-title {
+            color: #444;
+            transition: color 0.4s;
+        }
+
+        .add {
+            fill: #444;
+            transition: fill 0.4s;
+        }
+    }
+}
+
+.course-add-title {
+    color: #999;
+    display: inline-block;
+    font-size: 18px;
+
+    .add {
+        width: 13px;
+        height: auto;
+        margin: 0 5px 0 0;
+        fill: #999;
+    }
+}
