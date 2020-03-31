@@ -10,6 +10,7 @@ import UserApi from '../../services/UserApi';
 import UserSignIn from './UserSignIn';
 import AuthState from '../../models/AuthState';
 import AuthContext from '../../context/AuthContext';
+import { InvalidCredentialsError } from '../../models/errors';
 
 // Mock
 jest.mock('../../services/UserApi');
@@ -71,11 +72,7 @@ describe('UserSignIn page', () => {
 
         // Define error text and error object
         const errorMessage = 'Incorrect email/password combination.';
-        const error = {
-            response: {
-                status: 401,
-            },
-        };
+        const error = new InvalidCredentialsError();
 
         // Setup signin method on API to throw error
         mocked(UserApi.signIn).mockRejectedValueOnce(error);

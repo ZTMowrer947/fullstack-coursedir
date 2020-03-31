@@ -1,5 +1,4 @@
 // Imports
-import { AxiosError } from 'axios';
 import React, { useContext } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -8,6 +7,7 @@ import { Link, RouteComponentProps, Redirect } from 'react-router-dom';
 import SignInForm, { SignInFormValues } from '../forms/SignInForm';
 import AuthContext from '../../context/AuthContext';
 import { FormikActions } from 'formik';
+import { InvalidCredentialsError } from '../../models/errors';
 
 // Component
 const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
@@ -21,9 +21,9 @@ const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
     ) => {
         context
             .signIn(emailAddress, password)
-            .catch((error: AxiosError) => {
-                // If status is 401,
-                if (error.response?.status === 401) {
+            .catch(error => {
+                // If error is an InvalidCredentialsError,
+                if (error instanceof InvalidCredentialsError) {
                     // Attach incorrect credentials error to form
                     setFieldError(
                         'password',
