@@ -40,7 +40,7 @@ const SignInForm: React.FC<PropTypes> = ({ onSubmit }) => {
                 <Form noValidate method="POST" onSubmit={handleSubmit}>
                     <Form.Group>
                         <Form.Control
-                            type="text"
+                            type="email"
                             id="emailAddress"
                             name="emailAddress"
                             placeholder="Email Address"
