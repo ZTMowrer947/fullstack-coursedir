@@ -25,7 +25,7 @@ const App: React.FC = () => {
     // Generate memoized auth data for context
     const authData = useMemo((): AuthState => {
         // Define functions for context
-        const { getCredentials, signOut } = UserApi;
+        const { getCredentials } = UserApi;
 
         const signIn = async (emailAddress: string, password: string) => {
             // Use API to verify credentials
@@ -33,6 +33,14 @@ const App: React.FC = () => {
 
             // Attach user data to state
             setUser(user);
+        };
+
+        const signOut = () => {
+            // Remove credential data
+            UserApi.signOut();
+
+            // Remove user from state
+            setUser(undefined);
         };
 
         return {

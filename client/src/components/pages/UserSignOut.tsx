@@ -1,19 +1,28 @@
 // Imports
-import React, { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import AuthContext from '../../context/AuthContext';
 
 // Page
 const UserSignOut: React.FC = () => {
-    // Get signout function from AuthContext
-    const { signOut } = useContext(AuthContext);
+    // Get signout function and user data from AuthContext
+    const { signOut, user } = useContext(AuthContext);
 
-    // Sign out user
-    signOut();
+    // Sign out user if needed
+    useEffect(() => {
+        // If we need to sign out a user,
+        if (user) {
+            // Sign them out
+            signOut();
+        }
+    }, [user, signOut]);
 
-    // Redirect to home page
-    return <Redirect to="/" />;
+    // If user has been signed out, redirect to home page
+    if (!user) return <Redirect to="/" />;
+
+    // Otherwise, render nothing
+    return null;
 };
 
 // Export
