@@ -30,7 +30,7 @@ const Loading: React.FC<PropTypes> = ({ delay }) => {
             // Clear timer
             window.clearTimeout(timer);
         };
-    }, [shouldShow]);
+    }, [delay, shouldShow]);
 
     // Show spinner when delay expires
     return shouldShow ? (
