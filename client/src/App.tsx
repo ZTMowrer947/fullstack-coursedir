@@ -14,6 +14,7 @@ import User from './models/User';
 import UserApi from './services/UserApi';
 
 import './App.scss';
+import UserSignOut from './components/pages/UserSignOut';
 
 // Component
 const App: React.FC = () => {
@@ -87,6 +88,11 @@ const App: React.FC = () => {
                                 path="/signin"
                                 exact
                                 component={UserSignIn}
+                            />
+                            <Route
+                                path="/signout"
+                                exact
+                                component={UserSignOut}
                             />
                         </Switch>
                     </Container>
