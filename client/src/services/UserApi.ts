@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 import User from '../models/User';
+import UserDTO from '../models/UserDTO';
 
 // API Service
 export default class UserApi {
@@ -29,6 +30,11 @@ export default class UserApi {
 
         // Return user data
         return response.data;
+    }
+
+    public static async signUp(userData: UserDTO) {
+        // Make request to API
+        await axios.post('/api/users', userData);
     }
 
     public static signOut() {
