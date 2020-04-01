@@ -8,13 +8,14 @@ import Loading from './components/Loading';
 import CourseDetail from './components/pages/CourseDetail';
 import Courses from './components/pages/Courses';
 import UserSignIn from './components/pages/UserSignIn';
+import UserSignOut from './components/pages/UserSignOut';
+import UserSignUp from './components/pages/UserSignUp';
 import AuthContext from './context/AuthContext';
 import AuthState from './models/AuthState';
 import User from './models/User';
 import UserApi from './services/UserApi';
 
 import './App.scss';
-import UserSignOut from './components/pages/UserSignOut';
 
 // Component
 const App: React.FC = () => {
@@ -96,6 +97,11 @@ const App: React.FC = () => {
                                 path="/signin"
                                 exact
                                 component={UserSignIn}
+                            />
+                            <Route
+                                path="/signup"
+                                exact
+                                component={UserSignUp}
                             />
                             <Route
                                 path="/signout"
