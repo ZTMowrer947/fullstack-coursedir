@@ -20,6 +20,9 @@ describe('CourseInfo component', () => {
         })} hours`;
         course.materialsNeeded = faker.random.word();
 
+        // Get full name of course author
+        const fullName = `${course.creator.firstName} ${course.creator.lastName}`;
+
         // Render description and needed materials to markup
         const descriptionMarkup = renderToStaticMarkup(
             <ReactMarkdown source={course.description} />
@@ -38,6 +41,7 @@ describe('CourseInfo component', () => {
         // Get elements to test
         const backBtn = getByTestId('back-btn');
         const courseTitle = getByTestId('course-title');
+        const courseAuthor = getByTestId('course-author');
         const courseDescription = getByTestId('course-description');
         const courseEstTime = getByTestId('course-esttime');
         const courseMaterials = getByTestId('course-materials');
@@ -48,6 +52,9 @@ describe('CourseInfo component', () => {
         // Expect course title and estimated time to match course data
         expect(courseTitle).toHaveTextContent(course.title);
         expect(courseEstTime).toHaveTextContent(course.estimatedTime!);
+
+        // Expect course author to contain author name
+        expect(courseAuthor).toContainHTML(fullName);
 
         // Expect course description and materials needed to contain expected markup
         expect(courseDescription).toContainHTML(descriptionMarkup);

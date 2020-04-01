@@ -42,6 +42,9 @@ const CourseInfo: React.FC<PropTypes> = ({ course }) => (
                         >
                             {course.title}
                         </h3>
+                        <p data-testid="course-author">
+                            {`By ${course.creator.firstName} ${course.creator.lastName}`}
+                        </p>
                     </div>
                     <div
                         className="course-description"
