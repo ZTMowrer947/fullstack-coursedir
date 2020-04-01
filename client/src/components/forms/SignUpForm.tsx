@@ -4,6 +4,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { LinkContainer } from 'react-router-bootstrap';
+import * as Yup from 'yup';
 
 // Form Values
 export interface SignUpFormValues {
@@ -22,6 +23,19 @@ interface PropTypes {
     ) => void;
 }
 
+// Validation Schema
+const SignUpSchema = Yup.object().shape({
+    firstName: Yup.string().required('First Name is a required field.'),
+    lastName: Yup.string().required('Last Name is a required field.'),
+    emailAddress: Yup.string()
+        .email('Email Address must be a valid email address.')
+        .required('Email Address is a required field.'),
+    password: Yup.string().required('Password is a required field.'),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords do not match.')
+        .required('Password confirmation is a required field.'),
+});
+
 // Form Component
 const SignUpForm: React.FC<PropTypes> = ({ onSubmit }) => {
     // Define initial values
@@ -34,7 +48,11 @@ const SignUpForm: React.FC<PropTypes> = ({ onSubmit }) => {
     };
 
     return (
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+        <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            validationSchema={SignUpSchema}
+        >
             {({
                 errors,
                 isSubmitting,
@@ -54,10 +72,10 @@ const SignUpForm: React.FC<PropTypes> = ({ onSubmit }) => {
                             value={values.firstName}
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            isInvalid={touched.firstName && !!errors.firstName}
+                            isInvalid={!!errors.firstName}
                         />
                         <Form.Control.Feedback type="invalid">
-                            {errors.firstName}
+                            {touched.firstName && errors.firstName}
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
@@ -69,10 +87,10 @@ const SignUpForm: React.FC<PropTypes> = ({ onSubmit }) => {
                             value={values.lastName}
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            isInvalid={touched.lastName && !!errors.lastName}
+                            isInvalid={!!errors.lastName}
                         />
                         <Form.Control.Feedback type="invalid">
-                            {errors.lastName}
+                            {touched.lastName && errors.lastName}
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
@@ -84,12 +102,10 @@ const SignUpForm: React.FC<PropTypes> = ({ onSubmit }) => {
                             value={values.emailAddress}
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            isInvalid={
-                                touched.emailAddress && !!errors.emailAddress
-                            }
+                            isInvalid={!!errors.emailAddress}
                         />
                         <Form.Control.Feedback type="invalid">
-                            {errors.emailAddress}
+                            {touched.emailAddress && errors.emailAddress}
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
@@ -101,10 +117,10 @@ const SignUpForm: React.FC<PropTypes> = ({ onSubmit }) => {
                             value={values.password}
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            isInvalid={touched.password && !!errors.password}
+                            isInvalid={!!errors.password}
                         />
                         <Form.Control.Feedback type="invalid">
-                            {errors.password}
+                            {touched.password && errors.password}
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
@@ -116,13 +132,10 @@ const SignUpForm: React.FC<PropTypes> = ({ onSubmit }) => {
                             value={values.confirmPassword}
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            isInvalid={
-                                touched.confirmPassword &&
-                                !!errors.confirmPassword
-                            }
+                            isInvalid={!!errors.confirmPassword}
                         />
                         <Form.Control.Feedback type="invalid">
-                            {errors.confirmPassword}
+                            {touched.confirmPassword && errors.confirmPassword}
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
