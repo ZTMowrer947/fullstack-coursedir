@@ -21,6 +21,8 @@ export default class UserApiMock {
         }
     );
 
+    public static signUp = jest.fn();
+
     public static signOut = jest.fn(() => {
         UserApiMock.credentials = undefined;
     });
