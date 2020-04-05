@@ -2,7 +2,8 @@
 import axios, { AxiosError } from 'axios';
 
 import Course from '../models/Course';
-import { UnexpectedServerError } from '../models/errors';
+import CourseDTO from '../models/CourseDTO';
+import { UnexpectedServerError, ServerValidationError } from '../models/errors';
 
 // API Service
 export default class CourseApi {
@@ -35,6 +36,50 @@ export default class CourseApi {
 
             // If response status is 404, return undefined
             if (axiosError.response?.status === 404) return undefined;
+
+            // Otherwise, throw UnexpectedServerError
+            throw new UnexpectedServerError();
+        }
+    }
+
+    public static async create(
+        credentials: string,
+        courseData: CourseDTO
+    ): Promise<string> {
+        try {
+            // Decode credentials
+            const [emailAddress, password] = atob(credentials).split(':');
+
+            // Make request to API
+            const response = await axios.post('/api/courses', courseData, {
+                auth: {
+                    username: emailAddress,
+                    password,
+                },
+            });
+
+            // Get location header
+            const location = response.headers.location;
+
+            // Extract course id from location
+            const lastSlashIndex = location.lastIndexOf('/');
+            const courseId = location.substring(lastSlashIndex + 1);
+
+            // Return the course id
+            return courseId;
+        } catch (error) {
+            // Cast error as AxiosError
+            const axiosError = error as AxiosError;
+
+            // If the error is not an axios error, rethrow error
+            if (!axiosError.isAxiosError) throw error;
+
+            // If response status is 400, throw ServerValidationError
+            if (axiosError.response?.status === 400) {
+                throw new ServerValidationError(
+                    axiosError.response.data.errors
+                );
+            }
 
             // Otherwise, throw UnexpectedServerError
             throw new UnexpectedServerError();
