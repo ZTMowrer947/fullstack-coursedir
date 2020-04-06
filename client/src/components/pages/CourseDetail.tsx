@@ -42,6 +42,24 @@ const CourseDetail: React.FC<RouteComponentProps<RouteParams>> = ({
             <>
                 <div className="actions-bar" test-id="action-btns">
                     <div className="w-100">
+                        {user?.id === course.creator.id && (
+                            <>
+                                <IndexLinkContainer
+                                    to={`/courses/${course.id}/update`}
+                                >
+                                    <Button size="lg" className="mr-3">
+                                        Update Course
+                                    </Button>
+                                </IndexLinkContainer>
+                                <IndexLinkContainer
+                                    to={`/courses/${course.id}/delete`}
+                                >
+                                    <Button size="lg" className="mr-3">
+                                        Delete Course
+                                    </Button>
+                                </IndexLinkContainer>
+                            </>
+                        )}
                         <IndexLinkContainer to="/">
                             <Button
                                 variant="outline-primary"
