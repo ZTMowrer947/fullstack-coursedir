@@ -39,15 +39,11 @@ describe('CourseInfo component', () => {
         );
 
         // Get elements to test
-        const backBtn = getByTestId('back-btn');
         const courseTitle = getByTestId('course-title');
         const courseAuthor = getByTestId('course-author');
         const courseDescription = getByTestId('course-description');
         const courseEstTime = getByTestId('course-esttime');
         const courseMaterials = getByTestId('course-materials');
-
-        // Expect back btn to link to home page
-        expect(backBtn).toHaveAttribute('href', '/');
 
         // Expect course title and estimated time to match course data
         expect(courseTitle).toHaveTextContent(course.title);

@@ -1,7 +1,10 @@
 // Imports
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import { IndexLinkContainer } from 'react-router-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 
+import AuthContext from '../../context/AuthContext';
 import Course from '../../models/Course';
 import CourseApi from '../../services/CourseApi';
 import CourseInfo from '../CourseInfo';
@@ -16,6 +19,9 @@ const CourseDetail: React.FC<RouteComponentProps<RouteParams>> = ({
     history,
     match,
 }) => {
+    // Get user data from AuthContext
+    const { user } = useContext(AuthContext);
+
     // Initialize state
     const [course, setCourse] = useState<Course | null>(null);
 
@@ -31,7 +37,27 @@ const CourseDetail: React.FC<RouteComponentProps<RouteParams>> = ({
         });
     }, [match.params.id, history]);
 
-    return course && <CourseInfo course={course} />;
+    return (
+        course && (
+            <>
+                <div className="actions-bar" test-id="action-btns">
+                    <div className="w-100">
+                        <IndexLinkContainer to="/">
+                            <Button
+                                variant="outline-primary"
+                                size="lg"
+                                className="mr-3"
+                                data-testid="back-btn"
+                            >
+                                Return to List
+                            </Button>
+                        </IndexLinkContainer>
+                    </div>
+                </div>
+                <CourseInfo course={course} />
+            </>
+        )
+    );
 };
 
 // Export
