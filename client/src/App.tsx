@@ -19,6 +19,7 @@ import User from './models/User';
 import UserApi from './services/UserApi';
 
 import './App.scss';
+import DeleteCourse from './components/pages/DeleteCourse';
 
 // Component
 const App: React.FC = () => {
@@ -105,6 +106,11 @@ const App: React.FC = () => {
                                 path="/courses/:id/update"
                                 exact
                                 component={UpdateCourse}
+                            />
+                            <PrivateRoute
+                                path="/courses/:id/delete"
+                                exact
+                                component={DeleteCourse}
                             />
                             <Route
                                 path="/signin"
