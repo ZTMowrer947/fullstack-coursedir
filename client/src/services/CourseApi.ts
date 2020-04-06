@@ -120,4 +120,28 @@ export default class CourseApi {
             throw new UnexpectedServerError();
         }
     }
+
+    public static async delete(credentials: string, id: string): Promise<void> {
+        try {
+            // Decode credentials
+            const [emailAddress, password] = atob(credentials).split(':');
+
+            // Make request to API
+            await axios.delete(`/api/courses/${id}`, {
+                auth: {
+                    username: emailAddress,
+                    password,
+                },
+            });
+        } catch (error) {
+            // Cast error as AxiosError
+            const axiosError = error as AxiosError;
+
+            // If the error is not an axios error, rethrow error
+            if (!axiosError.isAxiosError) throw error;
+
+            // Otherwise, throw UnexpectedServerError
+            throw new UnexpectedServerError();
+        }
+    }
 }
