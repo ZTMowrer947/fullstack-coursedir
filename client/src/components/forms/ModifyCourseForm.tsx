@@ -41,8 +41,8 @@ const ModifyCourseForm: React.FC<PropTypes> = ({
     const initialValues: CourseDTO = {
         title: courseData?.title ?? '',
         description: courseData?.description ?? '',
-        estimatedTime: courseData?.description ?? '',
-        materialsNeeded: courseData?.description ?? '',
+        estimatedTime: courseData?.estimatedTime ?? '',
+        materialsNeeded: courseData?.materialsNeeded ?? '',
     };
 
     // Render form
