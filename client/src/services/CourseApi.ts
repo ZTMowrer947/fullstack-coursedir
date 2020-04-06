@@ -85,4 +85,39 @@ export default class CourseApi {
             throw new UnexpectedServerError();
         }
     }
+
+    public static async update(
+        credentials: string,
+        id: string,
+        courseData: CourseDTO
+    ): Promise<void> {
+        try {
+            // Decode credentials
+            const [emailAddress, password] = atob(credentials).split(':');
+
+            // Make request to API
+            await axios.put(`/api/courses/${id}`, courseData, {
+                auth: {
+                    username: emailAddress,
+                    password,
+                },
+            });
+        } catch (error) {
+            // Cast error as AxiosError
+            const axiosError = error as AxiosError;
+
+            // If the error is not an axios error, rethrow error
+            if (!axiosError.isAxiosError) throw error;
+
+            // If response status is 400, throw ServerValidationError
+            if (axiosError.response?.status === 400) {
+                throw new ServerValidationError(
+                    axiosError.response.data.errors
+                );
+            }
+
+            // Otherwise, throw UnexpectedServerError
+            throw new UnexpectedServerError();
+        }
+    }
 }
