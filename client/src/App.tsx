@@ -9,6 +9,7 @@ import PrivateRoute from './components/PrivateRoute';
 import CourseDetail from './components/pages/CourseDetail';
 import Courses from './components/pages/Courses';
 import CreateCourse from './components/pages/CreateCourse';
+import UpdateCourse from './components/pages/UpdateCourse';
 import UserSignIn from './components/pages/UserSignIn';
 import UserSignOut from './components/pages/UserSignOut';
 import UserSignUp from './components/pages/UserSignUp';
@@ -99,6 +100,11 @@ const App: React.FC = () => {
                                 path="/courses/:id"
                                 exact
                                 component={CourseDetail}
+                            />
+                            <PrivateRoute
+                                path="/courses/:id/update"
+                                exact
+                                component={UpdateCourse}
                             />
                             <Route
                                 path="/signin"
