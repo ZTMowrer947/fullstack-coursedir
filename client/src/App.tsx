@@ -5,8 +5,10 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Header from './components/Header';
 import Loading from './components/Loading';
+import PrivateRoute from './components/PrivateRoute';
 import CourseDetail from './components/pages/CourseDetail';
 import Courses from './components/pages/Courses';
+import CreateCourse from './components/pages/CreateCourse';
 import UserSignIn from './components/pages/UserSignIn';
 import UserSignOut from './components/pages/UserSignOut';
 import UserSignUp from './components/pages/UserSignUp';
@@ -88,6 +90,11 @@ const App: React.FC = () => {
                         <Switch>
                             <Redirect from="/" to="/courses" exact />
                             <Route path="/courses" exact component={Courses} />
+                            <PrivateRoute
+                                path="/courses/create"
+                                exact
+                                component={CreateCourse}
+                            />
                             <Route
                                 path="/courses/:id"
                                 exact
