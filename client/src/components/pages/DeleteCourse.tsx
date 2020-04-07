@@ -1,17 +1,18 @@
 // Imports
-import { Formik, FormikActions, FormikErrors } from 'formik';
+import { Formik, FormikErrors } from 'formik';
 import React, { useContext, useState, useEffect, useCallback } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import { LinkContainer } from 'react-router-bootstrap';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 
 import AuthContext from '../../context/AuthContext';
 import Course from '../../models/Course';
+import { NotFoundError } from '../../models/errors';
 import CourseApi from '../../services/CourseApi';
 import Loading from '../Loading';
-import { LinkContainer } from 'react-router-bootstrap';
 
 // Route params
 interface RouteParams {
@@ -35,13 +36,15 @@ const DeleteCourse: React.FC<RouteComponentProps<RouteParams>> = ({
 
     // Initialize state
     const [course, setCourse] = useState<Course | null>(null);
+    const [error, setError] = useState<Error | null>(null);
 
     // Fetch data on initial course load
     useEffect(() => {
         CourseApi.get(match.params.id).then(course => {
+            // If course was not found, redirect to book listing
             if (!course)
                 return history.push('/courses', {
-                    courseNotFound: true,
+                    flashError: new NotFoundError(),
                 });
 
             setCourse(course);
@@ -51,11 +54,16 @@ const DeleteCourse: React.FC<RouteComponentProps<RouteParams>> = ({
     // Define submission and validation handlers
     const handleSubmit = useCallback(() => {
         // Delete course
-        CourseApi.delete(credentials, match.params.id).then(() => {
-            // Redirect to home pahe
-            history.push('/');
-        });
-    }, [credentials, match.params.id]);
+        CourseApi.delete(credentials, match.params.id)
+            .then(() => {
+                // Redirect to home pahe
+                history.push('/');
+            })
+            .catch(error => {
+                // If an error was thrown, attach it to state to throw later
+                setError(error);
+            });
+    }, [credentials, history, match.params.id]);
 
     const validate = useCallback(
         (formData: DeleteCourseFormValues) => {
@@ -73,6 +81,9 @@ const DeleteCourse: React.FC<RouteComponentProps<RouteParams>> = ({
         },
         [course]
     );
+
+    // If an error has occurred, throw it
+    if (error) throw error;
 
     // Render loading indicator while waiting for course to load
     if (!course) return <Loading />;

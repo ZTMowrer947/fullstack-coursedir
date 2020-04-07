@@ -7,7 +7,7 @@ import AuthContext from '../../context/AuthContext';
 import ModifyCourseForm from '../forms/ModifyCourseForm';
 import Course from '../../models/Course';
 import CourseDTO from '../../models/CourseDTO';
-import { ServerValidationError } from '../../models/errors';
+import { ServerValidationError, NotFoundError } from '../../models/errors';
 import CourseApi from '../../services/CourseApi';
 import Loading from '../Loading';
 
@@ -28,13 +28,14 @@ const UpdateCourse: React.FC<RouteComponentProps<RouteParams>> = ({
 
     // Initialize state
     const [course, setCourse] = useState<Course | null>(null);
+    const [error, setError] = useState<Error | null>(null);
 
     // Fetch data on initial course load
     useEffect(() => {
         CourseApi.get(match.params.id).then(course => {
             if (!course)
                 return history.push('/courses', {
-                    courseNotFound: true,
+                    flashError: new NotFoundError(),
                 });
 
             setCourse(course);
@@ -89,12 +90,17 @@ const UpdateCourse: React.FC<RouteComponentProps<RouteParams>> = ({
                         // Stop submission
                         setSubmitting(false);
                     }
-                    // Otherwise, rethrow error
-                    else throw error;
+                    // Otherwise, attach error to state to be thrown later
+                    else {
+                        setError(error);
+                    }
                 });
         },
         [credentials, history, match.params.id]
     );
+
+    // If an error has occurred, throw it
+    if (error) throw error;
 
     // Render loading indicator while waiting for course to load
     if (!course) return <Loading />;

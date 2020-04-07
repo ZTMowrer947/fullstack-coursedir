@@ -1,5 +1,5 @@
 // Imports
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Link, RouteComponentProps, Redirect } from 'react-router-dom';
@@ -13,6 +13,9 @@ import { InvalidCredentialsError } from '../../models/errors';
 const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
     // Connect to AuthContext
     const context = useContext(AuthContext);
+
+    // Initialize state
+    const [error, setError] = useState<Error | null>(null);
 
     // Define submit function
     const handleSubmit = (
@@ -30,9 +33,9 @@ const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
                         'Incorrect email/password combination.'
                     );
                 }
-                // Otherwise, rethrow error
+                // Otherwise, attach error to state to be thrown later
                 else {
-                    throw error;
+                    setError(error);
                 }
             })
             .finally(() => {
@@ -41,29 +44,30 @@ const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
             });
     };
 
+    // If an error has occurred, throw it
+    if (error) throw error;
+
     // If user is already signed in,
-    if (context.user) {
+    if (context.user)
         // Redirect to home page
         return <Redirect to="/" />;
-    }
+
     // Otherwise, render signin form
-    else {
-        return (
-            <Row>
-                <Col xs={2} md={3} lg={4} />
-                <Col xs={8} md={6} lg={4}>
-                    <h1>Sign In</h1>
-                    <SignInForm onSubmit={handleSubmit} />
-                    <p>&nbsp;</p>
-                    <p>
-                        Don't have a user account?&nbsp;
-                        <Link to="/signup">Click here</Link> to sign up!
-                    </p>
-                </Col>
-                <Col xs={2} md={3} lg={4} />
-            </Row>
-        );
-    }
+    return (
+        <Row>
+            <Col xs={2} md={3} lg={4} />
+            <Col xs={8} md={6} lg={4}>
+                <h1>Sign In</h1>
+                <SignInForm onSubmit={handleSubmit} />
+                <p>&nbsp;</p>
+                <p>
+                    Don't have a user account?&nbsp;
+                    <Link to="/signup">Click here</Link> to sign up!
+                </p>
+            </Col>
+            <Col xs={2} md={3} lg={4} />
+        </Row>
+    );
 };
 
 // Export

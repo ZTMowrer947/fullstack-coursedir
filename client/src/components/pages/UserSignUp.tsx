@@ -1,6 +1,6 @@
 // Imports
 import { FormikActions, FormikErrors } from 'formik';
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Link, Redirect } from 'react-router-dom';
@@ -15,6 +15,9 @@ import UserApi from '../../services/UserApi';
 const UserSignUp: React.FC = () => {
     // Get user data and signin function from AuthContext
     const { user, signIn } = useContext(AuthContext);
+
+    // Initialize state
+    const [error, setError] = useState<Error | null>(null);
 
     // Define signUp function
     const signUp = useCallback(
@@ -92,8 +95,10 @@ const UserSignUp: React.FC = () => {
                         // Set validation errors for form
                         setErrors(formikErrors);
                     }
-                    // Otherwise, rethrow error
-                    else throw error;
+                    // Otherwise, attach error to state to be thrown later
+                    else {
+                        setError(error);
+                    }
                 })
                 .finally(() => {
                     // In any case, complete submission
@@ -102,6 +107,9 @@ const UserSignUp: React.FC = () => {
         },
         [signUp]
     );
+
+    // If an error has occurred, throw it
+    if (error) throw error;
 
     // If a user is signed in,
     if (user) {

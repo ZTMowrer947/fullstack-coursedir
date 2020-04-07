@@ -1,6 +1,6 @@
 // Imports
 import { FormikActions, FormikErrors } from 'formik';
-import React, { useContext, useCallback } from 'react';
+import React, { useContext, useCallback, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import AuthContext from '../../context/AuthContext';
@@ -15,6 +15,9 @@ const CreateCourse: React.FC<RouteComponentProps> = ({ history }) => {
     const context = useContext(AuthContext);
     const user = context.user!;
     const credentials = context.getCredentials()!;
+
+    // Initialize state
+    const [error, setError] = useState<Error | null>(null);
 
     // Define submit handler
     const handleSubmit = useCallback(
@@ -64,14 +67,19 @@ const CreateCourse: React.FC<RouteComponentProps> = ({ history }) => {
                         // Stop submission
                         setSubmitting(false);
                     }
-                    // Otherwise, rethrow error
-                    else throw error;
+                    // Otherwise, attach error to state to be thrown later
+                    else {
+                        setError(error);
+                    }
                 });
         },
         [credentials, history]
     );
 
-    // Render page
+    // If an error has occurred, throw it
+    if (error) throw error;
+
+    // Otherwise, render page
     return (
         <div className="course-detail">
             <h1>Create Course</h1>
