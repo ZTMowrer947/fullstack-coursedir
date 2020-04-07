@@ -1,6 +1,6 @@
 // Imports
 import axios, { AxiosError } from 'axios';
-import Cookies from 'js-cookie';
+import Cookies from 'universal-cookie';
 
 import User from '../models/User';
 import UserDTO from '../models/UserDTO';
@@ -11,10 +11,13 @@ import {
     UnexpectedServerError,
 } from '../models/errors';
 
+// Initialize cookie context
+const cookies = new Cookies();
+
 // API Service
 export default class UserApi {
-    public static getCredentials() {
-        return Cookies.get('sdbc-credentials');
+    public static getCredentials(): string | undefined {
+        return cookies.get('sdbc-credentials');
     }
 
     public static async signIn(emailAddress: string, password: string) {
@@ -28,7 +31,7 @@ export default class UserApi {
             });
 
             // If successful, store credentials in cookie data
-            Cookies.set(
+            cookies.set(
                 'sdbc-credentials',
                 btoa(`${emailAddress}:${password}`),
                 {
@@ -86,7 +89,7 @@ export default class UserApi {
     }
 
     public static signOut() {
-        return Cookies.remove('sdbc-credentials', {
+        return cookies.remove('sdbc-credentials', {
             domain: document.domain,
             sameSite: 'strict',
         });
