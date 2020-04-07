@@ -2,6 +2,20 @@
 import { ValidationError } from 'class-validator';
 
 // Error types
+export class NotFoundError extends Error {
+    constructor() {
+        super('The requested resource was not found.');
+        this.name = 'NotFoundError';
+    }
+}
+
+export class ForbiddenError extends Error {
+    constructor() {
+        super('You do not have permission to perform the requested action.');
+        this.name = 'ForbiddenError';
+    }
+}
+
 export class InvalidCredentialsError extends Error {
     constructor() {
         super('Invalid email/password combination.');

@@ -3,7 +3,12 @@ import axios, { AxiosError } from 'axios';
 
 import Course from '../models/Course';
 import CourseDTO from '../models/CourseDTO';
-import { UnexpectedServerError, ServerValidationError } from '../models/errors';
+import {
+    UnexpectedServerError,
+    ServerValidationError,
+    NotFoundError,
+    ForbiddenError,
+} from '../models/errors';
 
 // API Service
 export default class CourseApi {
@@ -109,15 +114,30 @@ export default class CourseApi {
             // If the error is not an axios error, rethrow error
             if (!axiosError.isAxiosError) throw error;
 
-            // If response status is 400, throw ServerValidationError
-            if (axiosError.response?.status === 400) {
-                throw new ServerValidationError(
-                    axiosError.response.data.errors
-                );
-            }
+            // Otherwise, consider response status
+            switch (axiosError.response?.status) {
+                // 404 Not Found
+                case 404:
+                    // Throw NotFoundError
+                    throw new NotFoundError();
 
-            // Otherwise, throw UnexpectedServerError
-            throw new UnexpectedServerError();
+                // 403 Forbidden
+                case 403:
+                    // Throw ForbiddenError
+                    throw new ForbiddenError();
+
+                // 400 Bad Request
+                case 400:
+                    // Throw ServerValidationError
+                    throw new ServerValidationError(
+                        axiosError.response.data.errors
+                    );
+
+                // Any other error
+                default:
+                    // Throw UnexpectedServerError
+                    throw new UnexpectedServerError();
+            }
         }
     }
 
@@ -140,8 +160,23 @@ export default class CourseApi {
             // If the error is not an axios error, rethrow error
             if (!axiosError.isAxiosError) throw error;
 
-            // Otherwise, throw UnexpectedServerError
-            throw new UnexpectedServerError();
+            // Otherwise, consider response status
+            switch (axiosError.response?.status) {
+                // 404 Not Found
+                case 404:
+                    // Throw NotFoundError
+                    throw new NotFoundError();
+
+                // 403 Forbidden
+                case 403:
+                    // Throw ForbiddenError
+                    throw new ForbiddenError();
+
+                // Any other error
+                default:
+                    // Throw UnexpectedServerError
+                    throw new UnexpectedServerError();
+            }
         }
     }
 }
