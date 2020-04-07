@@ -8,6 +8,7 @@ import AuthContext from '../../context/AuthContext';
 import Course from '../../models/Course';
 import CourseApi from '../../services/CourseApi';
 import CourseInfo from '../CourseInfo';
+import { NotFoundError } from '../../models/errors';
 
 // Route params
 interface RouteParams {
@@ -30,7 +31,7 @@ const CourseDetail: React.FC<RouteComponentProps<RouteParams>> = ({
         CourseApi.get(match.params.id).then(course => {
             if (!course)
                 return history.push('/courses', {
-                    courseNotFound: true,
+                    flashError: new NotFoundError(),
                 });
 
             setCourse(course);
