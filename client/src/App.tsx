@@ -20,6 +20,7 @@ import UserApi from './services/UserApi';
 
 import './App.scss';
 import DeleteCourse from './components/pages/DeleteCourse';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Component
 const App: React.FC = () => {
@@ -84,56 +85,62 @@ const App: React.FC = () => {
     }, [authData, isReady]);
 
     return (
-        <AuthContext.Provider value={authData}>
-            {isReady ? (
-                <>
-                    <Header />
-                    <Container fluid>
-                        <Switch>
-                            <Redirect from="/" to="/courses" exact />
-                            <Route path="/courses" exact component={Courses} />
-                            <PrivateRoute
-                                path="/courses/create"
-                                exact
-                                component={CreateCourse}
-                            />
-                            <Route
-                                path="/courses/:id"
-                                exact
-                                component={CourseDetail}
-                            />
-                            <PrivateRoute
-                                path="/courses/:id/update"
-                                exact
-                                component={UpdateCourse}
-                            />
-                            <PrivateRoute
-                                path="/courses/:id/delete"
-                                exact
-                                component={DeleteCourse}
-                            />
-                            <Route
-                                path="/signin"
-                                exact
-                                component={UserSignIn}
-                            />
-                            <Route
-                                path="/signup"
-                                exact
-                                component={UserSignUp}
-                            />
-                            <Route
-                                path="/signout"
-                                exact
-                                component={UserSignOut}
-                            />
-                        </Switch>
-                    </Container>
-                </>
-            ) : (
-                <Loading />
-            )}
-        </AuthContext.Provider>
+        <ErrorBoundary>
+            <AuthContext.Provider value={authData}>
+                {isReady ? (
+                    <>
+                        <Header />
+                        <Container fluid>
+                            <Switch>
+                                <Redirect from="/" to="/courses" exact />
+                                <Route
+                                    path="/courses"
+                                    exact
+                                    component={Courses}
+                                />
+                                <PrivateRoute
+                                    path="/courses/create"
+                                    exact
+                                    component={CreateCourse}
+                                />
+                                <Route
+                                    path="/courses/:id"
+                                    exact
+                                    component={CourseDetail}
+                                />
+                                <PrivateRoute
+                                    path="/courses/:id/update"
+                                    exact
+                                    component={UpdateCourse}
+                                />
+                                <PrivateRoute
+                                    path="/courses/:id/delete"
+                                    exact
+                                    component={DeleteCourse}
+                                />
+                                <Route
+                                    path="/signin"
+                                    exact
+                                    component={UserSignIn}
+                                />
+                                <Route
+                                    path="/signup"
+                                    exact
+                                    component={UserSignUp}
+                                />
+                                <Route
+                                    path="/signout"
+                                    exact
+                                    component={UserSignOut}
+                                />
+                            </Switch>
+                        </Container>
+                    </>
+                ) : (
+                    <Loading />
+                )}
+            </AuthContext.Provider>
+        </ErrorBoundary>
     );
 };
 
