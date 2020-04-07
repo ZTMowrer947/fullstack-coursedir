@@ -1,16 +1,23 @@
 // Imports
+import { FormikActions } from 'formik';
 import React, { useContext, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Link, RouteComponentProps, Redirect } from 'react-router-dom';
 
-import SignInForm, { SignInFormValues } from '../forms/SignInForm';
 import AuthContext from '../../context/AuthContext';
-import { FormikActions } from 'formik';
 import { InvalidCredentialsError } from '../../models/errors';
+import SignInForm, { SignInFormValues } from '../forms/SignInForm';
+
+// Location state
+interface PrevUrlState {
+    prevUrl?: string;
+}
 
 // Component
-const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
+const UserSignIn: React.FC<RouteComponentProps<{}, {}, PrevUrlState>> = ({
+    location,
+}) => {
     // Connect to AuthContext
     const context = useContext(AuthContext);
 
@@ -47,10 +54,14 @@ const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
     // If an error has occurred, throw it
     if (error) throw error;
 
-    // If user is already signed in,
-    if (context.user)
-        // Redirect to home page
-        return <Redirect to="/" />;
+    // If a user is signed in,
+    if (context.user) {
+        // Determine redirection url
+        const prevUrl = location.state?.prevUrl ?? '/';
+
+        // Redirect to URL
+        return <Redirect to={prevUrl} />;
+    }
 
     // Otherwise, render signin form
     return (
@@ -62,7 +73,15 @@ const UserSignIn: React.FC<RouteComponentProps> = ({ history }) => {
                 <p>&nbsp;</p>
                 <p>
                     Don't have a user account?&nbsp;
-                    <Link to="/signup">Click here</Link> to sign up!
+                    <Link
+                        to={{
+                            pathname: '/signup',
+                            state: { prevUrl: location.state?.prevUrl },
+                        }}
+                    >
+                        Click here
+                    </Link>{' '}
+                    to sign up!
                 </p>
             </Col>
             <Col xs={2} md={3} lg={4} />

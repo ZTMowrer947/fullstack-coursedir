@@ -3,7 +3,7 @@ import { FormikActions, FormikErrors } from 'formik';
 import React, { useCallback, useContext, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, RouteComponentProps } from 'react-router-dom';
 
 import AuthContext from '../../context/AuthContext';
 import SignUpForm, { SignUpFormValues } from '../forms/SignUpForm';
@@ -11,8 +11,15 @@ import UserDTO from '../../models/UserDTO';
 import { EmailInUseError, ServerValidationError } from '../../models/errors';
 import UserApi from '../../services/UserApi';
 
+// Location state
+interface PrevUrlState {
+    prevUrl?: string;
+}
+
 // Components
-const UserSignUp: React.FC = () => {
+const UserSignUp: React.FC<RouteComponentProps<{}, {}, PrevUrlState>> = ({
+    location,
+}) => {
     // Get user data and signin function from AuthContext
     const { user, signIn } = useContext(AuthContext);
 
@@ -113,8 +120,11 @@ const UserSignUp: React.FC = () => {
 
     // If a user is signed in,
     if (user) {
-        // Redirect to home page
-        return <Redirect to="/" />;
+        // Determine redirection url
+        const prevUrl = location.state?.prevUrl ?? '/';
+
+        // Redirect to URL
+        return <Redirect to={prevUrl} />;
     }
 
     // Otherwise, render form
@@ -127,7 +137,15 @@ const UserSignUp: React.FC = () => {
                 <p>&nbsp;</p>
                 <p>
                     Already have a user account?{' '}
-                    <Link to="/signin">Click here</Link> to sign in!
+                    <Link
+                        to={{
+                            pathname: '/signin',
+                            state: { prevUrl: location.state?.prevUrl },
+                        }}
+                    >
+                        Click here
+                    </Link>{' '}
+                    to sign in!
                 </p>
             </Col>
             <Col xs={2} md={3} lg={4} />
