@@ -1,10 +1,8 @@
 // Imports
 import React from 'react';
-import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import ReactMarkdown from 'react-markdown';
-import { IndexLinkContainer } from 'react-router-bootstrap';
 
 import Course from '../models/Course';
 import './CourseInfo.scss';
