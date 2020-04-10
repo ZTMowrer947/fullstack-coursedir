@@ -1,26 +1,28 @@
 // Imports
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { Suspense, lazy, useState, useMemo, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+import ErrorBoundary from './components/ErrorBoundary';
 import Header from './components/Header';
 import Loading from './components/Loading';
 import PrivateRoute from './components/PrivateRoute';
-import CourseDetail from './components/pages/CourseDetail';
-import Courses from './components/pages/Courses';
-import CreateCourse from './components/pages/CreateCourse';
-import UpdateCourse from './components/pages/UpdateCourse';
-import UserSignIn from './components/pages/UserSignIn';
-import UserSignOut from './components/pages/UserSignOut';
-import UserSignUp from './components/pages/UserSignUp';
 import AuthContext from './context/AuthContext';
 import AuthState from './models/AuthState';
 import User from './models/User';
 import UserApi from './services/UserApi';
 
 import './App.scss';
-import DeleteCourse from './components/pages/DeleteCourse';
-import ErrorBoundary from './components/ErrorBoundary';
+
+// Lazy components
+const CourseDetail = lazy(() => import('./components/pages/CourseDetail'));
+const Courses = lazy(() => import('./components/pages/Courses'));
+const CreateCourse = lazy(() => import('./components/pages/CreateCourse'));
+const DeleteCourse = lazy(() => import('./components/pages/DeleteCourse'));
+const UpdateCourse = lazy(() => import('./components/pages/UpdateCourse'));
+const UserSignIn = lazy(() => import('./components/pages/UserSignIn'));
+const UserSignOut = lazy(() => import('./components/pages/UserSignOut'));
+const UserSignUp = lazy(() => import('./components/pages/UserSignUp'));
 
 // Component
 const App: React.FC = () => {
@@ -91,49 +93,51 @@ const App: React.FC = () => {
                     <>
                         <Header />
                         <Container fluid>
-                            <Switch>
-                                <Redirect from="/" to="/courses" exact />
-                                <Route
-                                    path="/courses"
-                                    exact
-                                    component={Courses}
-                                />
-                                <PrivateRoute
-                                    path="/courses/create"
-                                    exact
-                                    component={CreateCourse}
-                                />
-                                <Route
-                                    path="/courses/:id"
-                                    exact
-                                    component={CourseDetail}
-                                />
-                                <PrivateRoute
-                                    path="/courses/:id/update"
-                                    exact
-                                    component={UpdateCourse}
-                                />
-                                <PrivateRoute
-                                    path="/courses/:id/delete"
-                                    exact
-                                    component={DeleteCourse}
-                                />
-                                <Route
-                                    path="/signin"
-                                    exact
-                                    component={UserSignIn}
-                                />
-                                <Route
-                                    path="/signup"
-                                    exact
-                                    component={UserSignUp}
-                                />
-                                <Route
-                                    path="/signout"
-                                    exact
-                                    component={UserSignOut}
-                                />
-                            </Switch>
+                            <Suspense fallback={<Loading />}>
+                                <Switch>
+                                    <Redirect from="/" to="/courses" exact />
+                                    <Route
+                                        path="/courses"
+                                        exact
+                                        component={Courses}
+                                    />
+                                    <PrivateRoute
+                                        path="/courses/create"
+                                        exact
+                                        component={CreateCourse}
+                                    />
+                                    <Route
+                                        path="/courses/:id"
+                                        exact
+                                        component={CourseDetail}
+                                    />
+                                    <PrivateRoute
+                                        path="/courses/:id/update"
+                                        exact
+                                        component={UpdateCourse}
+                                    />
+                                    <PrivateRoute
+                                        path="/courses/:id/delete"
+                                        exact
+                                        component={DeleteCourse}
+                                    />
+                                    <Route
+                                        path="/signin"
+                                        exact
+                                        component={UserSignIn}
+                                    />
+                                    <Route
+                                        path="/signup"
+                                        exact
+                                        component={UserSignUp}
+                                    />
+                                    <Route
+                                        path="/signout"
+                                        exact
+                                        component={UserSignOut}
+                                    />
+                                </Switch>
+                            </Suspense>
                         </Container>
                     </>
                 ) : (
