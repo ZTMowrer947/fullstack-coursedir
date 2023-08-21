@@ -38,6 +38,8 @@ const CourseDetail: React.FC<RouteComponentProps<RouteParams>> = ({
         });
     }, [match.params.id, history]);
 
+    console.log(course);
+
     return (
         course && (
             <>
