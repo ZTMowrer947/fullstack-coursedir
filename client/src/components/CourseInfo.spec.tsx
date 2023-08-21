@@ -21,7 +21,7 @@ describe('CourseInfo component', () => {
         course.materialsNeeded = faker.random.word();
 
         // Get full name of course author
-        const fullName = `${course.creator.firstName} ${course.creator.lastName}`;
+        const fullName = `${course.user.firstName} ${course.user.lastName}`;
 
         // Render description and needed materials to markup
         const descriptionMarkup = renderToStaticMarkup(

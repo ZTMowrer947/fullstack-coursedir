@@ -19,7 +19,7 @@ interface PropTypes {
         values: CourseDTO,
         formikActions: FormikActions<CourseDTO>
     ) => void;
-    author: User;
+    author: Pick<User, 'firstName' | 'lastName'>;
     courseId?: string;
     courseData?: CourseDTO;
 }

@@ -26,14 +26,14 @@ const CourseInfo: React.FC<PropTypes> = ({ course }) => (
                         {course.title}
                     </h3>
                     <p data-testid="course-author">
-                        {`By ${course.creator.firstName} ${course.creator.lastName}`}
+                        {`By ${course.user.firstName} ${course.user.lastName}`}
                     </p>
                 </div>
                 <div
                     className="course-description"
                     data-testid="course-description"
                 >
-                    <ReactMarkdown source={course.description} />
+                    <ReactMarkdown>{course.description}</ReactMarkdown>
                 </div>
             </Col>
             <Col xs={3}>
@@ -56,9 +56,7 @@ const CourseInfo: React.FC<PropTypes> = ({ course }) => (
                                 data-testid="course-materials"
                             >
                                 <h4>Materials Needed</h4>
-                                <ReactMarkdown
-                                    source={course.materialsNeeded}
-                                />
+                                <ReactMarkdown>{course.materialsNeeded}</ReactMarkdown>
                             </li>
                         )}
                     </ul>

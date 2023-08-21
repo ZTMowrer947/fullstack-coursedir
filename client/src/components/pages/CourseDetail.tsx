@@ -38,14 +38,12 @@ const CourseDetail: React.FC<RouteComponentProps<RouteParams>> = ({
         });
     }, [match.params.id, history]);
 
-    console.log(course);
-
     return (
         course && (
             <>
                 <div className="actions-bar" test-id="action-btns">
                     <div className="w-100">
-                        {user?.id === course.creator.id && (
+                        {user?.id === course.userId && (
                             <>
                                 <IndexLinkContainer
                                     to={`/courses/${course.id}/update`}

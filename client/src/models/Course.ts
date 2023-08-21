@@ -8,7 +8,8 @@ interface Course {
     description: string;
     estimatedTime?: string;
     materialsNeeded?: string;
-    creator: User;
+    user: Pick<User, 'firstName' | 'lastName'>;
+    userId: number;
 }
 
 // Export

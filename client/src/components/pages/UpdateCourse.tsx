@@ -106,13 +106,13 @@ const UpdateCourse: React.FC<RouteComponentProps<RouteParams>> = ({
     if (!course) return <Loading />;
 
     // If user and creator do not match,
-    if (user.id !== course.creator.id) {
+    if (user.id !== course.userId) {
         // Redirect back to course detail page
         return <Redirect to={`/courses/${course.id}`} />;
     }
 
     // Otherwise, split out course data
-    const { id, creator } = course;
+    const { id, user: creator } = course;
     const courseData: CourseDTO = {
         title: course.title,
         description: course.description,
