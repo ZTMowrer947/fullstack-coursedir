@@ -21,6 +21,9 @@
     "sql.js": "^1.8.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.2",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/sql.js": "^1.4.4",
@@ -33,6 +36,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "husky": "^8.0.3",
+    "jsdom": "^22.1.0",
     "lint-staged": "^14.0.1",
     "msw": "^1.2.5",
     "postcss": "^8.4.28",
