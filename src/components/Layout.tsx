@@ -6,7 +6,7 @@ export default function Layout({ children }: PropsWithChildren) {
   return (
     <>
       <Header />
-      {children}
+      <main className="mx-20">{children}</main>
     </>
   );
 }
