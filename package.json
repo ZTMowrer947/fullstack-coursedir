@@ -11,7 +11,8 @@
     "lint:css": "stylelint '**/*.css'",
     "lint": "pnpm lint:eslint --fix && pnpm lint:prettier && pnpm lint:css",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "vitest"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -41,6 +42,7 @@
     "stylelint-config-tailwindcss": "^0.0.7",
     "tailwindcss": "^3.3.3",
     "typescript": "~5.1.6",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vitest": "^0.34.3"
   }
 }
