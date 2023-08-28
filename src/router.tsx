@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
-import App from './App.tsx';
 import Layout from './components/Layout.tsx';
+import CourseListing from './pages/CourseListing.tsx';
 
 const router = createBrowserRouter([
   {
@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/courses',
-        element: <App />,
+        element: <CourseListing />,
       },
       {
         path: '/',
