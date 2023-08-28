@@ -1,8 +1,10 @@
-import { afterAll, afterEach, beforeAll } from 'vitest';
 import '@testing-library/jest-dom/vitest';
+
 import { cleanup } from '@testing-library/react';
-import server from './src/api-mock/server';
+import { afterAll, afterEach, beforeAll } from 'vitest';
+
 import db from './src/api-mock/db';
+import server from './src/api-mock/server';
 
 beforeAll(() => server.listen());
 

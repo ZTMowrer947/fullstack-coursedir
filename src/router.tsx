@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
+
 import Layout from './components/Layout.tsx';
 import CourseListing from './pages/CourseListing.tsx';
 
