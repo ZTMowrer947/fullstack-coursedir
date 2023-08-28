@@ -17,4 +17,9 @@ export default defineConfig({
     setupFiles: './testSetup.ts',
     watch: false,
   },
+  css: {
+    modules: {
+      localsConvention: 'camelCaseOnly',
+    },
+  },
 });
