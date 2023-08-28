@@ -1,0 +1,24 @@
+.header {
+    background: #57496e;
+    margin-bottom: 30px;
+
+    @apply py-5 px-20 flex flex-row justify-between;
+}
+
+.logo {
+    color: #fff;
+    margin: 0;
+    display: inline-block;
+
+    @apply text-2xl;
+}
+
+.nav {
+    margin-top: 3px;
+
+    & a {
+        color: rgb(255 255 255 / 50%);
+
+        @apply ml-5 hover:text-white;
+    }
+}
