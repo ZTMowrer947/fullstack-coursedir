@@ -1,0 +1,32 @@
+.course-add-module {
+  composes: course-module from '../components/CourseLink.module.css';
+
+  @apply bg-secondary text-center relative;
+
+  &:hover {
+    @apply bg-gray-300;
+  }
+
+  & .add-module-title {
+    color: #999;
+    transform: translate(-50%, -55%);
+
+    @apply inline-block text-lg font-bold absolute top-1/2 left-1/2;
+
+    & .svg {
+      fill: #999;
+      width: 13px;
+      margin-right: 5px;
+
+      @apply h-auto inline-block;
+    }
+  }
+
+  &:hover .add-module-title {
+    color: #444;
+
+    & .svg {
+      fill: #444;
+    }
+  }
+}

@@ -1,1 +1,11 @@
-{ "extends": ["stylelint-config-standard", "stylelint-config-tailwindcss"] }
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-tailwindcss"],
+  "rules": {
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": ["composes"]
+      }
+    ]
+  }
+}
