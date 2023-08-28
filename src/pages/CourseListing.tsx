@@ -1,20 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
 import CourseLink from '../components/CourseLink.tsx';
-import getCourses from '../queries/getCourses.ts';
+import { coursesQuery } from '../queries/getCourses.ts';
 import styles from './CourseListing.module.css';
 
 export default function CourseListing() {
-  const { error, data, isLoading } = useQuery({ queryKey: ['courses'], queryFn: getCourses });
+  const initialData = useLoaderData() as Awaited<ReturnType<typeof coursesQuery.queryFn>>;
 
-  if (isLoading) return null;
-
-  if (error) return <h1>Something went wrong</h1>;
+  const { data } = useQuery({
+    ...coursesQuery,
+    initialData,
+  });
 
   return (
     <div className="grid grid-cols-3 gap-4">
-      {data?.map((course) => <CourseLink course={course} key={course.id} />)}
+      {data.map((course) => (
+        <CourseLink course={course} key={course.id} />
+      ))}
       <Link to={'new'} className={styles.courseAddModule}>
         <h3 className={styles.addModuleTitle}>
           <svg

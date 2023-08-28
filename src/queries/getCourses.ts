@@ -1,3 +1,6 @@
+import { QueryClient } from '@tanstack/react-query';
+import { LoaderFunction } from 'react-router-dom';
+
 import { apiBaseUrl } from '../config.ts';
 
 export interface CoursePreview {
@@ -14,3 +17,14 @@ export default async function getCourses(): Promise<CoursePreview[]> {
 
   throw new Error('Could not fetch course listing');
 }
+
+export const coursesQuery = {
+  queryKey: ['courses'],
+  queryFn: getCourses,
+};
+
+export const loader = (queryClient: QueryClient): LoaderFunction => {
+  return async () => {
+    return queryClient.ensureQueryData(coursesQuery.queryKey, coursesQuery.queryFn);
+  };
+};

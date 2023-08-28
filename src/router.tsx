@@ -2,6 +2,8 @@ import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 
 import Layout from './components/Layout.tsx';
 import CourseListing from './pages/CourseListing.tsx';
+import { loader as courseLoader } from './queries/getCourses.ts';
+import queryClient from './queryClient.ts';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,7 @@ const router = createBrowserRouter([
       {
         path: '/courses',
         element: <CourseListing />,
+        loader: courseLoader(queryClient),
       },
       {
         path: '/',
