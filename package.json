@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint:eslint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:prettier": "prettier --write **/*.{ts,tsx}",
-    "lint": "pnpm lint:eslint --fix && pnpm lint:prettier",
+    "lint:css": "stylelint '**/*.css'",
+    "lint": "pnpm lint:eslint --fix && pnpm lint:prettier && pnpm lint:css",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -26,6 +27,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "prettier": "^3.0.2",
+    "stylelint": "^15.10.3",
+    "stylelint-config-standard": "^34.0.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
   }
