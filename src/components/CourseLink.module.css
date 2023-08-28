@@ -1,5 +1,5 @@
 .course-module {
-  min-height: 6.6875rem;
+  min-height: 7.5rem;
 
   @apply bg-primary rounded-lg p-8;
 
