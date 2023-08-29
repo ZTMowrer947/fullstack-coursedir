@@ -74,10 +74,36 @@ if (courses.length === 0 && users.length === 0) {
 
 // "Database" queries
 type CoursePreview = Pick<DbCourse, 'id' | 'title'>;
+interface CourseData extends Omit<DbCourse, 'createdAt' | 'updatedAt'> {
+  user: Pick<DbUser, 'firstName' | 'lastName'>;
+}
 
 export function getMockCourses(): CoursePreview[] {
   return courses.map((course) => ({
     id: course.id,
     title: course.title,
   }));
+}
+
+export function getMockCourse(id: number): CourseData | null {
+  const course = courses.find((crs) => crs.id === id);
+
+  if (!course) return null;
+
+  const author = users.find((user) => user.id === course.userId);
+
+  if (!author) throw new Error('Course associated with nonexistent user');
+
+  return {
+    id: course.id,
+    userId: course.userId,
+    title: course.title,
+    description: course.description,
+    estimatedTime: course.estimatedTime,
+    materialsNeeded: course.materialsNeeded,
+    user: {
+      firstName: author.firstName,
+      lastName: author.lastName,
+    },
+  };
 }
