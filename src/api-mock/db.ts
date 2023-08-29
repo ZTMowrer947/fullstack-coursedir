@@ -5,7 +5,7 @@ import seederYaml from './seeder_data.yaml?raw';
 
 const SQL = await initSqlJs({
   locateFile(file) {
-    return `./node_modules/sql.js/dist/${file}`;
+    return `/node_modules/sql.js/dist/${file}`;
   },
 });
 
