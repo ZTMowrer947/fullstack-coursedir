@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { CoursePreview } from '../queries/getCourses.ts';
+import textStyles from '../type.module.css';
 import styles from './CourseLink.module.css';
 
 interface CourseLinkProps {
@@ -10,8 +11,8 @@ interface CourseLinkProps {
 export default function CourseLink({ course }: CourseLinkProps) {
   return (
     <Link to={`${course.id}`} className={styles.courseModule}>
-      <h4 className={styles.courseLabel}>Course</h4>
-      <h3 className={styles.courseTitle}>{course.title}</h3>
+      <h4 className={textStyles.courseLabel}>Course</h4>
+      <h3 className={`${textStyles.courseTitle} ${styles.courseModuleTitle}`}>{course.title}</h3>
     </Link>
   );
 }

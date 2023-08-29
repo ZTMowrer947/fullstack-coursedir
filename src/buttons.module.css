@@ -1,0 +1,28 @@
+.primary {
+  font-family: "Work Sans", sans-serif;
+  padding: 15px 30px;
+  transition: background 0.2s;
+
+  @apply bg-primary text-white text-lg font-bold inline-block mr-2.5 border-0 rounded-lg;
+
+  &:hover {
+    background: #63537d;
+  }
+}
+
+.secondary {
+  composes: primary;
+  box-shadow: 0 0 0 2px #7c689b inset;
+  transition: box-shadow 0.2s, color 0.2s;
+
+  @apply text-primary;
+
+  &, &:hover {
+    background: none;
+  }
+
+  &:hover {
+    color: #63537d;
+    box-shadow: 0 0 0 2px #63537d inset;
+  }
+}

@@ -1,0 +1,10 @@
+.course-label {
+  color: rgb(255 255 255 / 50%);
+  font-family: Cousine, monospace;
+
+  @apply text-sm mb-1 font-normal;
+}
+
+.course-title {
+  @apply text-white text-lg font-bold;
+}

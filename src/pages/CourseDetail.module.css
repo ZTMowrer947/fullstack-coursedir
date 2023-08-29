@@ -1,0 +1,110 @@
+.nav {
+  border-bottom: 1px solid #d5f9fe;
+  background: #f8feff;
+  margin-top: -30px;
+
+  @apply py-8 -mx-20 px-20 flex flex-row justify-start;
+}
+
+.info {
+  margin-top: 60px;
+
+  @apply grid grid-cols-12;
+
+  & .header {
+    margin-bottom: 30px;
+
+    @apply col-span-12;
+
+    & .header-label {
+      color: #999;
+
+      @apply text-lg mb-4;
+    }
+
+    & .title {
+      margin-bottom: 15px;
+      color: #332a40;
+
+      @apply text-5xl font-bold;
+    }
+
+    & p {
+      font-weight: 100;
+      color: #b1a5c4;
+
+      @apply text-lg font-normal;
+    }
+  }
+
+  .desc {
+    @apply col-span-8;
+
+    margin-bottom: 30px;
+
+    & p {
+      font-family: Cousine, monospace;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #444;
+      margin-bottom: 30px;
+    }
+
+    & h1 {
+      @apply text-4xl;
+    }
+
+    & h2 {
+      @apply text-3xl;
+    }
+
+    & h3 {
+      @apply text-2xl;
+    }
+
+    & h4 {
+      font-weight: 100;
+      margin: 0 0 10px;
+      color: #999;
+
+      @apply text-lg block;
+    }
+  }
+
+  & .stats {
+    @apply col-start-10 col-end-13;
+
+    & h4 {
+      font-family: Cousine, monospace;
+      font-weight: 100;
+      color: #999;
+      font-size: 14px;
+      padding: 0 0 10px;
+      margin-bottom: 10px;
+      border-color: #ddd;
+      letter-spacing: 2px;
+
+      @apply border-b uppercase overflow-hidden whitespace-nowrap text-ellipsis;
+    }
+
+    & h3 {
+      font-family: "Work Sans", sans-serif;
+
+      @apply text-lg font-bold;
+    }
+
+    & > ul > li {
+      @apply mb-12;
+
+      & ul {
+        @apply pl-5;
+      }
+
+      & li {
+        list-style-type: circle;
+
+        @apply mb-4;
+      }
+    }
+  }
+}
