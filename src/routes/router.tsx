@@ -26,8 +26,14 @@ const router = createBrowserRouter([
         children: [
           {
             path: ':id',
-            element: <CourseDetail />,
             loader: courseLoader(queryClient),
+            id: 'course-id',
+            children: [
+              {
+                index: true,
+                element: <CourseDetail />,
+              },
+            ],
           },
           {
             index: true,

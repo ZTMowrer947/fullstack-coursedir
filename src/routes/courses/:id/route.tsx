@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import ReactMarkdown from 'react-markdown';
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link, useRouteLoaderData } from 'react-router-dom';
 
 import buttonStyles from '@/buttons.module.css';
 import { courseQuery } from '@/routes/courses/:id/loader.ts';
@@ -9,7 +9,7 @@ import typeStyles from '@/type.module.css';
 import styles from './styles.module.css';
 
 export default function CourseDetail() {
-  const initialData = useLoaderData() as Awaited<ReturnType<ReturnType<typeof courseQuery>['queryFn']>>;
+  const initialData = useRouteLoaderData('course-id') as Awaited<ReturnType<ReturnType<typeof courseQuery>['queryFn']>>;
 
   const { data: course } = useQuery({
     ...courseQuery(initialData.id),
