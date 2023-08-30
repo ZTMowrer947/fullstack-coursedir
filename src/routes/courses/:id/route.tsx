@@ -1,24 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import ReactMarkdown from 'react-markdown';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
 import buttonStyles from '@/buttons.module.css';
-import { courseQuery } from '@/queries/getCourse.ts';
+import { courseQuery } from '@/routes/courses/:id/loader.ts';
 import typeStyles from '@/type.module.css';
 
 import styles from './styles.module.css';
 
 export default function CourseDetail() {
-  const { id } = useParams();
-  const parsedId = Number.parseInt(id ?? '');
+  const initialData = useLoaderData() as Awaited<ReturnType<ReturnType<typeof courseQuery>['queryFn']>>;
 
-  const { isLoading, data: course } = useQuery(courseQuery(parsedId));
-
-  if (isLoading) return <h1>Loading...</h1>;
-
-  if (!course) {
-    return <h1>Course not found</h1>;
-  }
+  const { data: course } = useQuery({
+    ...courseQuery(initialData.id),
+    initialData,
+  });
 
   return (
     <article>
