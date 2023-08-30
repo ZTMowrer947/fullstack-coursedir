@@ -23,7 +23,9 @@ export const coursesQuery = {
 
 const coursesLoader = (queryClient: QueryClient): LoaderFunction => {
   return async () => {
-    return queryClient.ensureQueryData(coursesQuery.queryKey, coursesQuery.queryFn);
+    return queryClient.ensureQueryData(coursesQuery.queryKey, coursesQuery.queryFn, {
+      retry: 3,
+    });
   };
 };
 

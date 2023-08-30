@@ -43,7 +43,9 @@ const courseLoader = (queryClient: QueryClient): LoaderFunction => {
 
     const query = courseQuery(id);
 
-    return queryClient.ensureQueryData(query.queryKey, query.queryFn);
+    return queryClient.ensureQueryData(query.queryKey, query.queryFn, {
+      retry: 3,
+    });
   };
 };
 
