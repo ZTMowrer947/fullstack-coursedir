@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 
-import Layout from '@/components/Layout.tsx';
 import queryClient from '@/queryClient.ts';
+import Layout from '@/routes/layout.tsx';
 
 import courseLoader from './courses/:id/loader.ts';
 import CourseDetail from './courses/:id/route.tsx';
