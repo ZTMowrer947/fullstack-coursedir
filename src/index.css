@@ -13,3 +13,13 @@ body {
 
     @apply bg-white;
 }
+
+p {
+  font-family: Cousine, monospace;
+}
+
+a {
+  transition: color 0.2s;
+
+  @apply text-primary cursor-pointer;
+}

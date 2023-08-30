@@ -1,0 +1,21 @@
+.group {
+  &, & .field {
+    width: 100%;
+  }
+
+  & .field {
+    color: #332a40;
+    border-color: #ccc4d8;
+    font-size: 1rem;
+
+    @apply border rounded-lg p-4 mb-4 outline-none;
+
+    &::placeholder {
+      @apply font-normal;
+    }
+
+    &:focus {
+      @apply border-primary;
+    }
+  }
+}

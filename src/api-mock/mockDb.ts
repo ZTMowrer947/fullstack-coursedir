@@ -78,6 +78,8 @@ interface CourseData extends Omit<DbCourse, 'createdAt' | 'updatedAt'> {
   user: Pick<DbUser, 'firstName' | 'lastName'>;
 }
 
+type UserData = Pick<DbUser, 'id' | 'firstName' | 'lastName' | 'emailAddress' | 'password'>;
+
 export function getMockCourses(): CoursePreview[] {
   return courses.map((course) => ({
     id: course.id,
@@ -105,5 +107,19 @@ export function getMockCourse(id: number): CourseData | null {
       firstName: author.firstName,
       lastName: author.lastName,
     },
+  };
+}
+
+export function getMockUser(emailAddress: string): UserData | null {
+  const user = users.find((user) => user.emailAddress === emailAddress) ?? null;
+
+  if (!user) return user;
+
+  return {
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    emailAddress: user.emailAddress,
+    password: user.password,
   };
 }
