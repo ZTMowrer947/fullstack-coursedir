@@ -25,7 +25,9 @@ export default function Header() {
   }, [user, isNavReady]);
 
   useEffect(() => {
-    const intervalId = window.setInterval(() => {
+    let timeoutId: number;
+
+    function revalidateAuth() {
       if (!isNavReady) return;
 
       if (!authManager.hasCredentials && authManager.user) {
@@ -36,10 +38,14 @@ export default function Header() {
       } else if (authManager.hasCredentials && !user) {
         setUser(authManager.user);
       }
-    }, 500);
+
+      timeoutId = window.setTimeout(revalidateAuth, 250);
+    }
+
+    timeoutId = window.setTimeout(revalidateAuth, 250);
 
     return () => {
-      window.clearInterval(intervalId);
+      window.clearTimeout(timeoutId);
     };
   }, [isNavReady, user]);
 

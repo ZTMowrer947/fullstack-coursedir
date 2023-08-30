@@ -49,8 +49,10 @@ class AuthManager {
 
     const user = await getUser(emailAddress, password);
 
-    if (user && !this.hasCredentials) {
-      Cookies.set(credentialCookieName, credentials, credentialCookieOptions);
+    if (user) {
+      if (!this.hasCredentials) {
+        Cookies.set(credentialCookieName, credentials, credentialCookieOptions);
+      }
       this.#user = user;
     } else if (this.hasCredentials) {
       this.signOut();
