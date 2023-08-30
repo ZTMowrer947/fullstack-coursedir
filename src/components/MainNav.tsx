@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+import authManager from '@/lib/authManager.ts';
 import { User } from '@/queries/getUser.ts';
 
 import styles from './MainNav.module.css';
@@ -16,7 +17,9 @@ export default function MainNav({ isReady, user }: MainNavProps) {
         (user ? (
           <>
             <span>Welcome {`${user.firstName} ${user.lastName}`}!</span>
-            <button className={styles.link}>Sign Out</button>
+            <button className={styles.link} onClick={authManager.signOut}>
+              Sign Out
+            </button>
           </>
         ) : (
           <>
