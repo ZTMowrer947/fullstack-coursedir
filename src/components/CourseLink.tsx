@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { CoursePreview } from '../queries/getCourses.ts';
+import { CoursePreview } from '../routes/courses/loader.ts';
 import textStyles from '../type.module.css';
 import styles from './CourseLink.module.css';
 

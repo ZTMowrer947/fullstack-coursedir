@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
-import btnStyles from '../buttons.module.css';
-import formStyles from '../form.module.css';
-import authManager from '../lib/authManager.ts';
-import styles from './SignIn.module.css';
+import btnStyles from '../../buttons.module.css';
+import formStyles from '../../form.module.css';
+import authManager from '../../lib/authManager.ts';
+import styles from './styles.module.css';
 
 interface SignInFormData {
   emailAddress: string;

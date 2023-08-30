@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link, useLoaderData } from 'react-router-dom';
 
-import CourseLink from '../components/CourseLink.tsx';
-import { coursesQuery } from '../queries/getCourses.ts';
-import styles from './CourseListing.module.css';
+import CourseLink from '../../components/CourseLink.tsx';
+import { coursesQuery } from './loader.ts';
+import styles from './styles.module.css';
 
 export default function CourseListing() {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof coursesQuery.queryFn>>;

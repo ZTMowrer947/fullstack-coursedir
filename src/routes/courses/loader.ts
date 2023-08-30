@@ -1,14 +1,14 @@
 import { QueryClient } from '@tanstack/react-query';
 import { LoaderFunction } from 'react-router-dom';
 
-import { apiBaseUrl } from '../config.ts';
+import { apiBaseUrl } from '../../config.ts';
 
 export interface CoursePreview {
   id: number;
   title: string;
 }
 
-export default async function getCourses(): Promise<CoursePreview[]> {
+async function getCourses(): Promise<CoursePreview[]> {
   const res = await fetch(`${apiBaseUrl}/api/courses`);
 
   if (res.ok) {
@@ -23,10 +23,12 @@ export const coursesQuery = {
   queryFn: getCourses,
 };
 
-export const loader = (queryClient: QueryClient): LoaderFunction => {
+const coursesLoader = (queryClient: QueryClient): LoaderFunction => {
   return async () => {
     return queryClient.ensureQueryData(coursesQuery.queryKey, coursesQuery.queryFn, {
       retry: 3,
     });
   };
 };
+
+export default coursesLoader;

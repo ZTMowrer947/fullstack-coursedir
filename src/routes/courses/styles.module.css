@@ -1,5 +1,5 @@
 .course-add-module {
-  composes: course-module from '../components/CourseLink.module.css';
+  composes: course-module from '../../components/CourseLink.module.css';
   min-height: 7.5rem;
 
   @apply bg-secondary text-center relative;
