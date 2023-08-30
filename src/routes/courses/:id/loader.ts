@@ -15,31 +15,21 @@ export interface Course extends CoursePreview {
   };
 }
 
-async function getCourse(id: Course['id']): Promise<Course | null> {
-  const encodedId = encodeURIComponent(id);
-
-  const res = await fetch(`${apiBaseUrl}/api/courses/${encodedId}`);
-
-  if (res.ok) {
-    return await res.json();
-  } else if (res.status === 404) {
-    return null;
-  } else {
-    throw new Error(`Unexpected error trying to fetch course with id ${id}`);
-  }
-}
-
 export const courseQuery = (id: number) => {
   return {
     queryKey: ['course', id],
-    queryFn: async () => {
-      const course = await getCourse(id);
+    queryFn: async (): Promise<Course> => {
+      const encodedId = encodeURIComponent(id);
 
-      if (!course) {
+      const res = await fetch(`${apiBaseUrl}/api/courses/${encodedId}`);
+
+      if (res.ok) {
+        return await res.json();
+      } else if (res.status === 404) {
         throw new Error(`No course with ID ${id}`);
+      } else {
+        throw new Error(`Unexpected error trying to fetch course with id ${id}`);
       }
-
-      return course;
     },
   };
 };
