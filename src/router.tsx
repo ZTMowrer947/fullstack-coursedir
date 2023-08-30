@@ -1,11 +1,12 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 
-import Layout from './components/Layout.tsx';
+import Layout from '@/components/Layout.tsx';
+import CourseDetail from '@/routes/courses/:id/route.tsx';
+import coursesLoader from '@/routes/courses/loader.ts';
+import CourseListing from '@/routes/courses/route.tsx';
+import SignIn from '@/routes/signin/route.tsx';
+
 import queryClient from './queryClient.ts';
-import CourseDetail from './routes/courses/:id/route.tsx';
-import coursesLoader from './routes/courses/loader.ts';
-import CourseListing from './routes/courses/route.tsx';
-import SignIn from './routes/signin/route.tsx';
 
 const router = createBrowserRouter([
   {

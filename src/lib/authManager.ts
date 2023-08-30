@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-import getUser, { User } from '../queries/getUser.ts';
+import getUser, { User } from '@/queries/getUser.ts';
 
 const credentialCookieName = 'sdbc-credentials';
 const credentialCookieOptions: Cookies.CookieAttributes = {

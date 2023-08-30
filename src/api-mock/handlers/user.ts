@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 
-import { apiBaseUrl } from '../../config.ts';
+import { apiBaseUrl } from '@/config.ts';
+
 import { getMockUser } from '../mockDb.ts';
 
 export const getUser = rest.get(`${apiBaseUrl}/api/users`, (req, res, ctx) => {

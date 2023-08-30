@@ -2,9 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import ReactMarkdown from 'react-markdown';
 import { Link, useParams } from 'react-router-dom';
 
-import buttonStyles from '../../../buttons.module.css';
-import { courseQuery } from '../../../queries/getCourse.ts';
-import typeStyles from '../../../type.module.css';
+import buttonStyles from '@/buttons.module.css';
+import { courseQuery } from '@/queries/getCourse.ts';
+import typeStyles from '@/type.module.css';
+
 import styles from './styles.module.css';
 
 export default function CourseDetail() {

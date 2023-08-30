@@ -1,7 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import { LoaderFunction } from 'react-router-dom';
 
-import { apiBaseUrl } from '../../config.ts';
+import { apiBaseUrl } from '@/config.ts';
 
 export interface CoursePreview {
   id: number;

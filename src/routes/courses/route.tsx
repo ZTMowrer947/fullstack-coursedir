@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link, useLoaderData } from 'react-router-dom';
 
-import CourseLink from '../../components/CourseLink.tsx';
+import CourseLink from '@/components/CourseLink.tsx';
+
 import { coursesQuery } from './loader.ts';
 import styles from './styles.module.css';
 

@@ -1,5 +1,5 @@
-import { apiBaseUrl } from '../config.ts';
-import { CoursePreview } from '../routes/courses/loader.ts';
+import { apiBaseUrl } from '@/config.ts';
+import { CoursePreview } from '@/routes/courses/loader.ts';
 
 export interface Course extends CoursePreview {
   description: string;

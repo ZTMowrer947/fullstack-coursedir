@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import User from '../../old/src/models/User.ts';
-import authManager from '../lib/authManager.ts';
+import authManager from '@/lib/authManager.ts';
+import { User } from '@/queries/getUser.ts';
+
 import styles from './Header.module.css';
 import MainNav from './MainNav.tsx';
 

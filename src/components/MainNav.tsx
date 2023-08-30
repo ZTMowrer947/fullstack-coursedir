@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import { User } from '../queries/getUser.ts';
+import { User } from '@/queries/getUser.ts';
+
 import styles from './MainNav.module.css';
 
 interface MainNavProps {

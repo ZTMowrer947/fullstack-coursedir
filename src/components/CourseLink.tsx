@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 
-import { CoursePreview } from '../routes/courses/loader.ts';
-import textStyles from '../type.module.css';
+import { CoursePreview } from '@/routes/courses/loader.ts';
+import textStyles from '@/type.module.css';
+
 import styles from './CourseLink.module.css';
 
 interface CourseLinkProps {

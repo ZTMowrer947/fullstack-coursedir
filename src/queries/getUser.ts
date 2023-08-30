@@ -1,4 +1,4 @@
-import { apiBaseUrl } from '../config.ts';
+import { apiBaseUrl } from '@/config.ts';
 
 export interface User {
   id: number;
