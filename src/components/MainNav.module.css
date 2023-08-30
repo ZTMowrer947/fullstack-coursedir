@@ -1,0 +1,13 @@
+.nav {
+    margin-top: 3px;
+
+    & .link {
+        color: rgb(255 255 255 / 50%);
+
+        @apply ml-5 hover:text-white;
+    }
+
+    & span {
+        color: #fff;
+    }
+}

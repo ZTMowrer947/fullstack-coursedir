@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import btnStyles from '../buttons.module.css';
 import formStyles from '../form.module.css';
-import getUser from '../queries/getUser.ts';
+import authManager from '../lib/authManager.ts';
 import styles from './SignIn.module.css';
 
 interface SignInFormData {
@@ -19,12 +19,9 @@ export default function SignIn() {
   const [wasSigninSuccessful, setSigninSuccessful] = useState(false);
 
   const onSubmit = handleSubmit(async ({ emailAddress, password }) => {
-    const user = await getUser(emailAddress, password);
+    const user = await authManager.signIn(emailAddress, password);
 
     if (user) {
-      // TODO: Persist user data for session
-      console.log(user);
-
       navigate('/courses');
     } else {
       setSigninSuccessful(false);
