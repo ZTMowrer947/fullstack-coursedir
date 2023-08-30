@@ -21,12 +21,17 @@ const router = createBrowserRouter([
       },
       {
         path: '/courses',
-        element: <CourseListing />,
-        loader: coursesLoader(queryClient),
-      },
-      {
-        path: '/courses/:id',
-        element: <CourseDetail />,
+        children: [
+          {
+            path: ':id',
+            element: <CourseDetail />,
+          },
+          {
+            index: true,
+            element: <CourseListing />,
+            loader: coursesLoader(queryClient),
+          },
+        ],
       },
       {
         path: '/',
