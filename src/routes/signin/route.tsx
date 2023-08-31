@@ -6,8 +6,6 @@ import btnStyles from '@/buttons.module.css';
 import formStyles from '@/form.module.css';
 import { AuthContext } from '@/routes/layout.tsx';
 
-import styles from './styles.module.css';
-
 interface SignInFormData {
   emailAddress: string;
   password: string;
@@ -33,7 +31,7 @@ export default function SignIn() {
 
   return (
     <div className="grid grid-cols-6">
-      <form className={styles.form} onSubmit={onSubmit}>
+      <form className={formStyles.authForm} onSubmit={onSubmit}>
         <h1>Sign In</h1>
         <div className={formStyles.group}>
           <label className="hidden" htmlFor="emailAddress">

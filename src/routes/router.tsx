@@ -9,6 +9,7 @@ import CourseDetail from './courses/:id/route.tsx';
 import coursesLoader from './courses/loader.ts';
 import CourseListing from './courses/route.tsx';
 import SignIn from './signin/route.tsx';
+import SignUp from './signup/route.tsx';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: '/signin',
         element: <SignIn />,
+      },
+      {
+        path: '/signup',
+        element: <SignUp />,
       },
       {
         path: '/courses',
