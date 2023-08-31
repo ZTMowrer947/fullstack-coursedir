@@ -31,7 +31,7 @@ export default function Layout() {
 
   return (
     <>
-      <Header />
+      <Header signOut={authUtils.signOut} />
       <main className="mx-20">
         <Outlet context={authUtils} />
       </main>

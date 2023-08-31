@@ -1,21 +1,17 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { Suspense } from 'react';
-import { Await, useLoaderData, useRevalidator } from 'react-router-dom';
+import { Await, useLoaderData } from 'react-router-dom';
 
-import { signOut, User } from '@/routes/loader.ts';
+import { User } from '@/routes/loader.ts';
 
 import styles from './Header.module.css';
 import MainNav from './MainNav.tsx';
 
-export default function Header() {
-  const queryClient = useQueryClient();
-  const data = useLoaderData() as { user: Promise<User | null> };
-  const revalidator = useRevalidator();
+interface HeaderProps {
+  signOut(): void;
+}
 
-  const handleSignOut = () => {
-    signOut(queryClient);
-    revalidator.revalidate();
-  };
+export default function Header({ signOut }: HeaderProps) {
+  const data = useLoaderData() as { user: Promise<User | null> };
 
   return (
     <header className={styles.header}>
@@ -23,7 +19,7 @@ export default function Header() {
 
       <Suspense>
         <Await resolve={data.user}>
-          <MainNav onSignOut={handleSignOut} />
+          <MainNav onSignOut={signOut} />
         </Await>
       </Suspense>
     </header>
