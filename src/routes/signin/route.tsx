@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 
 import btnStyles from '@/buttons.module.css';
 import formStyles from '@/form.module.css';
-import authManager from '@/lib/authManager.ts';
+import { AuthContext } from '@/routes/layout.tsx';
 
 import styles from './styles.module.css';
 
@@ -14,19 +14,21 @@ interface SignInFormData {
 }
 
 export default function SignIn() {
+  const { signIn } = useOutletContext<AuthContext>();
+
   const navigate = useNavigate();
   const { register, handleSubmit, formState } = useForm<SignInFormData>();
 
   const [wasSigninSuccessful, setSigninSuccessful] = useState(false);
 
   const onSubmit = handleSubmit(async ({ emailAddress, password }) => {
-    const user = await authManager.signIn(emailAddress, password);
+    const user = await signIn(emailAddress, password);
 
     if (user) {
       navigate('/courses');
-    } else {
-      setSigninSuccessful(false);
     }
+
+    setSigninSuccessful(false);
   });
 
   return (

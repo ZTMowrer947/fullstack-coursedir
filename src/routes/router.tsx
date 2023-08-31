@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import queryClient from '@/queryClient.ts';
 import Layout from '@/routes/layout.tsx';
@@ -12,11 +12,7 @@ import SignIn from './signin/route.tsx';
 
 const router = createBrowserRouter([
   {
-    element: (
-      <Layout>
-        <Outlet />
-      </Layout>
-    ),
+    element: <Layout />,
     id: 'base',
     loader: authLoader(queryClient),
     children: [

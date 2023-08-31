@@ -43,6 +43,24 @@ export const authQuery = (credentials: string) => {
   };
 };
 
+export async function signIn(queryClient: QueryClient, credentials: string): Promise<User | null> {
+  const query = authQuery(credentials);
+
+  try {
+    const user = await queryClient.fetchQuery(query);
+
+    Cookies.set(credentialCookieName, credentials, credentialCookieOptions);
+
+    return user;
+  } catch (error) {
+    if (!(error instanceof Error) || !error.message.includes('Incorrect email/password combination')) {
+      throw error;
+    }
+
+    return null;
+  }
+}
+
 export function signOut(queryClient: QueryClient) {
   Cookies.remove(credentialCookieName, credentialCookieOptions);
   queryClient.setQueryData(queryKey, null);
