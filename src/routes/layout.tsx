@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { Outlet, useRevalidator } from 'react-router-dom';
 
 import Header from '@/components/Header.tsx';
@@ -13,21 +14,24 @@ export default function Layout() {
   const queryClient = useQueryClient();
   const revalidator = useRevalidator();
 
-  const authUtils: AuthContext = {
-    signOut() {
-      signOut(queryClient);
-      revalidator.revalidate();
-    },
-    async signIn(emailAddress: string, password: string) {
-      const credentials = btoa(`${emailAddress}:${password}`);
+  const authUtils: AuthContext = useMemo(
+    () => ({
+      signOut() {
+        signOut(queryClient);
+        revalidator.revalidate();
+      },
+      async signIn(emailAddress: string, password: string) {
+        const credentials = btoa(`${emailAddress}:${password}`);
 
-      const user = await signIn(queryClient, credentials);
+        const user = await signIn(queryClient, credentials);
 
-      revalidator.revalidate();
+        revalidator.revalidate();
 
-      return user;
-    },
-  };
+        return user;
+      },
+    }),
+    [queryClient, revalidator],
+  );
 
   return (
     <>
