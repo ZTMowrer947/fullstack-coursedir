@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { useForm, Validate } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 import btnStyles from '@/buttons.module.css';
@@ -13,7 +13,19 @@ interface SignUpFormData {
 }
 
 export default function SignUp() {
-  const { register, handleSubmit } = useForm<SignUpFormData>();
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    trigger,
+    formState: { errors },
+  } = useForm<SignUpFormData>();
+
+  const ensureMatchingPassword: Validate<string, SignUpFormData> = (confirmPassword: string) => {
+    const password = getValues('password');
+
+    return password === confirmPassword;
+  };
 
   const onSubmit = handleSubmit((values) => {
     console.log(values);
@@ -27,13 +39,29 @@ export default function SignUp() {
           <label className="hidden" htmlFor="firstName">
             First Name
           </label>
-          <input className={formStyles.field} id="firstName" placeholder="First Name" {...register('firstName')} />
+          <input
+            className={formStyles.field}
+            id="firstName"
+            placeholder="First Name"
+            {...register('firstName', {
+              required: true,
+            })}
+          />
+          {errors.firstName?.type === 'required' && <p role="alert">First name is required</p>}
         </div>
         <div className={formStyles.group}>
           <label className="hidden" htmlFor="lastName">
             Last Name
           </label>
-          <input className={formStyles.field} id="lastName" placeholder="Last Name" {...register('lastName')} />
+          <input
+            className={formStyles.field}
+            id="lastName"
+            placeholder="Last Name"
+            {...register('lastName', {
+              required: true,
+            })}
+          />
+          {errors.lastName?.type === 'required' && <p role="alert">Last name is required</p>}
         </div>
         <div className={formStyles.group}>
           <label className="hidden" htmlFor="emailAddress">
@@ -44,8 +72,11 @@ export default function SignUp() {
             type="email"
             id="emailAddress"
             placeholder="Email Address"
-            {...register('emailAddress')}
+            {...register('emailAddress', {
+              required: true,
+            })}
           />
+          {errors.emailAddress?.type === 'required' && <p role="alert">Email Address is required</p>}
         </div>
         <div className={formStyles.group}>
           <label className="hidden" htmlFor="password">
@@ -56,8 +87,16 @@ export default function SignUp() {
             type="password"
             id="password"
             placeholder="Password"
-            {...register('password')}
+            {...register('password', {
+              required: true,
+              minLength: 8,
+              onChange() {
+                return trigger('confirmPassword');
+              },
+            })}
           />
+          {errors.password?.type === 'required' && <p role="alert">Password is required</p>}
+          {errors.password?.type === 'minLength' && <p role="alert">Password must be at least 8 characters long</p>}
         </div>
         <div className={formStyles.group}>
           <label className="hidden" htmlFor="confirmPassword">
@@ -68,8 +107,15 @@ export default function SignUp() {
             type="password"
             id="confirmPassword"
             placeholder="Confirm Password"
-            {...register('confirmPassword')}
+            {...register('confirmPassword', {
+              required: true,
+              validate: {
+                matchingPassword: ensureMatchingPassword,
+              },
+            })}
           />
+          {errors.confirmPassword?.type === 'required' && <p role="alert">Password Confirmation is required</p>}
+          {errors.confirmPassword?.type === 'matchingPassword' && <p role="alert">Passwords do not match</p>}
         </div>
         <div>
           <button type="submit" className={btnStyles.primary}>
