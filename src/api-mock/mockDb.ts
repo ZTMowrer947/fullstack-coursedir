@@ -79,6 +79,7 @@ interface CourseData extends Omit<DbCourse, 'createdAt' | 'updatedAt'> {
 }
 
 type UserData = Pick<DbUser, 'id' | 'firstName' | 'lastName' | 'emailAddress' | 'password'>;
+type UserInput = Omit<UserData, 'id'>;
 
 export function getMockCourses(): CoursePreview[] {
   return courses.map((course) => ({
@@ -122,4 +123,23 @@ export function getMockUser(emailAddress: string): UserData | null {
     emailAddress: user.emailAddress,
     password: user.password,
   };
+}
+
+export function userHasEmail(emailAddress: string): boolean {
+  return users.some((user) => user.emailAddress === emailAddress);
+}
+
+export function addUser(data: UserInput): number {
+  const creationTime = Date.now();
+
+  const newUser: DbUser = {
+    ...data,
+    id: nextIds.user++,
+    createdAt: creationTime,
+    updatedAt: creationTime,
+  };
+
+  users.push(newUser);
+
+  return newUser.id;
 }

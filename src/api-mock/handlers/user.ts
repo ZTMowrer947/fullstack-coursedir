@@ -1,8 +1,20 @@
 import { rest } from 'msw';
+import { InferType, object, string, ValidationError } from 'yup';
 
 import { apiBaseUrl } from '@/config.ts';
 
-import { getMockUser } from '../mockDb.ts';
+import { addUser, getMockUser, userHasEmail } from '../mockDb.ts';
+
+const UserSchema = object().shape({
+  firstName: string().defined().required(),
+  lastName: string().defined().required(),
+  emailAddress: string()
+    .defined()
+    .required()
+    .email()
+    .test('unique', 'email already in use', (value) => !userHasEmail(value)),
+  password: string().defined().required().min(8),
+});
 
 export const getUser = rest.get(`${apiBaseUrl}/api/users`, (req, res, ctx) => {
   if (!req.headers.has('authorization') || !req.headers.get('authorization')?.startsWith('Basic')) {
@@ -25,6 +37,21 @@ export const getUser = rest.get(`${apiBaseUrl}/api/users`, (req, res, ctx) => {
   return res(ctx.status(200), ctx.json(outputUser));
 });
 
-export const newUser = rest.post(`${apiBaseUrl}/api/users`, (_req, res, ctx) => {
-  return res(ctx.status(503));
+export const newUser = rest.post(`${apiBaseUrl}/api/users`, async (req, res, ctx) => {
+  const data = await req.json();
+
+  let user: InferType<typeof UserSchema>;
+  try {
+    user = await UserSchema.validate(data, {
+      abortEarly: false,
+    });
+  } catch (error) {
+    if (!(error instanceof ValidationError)) throw error;
+
+    return res(ctx.status(400), ctx.json(error));
+  }
+
+  addUser(user);
+
+  return res(ctx.status(201));
 });
