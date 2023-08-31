@@ -1,36 +1,35 @@
-import { Link } from 'react-router-dom';
+import { Link, useAsyncValue } from 'react-router-dom';
 
-import authManager from '@/lib/authManager.ts';
 import { User } from '@/queries/getUser.ts';
 
 import styles from './MainNav.module.css';
 
 interface MainNavProps {
-  isReady: boolean;
-  user: User | null;
+  onSignOut(): void;
 }
 
-export default function MainNav({ isReady, user }: MainNavProps) {
+export default function MainNav({ onSignOut }: MainNavProps) {
+  const user = useAsyncValue() as User | null;
+
   return (
     <nav className={styles.nav}>
-      {isReady &&
-        (user ? (
-          <>
-            <span>Welcome {`${user.firstName} ${user.lastName}`}!</span>
-            <button className={styles.link} onClick={authManager.signOut}>
-              Sign Out
-            </button>
-          </>
-        ) : (
-          <>
-            <Link className={styles.link} to={`signin`}>
-              Sign in
-            </Link>
-            <Link className={styles.link} to={`signup`}>
-              Sign up
-            </Link>
-          </>
-        ))}
+      {user ? (
+        <>
+          <span>Welcome {`${user.firstName} ${user.lastName}`}!</span>
+          <button className={styles.link} onClick={onSignOut}>
+            Sign Out
+          </button>
+        </>
+      ) : (
+        <>
+          <Link className={styles.link} to={`signin`}>
+            Sign in
+          </Link>
+          <Link className={styles.link} to={`signup`}>
+            Sign up
+          </Link>
+        </>
+      )}
     </nav>
   );
 }

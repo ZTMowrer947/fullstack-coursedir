@@ -1,60 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { Suspense } from 'react';
+import { Await, useLoaderData, useRevalidator } from 'react-router-dom';
 
-import authManager from '@/lib/authManager.ts';
-import { User } from '@/queries/getUser.ts';
+import { signOut, User } from '@/routes/loader.ts';
 
 import styles from './Header.module.css';
 import MainNav from './MainNav.tsx';
 
 export default function Header() {
-  const [isNavReady, setNavReady] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const queryClient = useQueryClient();
+  const data = useLoaderData() as { user: Promise<User | null> };
+  const revalidator = useRevalidator();
 
-  useEffect(() => {
-    if (!isNavReady) {
-      if (!user && authManager.hasCredentials) {
-        authManager.signInFromCookie().then((user) => {
-          if (user) {
-            setUser(user);
-          }
-          setNavReady(true);
-        });
-      } else {
-        setNavReady(true);
-      }
-    }
-  }, [user, isNavReady]);
-
-  useEffect(() => {
-    let timeoutId: number;
-
-    function revalidateAuth() {
-      if (!isNavReady) return;
-
-      if (!authManager.hasCredentials && authManager.user) {
-        authManager.signOut();
-        setUser(null);
-      } else if (authManager.hasCredentials && !authManager.user) {
-        authManager.signInFromCookie().then(setUser);
-      } else if (authManager.hasCredentials && !user) {
-        setUser(authManager.user);
-      }
-
-      timeoutId = window.setTimeout(revalidateAuth, 250);
-    }
-
-    timeoutId = window.setTimeout(revalidateAuth, 250);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [isNavReady, user]);
+  const handleSignOut = () => {
+    signOut(queryClient);
+    revalidator.revalidate();
+  };
 
   return (
     <header className={styles.header}>
       <h1 className={styles.logo}>Courses</h1>
 
-      <MainNav isReady={isNavReady} user={user} />
+      <Suspense>
+        <Await resolve={data.user}>
+          <MainNav onSignOut={handleSignOut} />
+        </Await>
+      </Suspense>
     </header>
   );
 }

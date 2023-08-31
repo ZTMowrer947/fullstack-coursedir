@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 
 import queryClient from '@/queryClient.ts';
 import Layout from '@/routes/layout.tsx';
+import authLoader from '@/routes/loader.ts';
 
 import courseLoader from './courses/:id/loader.ts';
 import CourseDetail from './courses/:id/route.tsx';
@@ -16,6 +17,8 @@ const router = createBrowserRouter([
         <Outlet />
       </Layout>
     ),
+    id: 'base',
+    loader: authLoader(queryClient),
     children: [
       {
         path: '/signin',
