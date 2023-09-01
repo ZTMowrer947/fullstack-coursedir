@@ -1,14 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
+import { Suspense } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Link, useRouteLoaderData } from 'react-router-dom';
+import { Await, Link, useRouteLoaderData } from 'react-router-dom';
 
 import buttonStyles from '@/buttons.module.css';
 import { courseQuery } from '@/routes/courses/:id/loader.ts';
+import { User } from '@/routes/loader.ts';
 import typeStyles from '@/type.module.css';
 
 import styles from './styles.module.css';
 
 export default function CourseDetail() {
+  const authData = useRouteLoaderData('base') as { user: Promise<User | null> };
   const initialData = useRouteLoaderData('course-id') as Awaited<ReturnType<ReturnType<typeof courseQuery>['queryFn']>>;
 
   const { data: course } = useQuery({
@@ -19,7 +22,24 @@ export default function CourseDetail() {
   return (
     <article>
       <nav className={styles.nav}>
-        <button className={buttonStyles.primary}>Basic Primary Button Test</button>
+        <Suspense>
+          <Await resolve={authData.user}>
+            {(user) => {
+              if (user?.id !== course.userId) return null;
+
+              return (
+                <>
+                  <Link to={`/courses/${course.id}/update`} className={buttonStyles.primary}>
+                    Update Course
+                  </Link>
+                  <Link to={`/courses/${course.id}/delete`} className={buttonStyles.primary}>
+                    Delete Course
+                  </Link>
+                </>
+              );
+            }}
+          </Await>
+        </Suspense>
         <Link to={'/courses'} className={buttonStyles.secondary}>
           Return to List
         </Link>
