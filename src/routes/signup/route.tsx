@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { useForm, Validate } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useActionData, useSubmit } from 'react-router-dom';
+import { ValidationError } from 'yup';
 
 import btnStyles from '@/buttons.module.css';
 import formStyles from '@/form.module.css';
@@ -13,12 +15,15 @@ interface SignUpFormData {
 }
 
 export default function SignUp() {
+  const submit = useSubmit();
+  const serverErrors = useActionData() as ValidationError | undefined;
   const {
     register,
     handleSubmit,
     getValues,
     trigger,
     formState: { errors },
+    setError,
   } = useForm<SignUpFormData>();
 
   const ensureMatchingPassword: Validate<string, SignUpFormData> = (confirmPassword: string) => {
@@ -27,9 +32,42 @@ export default function SignUp() {
     return password === confirmPassword;
   };
 
-  const onSubmit = handleSubmit((values) => {
-    console.log(values);
+  const onSubmit = handleSubmit(({ firstName, lastName, emailAddress, password }) => {
+    submit(
+      {
+        firstName,
+        lastName,
+        emailAddress,
+        password,
+      },
+      {
+        method: 'post',
+        encType: 'application/json',
+      },
+    );
   });
+
+  useEffect(() => {
+    if (serverErrors) {
+      serverErrors.inner.forEach((error) => {
+        let type = error.type!;
+
+        if (error.path && error.path in getValues()) {
+          const key = error.path as keyof SignUpFormData;
+
+          if (type === 'min') type = 'minLength';
+
+          if (!errors[key]) {
+            setError(`root.${key}`, { type, message: error.message });
+          }
+        }
+      });
+    }
+  }, [serverErrors, errors, setError, getValues]);
+
+  const hasClientOrServerError = (key: keyof SignUpFormData, type: string) => {
+    return errors?.[key]?.type === type || errors?.root?.[key]?.type === type;
+  };
 
   return (
     <div className="grid grid-cols-6">
@@ -47,7 +85,7 @@ export default function SignUp() {
               required: true,
             })}
           />
-          {errors.firstName?.type === 'required' && <p role="alert">First name is required</p>}
+          {hasClientOrServerError('firstName', 'required') && <p role="alert">First name is required</p>}
         </div>
         <div className={formStyles.group}>
           <label className="hidden" htmlFor="lastName">
@@ -61,7 +99,7 @@ export default function SignUp() {
               required: true,
             })}
           />
-          {errors.lastName?.type === 'required' && <p role="alert">Last name is required</p>}
+          {hasClientOrServerError('lastName', 'required') && <p role="alert">Last name is required</p>}
         </div>
         <div className={formStyles.group}>
           <label className="hidden" htmlFor="emailAddress">
@@ -76,7 +114,8 @@ export default function SignUp() {
               required: true,
             })}
           />
-          {errors.emailAddress?.type === 'required' && <p role="alert">Email Address is required</p>}
+          {hasClientOrServerError('emailAddress', 'required') && <p role="alert">Email Address is required</p>}
+          {errors?.root?.emailAddress?.type === 'unique' && <p role="alert">Email Address already in use</p>}
         </div>
         <div className={formStyles.group}>
           <label className="hidden" htmlFor="password">
@@ -95,8 +134,10 @@ export default function SignUp() {
               },
             })}
           />
-          {errors.password?.type === 'required' && <p role="alert">Password is required</p>}
-          {errors.password?.type === 'minLength' && <p role="alert">Password must be at least 8 characters long</p>}
+          {hasClientOrServerError('password', 'required') && <p role="alert">Password is required</p>}
+          {hasClientOrServerError('password', 'minLength') && (
+            <p role="alert">Password must be at least 8 characters long</p>
+          )}
         </div>
         <div className={formStyles.group}>
           <label className="hidden" htmlFor="confirmPassword">

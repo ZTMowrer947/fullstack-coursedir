@@ -9,6 +9,7 @@ import CourseDetail from './courses/:id/route.tsx';
 import coursesLoader from './courses/loader.ts';
 import CourseListing from './courses/route.tsx';
 import SignIn from './signin/route.tsx';
+import signUpAction from './signup/action.ts';
 import SignUp from './signup/route.tsx';
 
 const router = createBrowserRouter([
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       {
         path: '/signup',
         element: <SignUp />,
+        action: signUpAction(queryClient),
       },
       {
         path: '/courses',
