@@ -1,6 +1,6 @@
 import { Link, useAsyncValue } from 'react-router-dom';
 
-import { User } from '@/queries/getUser.ts';
+import { User } from '@/routes/loader.ts';
 
 import styles from './MainNav.module.css';
 
