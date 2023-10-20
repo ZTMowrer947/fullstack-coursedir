@@ -12,40 +12,14 @@ body {
 }
 
 /* line 17, ../sass/global.sass */
-.header--logo {
-    color: #fff;
+.header-logo {
     font-size: 24px;
-    padding: 0 15px;
     margin: 0;
     display: inline-block;
 }
 
-/* line 23, ../sass/global.sass */
-.header--logo a {
-    color: rgb(255 255 255 / 50%);
-}
-
-/* line 25, ../sass/global.sass */
-.header--logo a:hover {
-    color: #fff;
-}
-
-/* line 27, ../sass/global.sass */
-.header--logo .selected {
-    color: #fff;
-}
-
-/* line 29, ../sass/global.sass */
-.header--logo .chevron {
-    fill: rgb(255 255 255 / 30%);
-    width: 7px;
-    height: auto;
-    margin: 0 10px;
-}
-
 /* line 34, ../sass/global.sass */
 .header nav {
-    float: right;
     margin-top: 3px;
 }
 
@@ -149,7 +123,7 @@ p {
 }
 
 /* line 102, ../sass/global.sass */
-.course--module {
+.course-module {
     background: #7c689b;
     border-radius: 8px;
     padding: 30px;
@@ -158,17 +132,6 @@ p {
     display: block;
     position: relative;
     box-sizing: border-box;
-}
-
-/* line 2, ../sass/mixins.sass */
-.course--module::before, .course--module::after {
-    content: " ";
-    display: table;
-}
-
-/* line 5, ../sass/mixins.sass */
-.course--module::after {
-    clear: both;
 }
 
 /* line 112, ../sass/global.sass */
@@ -609,4 +572,8 @@ input:focus {
 /* reduce bottom margin on the course description textarea element */
 .course--description textarea {
     margin-bottom: 20px;
+}
+
+h1 {
+    font-weight: 500;
 }
