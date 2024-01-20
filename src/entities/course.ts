@@ -8,8 +8,8 @@ export interface Course {
   userId: number;
   title: string;
   description: string;
-  estimatedTime?: string;
-  materialsNeeded?: string;
+  estimatedTime: string | null;
+  materialsNeeded: string | null;
   user: AuthorInfo;
 }
 
