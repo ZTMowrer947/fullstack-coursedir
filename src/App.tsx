@@ -1,10 +1,11 @@
 import { RouterProvider } from 'react-router-dom';
 import routes from './pages/routes';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { useRef } from 'react';
+import queryClient from './queryClient';
 
 function App() {
-  const queryClientRef = useRef(new QueryClient());
+  const queryClientRef = useRef(queryClient);
 
   return (
     <QueryClientProvider client={queryClientRef.current}>
