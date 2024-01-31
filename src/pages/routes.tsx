@@ -4,6 +4,7 @@ import CourseInfo from './courses/[id]/page';
 import Layout from './(base)/layout';
 import courseListLoader from './courses/loader';
 import queryClient from '../queryClient';
+import courseDetailLoader from './courses/[id]/loader';
 
 const routes = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ const routes = createBrowserRouter([
           {
             path: ':id',
             element: <CourseInfo />,
+            loader: courseDetailLoader(queryClient),
           },
         ],
       },

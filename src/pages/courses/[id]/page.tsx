@@ -1,12 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 
 import { courseDetailQuery } from '../../../lib/queries/courseDetail';
 import CourseDetail from './course-detail';
+import { CourseDetailData } from './loader';
 
 export default function CourseInfo() {
+  const initialData = useLoaderData() as CourseDetailData;
   const { id } = useParams();
-  const query = useQuery(courseDetailQuery(Number.parseInt(id!.toString(), 10)));
+  const query = useQuery({
+    ...courseDetailQuery(Number.parseInt(id!.toString(), 10)),
+    initialData,
+  });
 
   return (
     <div>
