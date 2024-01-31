@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
+import { RouterProvider } from 'react-router-dom';
 
 // Initialize mock worker for development
 if (import.meta.env.DEV) {
@@ -16,8 +17,12 @@ if (import.meta.env.DEV) {
   }
 }
 
+const { default: routes } = await import('./pages/routes.tsx');
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <App>
+      <RouterProvider router={routes} />
+    </App>
   </React.StrictMode>,
 );
