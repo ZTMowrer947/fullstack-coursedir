@@ -1,23 +1,34 @@
-import { createBrowserRouter } from 'react-router-dom';
-import Home from './home/page';
+import { Outlet, createBrowserRouter } from 'react-router-dom';
 import Courses from './courses/page';
 import CourseInfo from './courses/[id]/page';
+import Layout from './(base)/layout';
+import Home from './home/page';
 
 const routes = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
-  },
-  {
-    path: '/courses',
+    element: (
+      <Layout>
+        <Outlet />
+      </Layout>
+    ),
     children: [
       {
         index: true,
-        element: <Courses />,
+        element: <Home />,
       },
       {
-        path: ':id',
-        element: <CourseInfo />,
+        path: '/courses',
+        children: [
+          {
+            index: true,
+            element: <Courses />,
+          },
+          {
+            path: ':id',
+            element: <CourseInfo />,
+          },
+        ],
       },
     ],
   },
