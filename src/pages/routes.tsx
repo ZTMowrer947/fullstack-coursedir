@@ -2,6 +2,8 @@ import { Outlet, createBrowserRouter } from 'react-router-dom';
 import Courses from './courses/page';
 import CourseInfo from './courses/[id]/page';
 import Layout from './(base)/layout';
+import courseListLoader from './courses/loader';
+import queryClient from '../queryClient';
 
 const routes = createBrowserRouter([
   {
@@ -15,6 +17,7 @@ const routes = createBrowserRouter([
       {
         index: true,
         element: <Courses />,
+        loader: courseListLoader(queryClient),
       },
       {
         path: 'courses',
@@ -22,6 +25,7 @@ const routes = createBrowserRouter([
           {
             index: true,
             element: <Courses />,
+            loader: courseListLoader(queryClient),
           },
           {
             path: ':id',
