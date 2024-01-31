@@ -17,6 +17,7 @@ if (import.meta.env.DEV) {
   }
 }
 
+// Import route information (must do this after MSW setup to ensure loaders work correctly in dev)
 const { default: routes } = await import('./pages/routes.tsx');
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
