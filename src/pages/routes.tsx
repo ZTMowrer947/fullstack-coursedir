@@ -5,6 +5,8 @@ import Layout from './(base)/layout';
 import courseListLoader from './courses/loader';
 import queryClient from '../queryClient';
 import courseDetailLoader from './courses/[id]/loader';
+import SignupPage from './(auth)/signup/page';
+import SigninPage from './(auth)/signin/page';
 
 const routes = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const routes = createBrowserRouter([
         index: true,
         element: <Courses />,
         loader: courseListLoader(queryClient),
+      },
+      {
+        path: 'signin',
+        element: <SigninPage />,
+      },
+      {
+        path: 'signup',
+        element: <SignupPage />,
       },
       {
         path: 'courses',
