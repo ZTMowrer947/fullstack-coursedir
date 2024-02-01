@@ -7,6 +7,7 @@ import queryClient from '../queryClient';
 import courseDetailLoader from './courses/[id]/loader';
 import SignupPage from './(auth)/signup/page';
 import SigninPage from './(auth)/signin/page';
+import signInAction from './(auth)/signin/action';
 
 const routes = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ const routes = createBrowserRouter([
       {
         path: 'signin',
         element: <SigninPage />,
+        action: signInAction(),
       },
       {
         path: 'signup',
