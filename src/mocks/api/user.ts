@@ -1,6 +1,9 @@
 import { HttpResponse, RequestHandler, StrictResponse, http } from 'msw';
+import { ValidationError } from 'yup';
+
 import db from './db';
 import { User } from '../../entities/user';
+import { NewUserData, userSchema } from '../../lib/mutations/newUser';
 
 const userHandlers: RequestHandler[] = [
   http.get('/api/user', ({ request }): StrictResponse<{ message: string } | User> => {
@@ -82,6 +85,37 @@ const userHandlers: RequestHandler[] = [
     };
 
     return HttpResponse.json(userData);
+  }),
+
+  http.post('/api/user', async ({ request }): Promise<StrictResponse<NewUserData | ValidationError>> => {
+    const userData = await request.json();
+
+    let result: NewUserData;
+
+    try {
+      result = await userSchema.validate(userData, { abortEarly: false });
+    } catch (err) {
+      const validationErrors = err as ValidationError;
+
+      return HttpResponse.json(validationErrors, { status: 400 });
+    }
+
+    const existingUserWithEmail = db.user.findFirst({
+      where: {
+        emailAddress: {
+          equals: result.emailAddress,
+        },
+      },
+    });
+
+    if (existingUserWithEmail) {
+      const error = new ValidationError('email already in use', result, 'emailAddress');
+      return HttpResponse.json(error, { status: 401 });
+    }
+
+    db.user.create(result);
+
+    return HttpResponse.json(result);
   }),
 ];
 
