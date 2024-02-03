@@ -15,7 +15,7 @@ const signUpAction =
       newUser = await createNewUser(data);
     } catch (err) {
       // If validation failed, throw a 400 error
-      if (err instanceof ValidationError) {
+      if (err instanceof ValidationError || (err as Error).name === 'ValidationError') {
         throw json(
           { message: 'error during validation', error: err },
           {
