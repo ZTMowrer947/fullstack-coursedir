@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
 import { RouterProvider } from 'react-router-dom';
+
+import App from './App.tsx';
 
 // Initialize mock worker for development
 if (import.meta.env.DEV) {

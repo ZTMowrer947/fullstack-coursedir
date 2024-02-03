@@ -1,7 +1,8 @@
-import { Link, useSubmit } from 'react-router-dom';
-import type { SignUpFormData } from '../../../lib/mutations/newUser';
-import { useForm } from 'react-hook-form';
 import { FormEventHandler } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useSubmit } from 'react-router-dom';
+
+import type { SignUpFormData } from '../../../lib/mutations/newUser';
 
 export default function SignupPage() {
   const submit = useSubmit();

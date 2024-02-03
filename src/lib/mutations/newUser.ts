@@ -1,4 +1,5 @@
-import { object, string, ref, InferType, ValidationError } from 'yup';
+import { InferType, object, ref, string, ValidationError } from 'yup';
+
 import { User } from '../../entities/user';
 
 export const signUpSchema = object({

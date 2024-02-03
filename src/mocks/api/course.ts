@@ -1,6 +1,7 @@
-import { HttpResponse, RequestHandler, http } from 'msw';
-import db from './db';
+import { http, HttpResponse, RequestHandler } from 'msw';
+
 import { Course } from '../../entities/course';
+import db from './db';
 
 const courseHandlers: RequestHandler[] = [
   http.get('/api/courses', () => {

@@ -1,5 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import { PropsWithChildren, useRef } from 'react';
+
 import queryClient from './queryClient';
 
 function App({ children }: PropsWithChildren) {

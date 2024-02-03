@@ -1,14 +1,15 @@
-import { Outlet, createBrowserRouter } from 'react-router-dom';
-import Courses from './courses/page';
-import CourseInfo from './courses/[id]/page';
-import Layout from './(base)/layout';
-import courseListLoader from './courses/loader';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
+
 import queryClient from '../queryClient';
-import courseDetailLoader from './courses/[id]/loader';
-import SignupPage from './(auth)/signup/page';
-import SigninPage from './(auth)/signin/page';
 import signInAction from './(auth)/signin/action';
+import SigninPage from './(auth)/signin/page';
 import signUpAction from './(auth)/signup/action';
+import SignupPage from './(auth)/signup/page';
+import Layout from './(base)/layout';
+import courseDetailLoader from './courses/[id]/loader';
+import CourseInfo from './courses/[id]/page';
+import courseListLoader from './courses/loader';
+import Courses from './courses/page';
 
 const routes = createBrowserRouter([
   {

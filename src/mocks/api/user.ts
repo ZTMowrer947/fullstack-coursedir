@@ -1,9 +1,9 @@
-import { HttpResponse, RequestHandler, StrictResponse, http } from 'msw';
+import { http, HttpResponse, RequestHandler, StrictResponse } from 'msw';
 import { ValidationError } from 'yup';
 
-import db from './db';
 import { User } from '../../entities/user';
 import { NewUserData, userSchema } from '../../lib/mutations/newUser';
+import db from './db';
 
 const userHandlers: RequestHandler[] = [
   http.get('/api/user', ({ request }): StrictResponse<{ message: string } | User> => {

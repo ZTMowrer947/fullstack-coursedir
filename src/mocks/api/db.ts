@@ -1,5 +1,5 @@
-import { factory, primaryKey, oneOf, nullable } from '@mswjs/data';
 import { faker } from '@faker-js/faker';
+import { factory, nullable, oneOf, primaryKey } from '@mswjs/data';
 
 // Set a consistent seed for reusable results
 faker.seed(11224);
