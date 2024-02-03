@@ -8,6 +8,7 @@ import courseDetailLoader from './courses/[id]/loader';
 import SignupPage from './(auth)/signup/page';
 import SigninPage from './(auth)/signin/page';
 import signInAction from './(auth)/signin/action';
+import signUpAction from './(auth)/signup/action';
 
 const routes = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ const routes = createBrowserRouter([
       {
         path: 'signup',
         element: <SignupPage />,
+        action: signUpAction(queryClient),
       },
       {
         path: 'courses',
