@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useLoaderData } from 'react-router-dom';
 
-import { courseListQuery } from '../../lib/queries/courseList';
+import { courseListQuery } from '@/lib/queries/courseList';
+
 import CourseList from './course-list';
 import { CourseListData } from './loader';
 

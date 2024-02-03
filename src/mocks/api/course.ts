@@ -1,6 +1,7 @@
 import { http, HttpResponse, RequestHandler } from 'msw';
 
-import { Course } from '../../entities/course';
+import { Course } from '@/entities/course';
+
 import db from './db';
 
 const courseHandlers: RequestHandler[] = [

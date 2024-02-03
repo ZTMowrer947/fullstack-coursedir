@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import type { CoursePreview } from '../../entities/course';
+import type { CoursePreview } from '@/entities/course';
 
 export interface CourseListProps {
   courses: CoursePreview[];

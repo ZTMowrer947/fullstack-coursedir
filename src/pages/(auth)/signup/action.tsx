@@ -2,8 +2,8 @@ import { QueryClient } from '@tanstack/react-query';
 import { ActionFunctionArgs, json, redirect } from 'react-router-dom';
 import { ValidationError } from 'yup';
 
-import createNewUser from '../../../lib/mutations/newUser';
-import { userInfoQuery } from '../../../lib/queries/userInfo';
+import createNewUser from '@/lib/mutations/newUser';
+import { userInfoQuery } from '@/lib/queries/userInfo';
 
 const signUpAction =
   (queryClient: QueryClient) =>

@@ -1,7 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import { LoaderFunctionArgs } from 'react-router-dom';
 
-import { courseDetailQuery } from '../../../lib/queries/courseDetail';
+import { courseDetailQuery } from '@/lib/queries/courseDetail';
 
 const courseDetailLoader =
   (queryClient: QueryClient) =>

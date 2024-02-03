@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import type { Course } from '../../../entities/course';
+import type { Course } from '@/entities/course';
 
 export interface CourseDetailProps {
   course: Course;

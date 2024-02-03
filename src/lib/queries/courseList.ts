@@ -1,6 +1,6 @@
 import type { QueryKey } from '@tanstack/react-query';
 
-import type { CoursePreview } from '../../entities/course';
+import type { CoursePreview } from '@/entities/course';
 
 const queryKey: QueryKey = ['courses'];
 

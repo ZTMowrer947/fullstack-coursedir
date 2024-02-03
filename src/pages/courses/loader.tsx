@@ -1,6 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 
-import { courseListQuery } from '../../lib/queries/courseList';
+import { courseListQuery } from '@/lib/queries/courseList';
 
 const courseListLoader = (queryClient: QueryClient) => async () => {
   return queryClient.ensureQueryData(courseListQuery);

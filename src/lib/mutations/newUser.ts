@@ -1,6 +1,6 @@
 import { InferType, object, ref, string, ValidationError } from 'yup';
 
-import { User } from '../../entities/user';
+import { User } from '@/entities/user';
 
 export const signUpSchema = object({
   firstName: string().required(),

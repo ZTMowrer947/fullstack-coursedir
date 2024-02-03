@@ -1,4 +1,4 @@
-import type { Course } from '../../entities/course';
+import type { Course } from '@/entities/course';
 
 async function fetchCourseDetail(id: number): Promise<Course | null> {
   const res = await fetch(`/api/courses/${id}`);

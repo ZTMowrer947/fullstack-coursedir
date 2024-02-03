@@ -1,8 +1,9 @@
 import { http, HttpResponse, RequestHandler, StrictResponse } from 'msw';
 import { ValidationError } from 'yup';
 
-import { User } from '../../entities/user';
-import { NewUserData, userSchema } from '../../lib/mutations/newUser';
+import { User } from '@/entities/user';
+import { NewUserData, userSchema } from '@/lib/mutations/newUser';
+
 import db from './db';
 
 const userHandlers: RequestHandler[] = [
