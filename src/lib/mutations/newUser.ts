@@ -5,7 +5,7 @@ export const signUpSchema = object({
   firstName: string().required(),
   lastName: string().required(),
   emailAddress: string().email().required(),
-  password: string().min(8).required(),
+  password: string().required().min(8),
   confirmPassword: string()
     .required()
     .oneOf([ref('password')]),
@@ -22,8 +22,8 @@ async function createNewUser(userData: NewUserData) {
     headers: {
       'content-type': 'application/json',
       accept: 'application/json',
-      body: JSON.stringify(userData),
     },
+    body: JSON.stringify(userData),
   });
 
   if (res.ok) {
