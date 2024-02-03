@@ -1,12 +1,19 @@
 import { FormEventHandler } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useSubmit } from 'react-router-dom';
+import type { ValidationError } from 'yup';
 
 import type { SignUpFormData } from '@/lib/mutations/newUser';
 
-export default function SignupPage() {
+export interface SignupProps {
+  validationErrors?: ValidationError;
+}
+
+export default function SignupPage({ validationErrors }: SignupProps) {
   const submit = useSubmit();
-  const { register, trigger, getValues } = useForm<SignUpFormData>();
+  const { register, trigger, getValues } = useForm<SignUpFormData>({
+    defaultValues: validationErrors?.value,
+  });
 
   const handleFormSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     // Perform form validation
