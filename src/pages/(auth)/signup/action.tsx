@@ -5,9 +5,20 @@ import { ValidationError } from 'yup';
 import createNewUser from '@/lib/mutations/newUser';
 import { userInfoQuery } from '@/lib/queries/userInfo';
 
+type FormErrorResult = {
+  error: ValidationError;
+  timestamp: number;
+};
+
+export type SignUpActionResult = FormErrorResult | Response | undefined;
+
+export function isFormError(val: unknown): val is FormErrorResult {
+  return !!val && typeof val === 'object' && 'error' in val && 'timestamp' in val;
+}
+
 const signUpAction =
   (queryClient: QueryClient) =>
-  async ({ request }: ActionFunctionArgs) => {
+  async ({ request }: ActionFunctionArgs): Promise<NonNullable<SignUpActionResult>> => {
     const data = await request.json();
 
     // Attempt to create new user
@@ -15,14 +26,12 @@ const signUpAction =
     try {
       newUser = await createNewUser(data);
     } catch (err) {
-      // If validation failed, throw a 400 error
+      // If validation failed, return them to the action caller
       if (err instanceof ValidationError || (err as Error).name === 'ValidationError') {
-        throw json(
-          { message: 'error during validation', error: err },
-          {
-            status: 400,
-          },
-        );
+        return {
+          error: err as ValidationError,
+          timestamp: Date.now(),
+        };
       }
 
       // Any other error is unexpected, throw a 500 error if we get one

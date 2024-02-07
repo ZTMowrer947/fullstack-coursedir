@@ -4,7 +4,6 @@ import queryClient from '../queryClient';
 import signInAction from './(auth)/signin/action';
 import SigninPage from './(auth)/signin/page';
 import signUpAction from './(auth)/signup/action';
-import SignUpFail from './(auth)/signup/error-page';
 import SignupPage from './(auth)/signup/page';
 import Layout from './(base)/layout';
 import courseDetailLoader from './courses/[id]/loader';
@@ -35,7 +34,6 @@ const routes = createBrowserRouter([
         path: 'signup',
         element: <SignupPage />,
         action: signUpAction(queryClient),
-        errorElement: <SignUpFail />,
       },
       {
         path: 'courses',

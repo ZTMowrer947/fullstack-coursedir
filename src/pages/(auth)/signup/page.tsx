@@ -1,19 +1,15 @@
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useSubmit } from 'react-router-dom';
-import type { ValidationError } from 'yup';
+import { Link, useActionData, useSubmit } from 'react-router-dom';
 
 import type { SignUpFormData } from '@/lib/mutations/newUser';
+import { isFormError, SignUpActionResult } from '@/pages/(auth)/signup/action.tsx';
 
-export interface SignupProps {
-  validationErrors?: ValidationError;
-}
-
-export default function SignupPage({ validationErrors }: SignupProps) {
+export default function SignupPage() {
+  const actionResult = useActionData() as SignUpActionResult;
+  const [submitTimestamp, setSubmitTimestamp] = useState(-1);
   const submit = useSubmit();
-  const { register, trigger, getValues } = useForm<SignUpFormData>({
-    defaultValues: validationErrors?.value,
-  });
+  const { register, trigger, getValues } = useForm<SignUpFormData>({});
 
   const handleFormSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     // Perform form validation
@@ -22,6 +18,8 @@ export default function SignupPage({ validationErrors }: SignupProps) {
 
     // If validation succeeded, proceed with submission
     if (isValid) {
+      setSubmitTimestamp(Date.now());
+
       // Send form data to action as JSON
       const data = getValues();
 
@@ -31,6 +29,15 @@ export default function SignupPage({ validationErrors }: SignupProps) {
       });
     }
   };
+
+  useEffect(() => {
+    // If the server returned validation errors after our most recent submission,
+    if (isFormError(actionResult) && actionResult.timestamp > submitTimestamp) {
+      console.error('Received validation errors from server: ', actionResult.error);
+
+      // TODO: Add validation errors to form data
+    }
+  }, [actionResult, submitTimestamp]);
 
   return (
     <form action="#" method="post" onSubmit={handleFormSubmit}>
