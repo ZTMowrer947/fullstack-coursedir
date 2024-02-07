@@ -9,7 +9,7 @@ export const signUpSchema = object({
   password: string().required().min(8),
   confirmPassword: string()
     .required()
-    .oneOf([ref('password')]),
+    .oneOf([ref('password')], 'password fields must match'),
 });
 
 export const userSchema = signUpSchema.omit(['confirmPassword']);
