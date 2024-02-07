@@ -1,8 +1,9 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { FormEventHandler, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useActionData, useSubmit } from 'react-router-dom';
 
-import type { SignUpFormData } from '@/lib/mutations/newUser';
+import { SignUpFormData, signUpSchema } from '@/lib/mutations/newUser';
 import addServerErrors from '@/lib/server-validation/add-server-errors.ts';
 import { isFormError, SignUpActionResult } from '@/pages/(auth)/signup/action.tsx';
 
@@ -17,7 +18,9 @@ export default function SignupPage() {
     setError,
     clearErrors,
     formState: { errors },
-  } = useForm<SignUpFormData>({});
+  } = useForm<SignUpFormData>({
+    resolver: yupResolver(signUpSchema),
+  });
 
   const handleFormSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     // Perform form validation
