@@ -111,7 +111,7 @@ const userHandlers: RequestHandler[] = [
 
     if (existingUserWithEmail) {
       const error = new ValidationError('email already in use', result, 'emailAddress');
-      return HttpResponse.json(error, { status: 401 });
+      return HttpResponse.json(error, { status: 400 });
     }
 
     db.user.create(result);
