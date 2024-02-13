@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useLoaderData, useParams } from 'react-router-dom';
+import { Link, useLoaderData, useParams } from 'react-router-dom';
 
 import { courseDetailQuery } from '@/lib/queries/courseDetail';
 
@@ -14,11 +14,28 @@ export default function CourseInfo() {
     initialData,
   });
 
-  return (
-    <div>
-      {query.isPending && 'Loading...'}
-      {query.isError && 'Error!'}
-      {query.isSuccess && (query.data ? <CourseDetail course={query.data} /> : <p>Course not found</p>)}
-    </div>
-  );
+  if (query.isError) {
+    return <div>Error!</div>;
+  }
+
+  if (query.isSuccess && query.data == null) {
+    return (
+      <div>
+        <p>Course not found</p>
+      </div>
+    );
+  } else if (query.isSuccess && !!query.data) {
+    const course = query.data;
+
+    return (
+      <div>
+        <div>
+          <Link to={'..'}>Back to list</Link>
+        </div>
+        <CourseDetail course={course} />
+      </div>
+    );
+  }
+
+  return <></>;
 }

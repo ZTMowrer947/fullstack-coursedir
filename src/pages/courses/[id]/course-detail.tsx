@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 import type { Course } from '@/entities/course';
 
 export interface CourseDetailProps {
@@ -9,7 +7,6 @@ export interface CourseDetailProps {
 export default function CourseDetail({ course }: CourseDetailProps) {
   return (
     <div>
-      <Link to={'..'}>Back to list</Link>
       <h1>{course.title}</h1>
       <div>{course.description}</div>
       <div>
