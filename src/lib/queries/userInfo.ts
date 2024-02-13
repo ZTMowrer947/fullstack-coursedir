@@ -8,7 +8,7 @@ export interface UserCredentials {
 async function fetchUserInfo({ emailAddress, password }: UserCredentials): Promise<User | null> {
   const credentials = btoa(`${emailAddress}:${password}`);
 
-  const res = await fetch('/api/users', {
+  const res = await fetch('/api/user', {
     headers: {
       authorization: `Basic ${credentials}`,
       accept: 'application/json',
