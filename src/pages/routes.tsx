@@ -1,5 +1,6 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom';
 
+import signOutAction from '@/pages/(auth)/action.ts';
 import authLoader from '@/pages/(auth)/loader.ts';
 
 import queryClient from '../queryClient';
@@ -33,6 +34,11 @@ const routes = createBrowserRouter([
         path: 'signin',
         element: <SigninPage />,
         action: signInAction(),
+      },
+      {
+        path: 'signout',
+        action: signOutAction(queryClient),
+        element: <></>,
       },
       {
         path: 'signup',

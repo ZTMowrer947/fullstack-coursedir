@@ -1,10 +1,11 @@
 import { Suspense } from 'react';
-import { Await, NavLink, useRouteLoaderData } from 'react-router-dom';
+import { Await, NavLink, useFetcher, useRouteLoaderData } from 'react-router-dom';
 
 import { AuthLoaderData } from '@/pages/(auth)/loader.ts';
 
 export default function Header() {
   const data = useRouteLoaderData('base') as AuthLoaderData;
+  const signoutFetcher = useFetcher();
 
   return (
     <header>
@@ -24,13 +25,12 @@ export default function Header() {
 
               // Display welcome and signout button for authenticated user
               return (
-                <form method="POST">
-                  <input type="hidden" name="op" value="signout" />
+                <signoutFetcher.Form method="POST" action="/signout">
                   <span>
                     Welcome {user.firstName} {user.lastName}!
                   </span>
                   <button type="submit">Log Out</button>
-                </form>
+                </signoutFetcher.Form>
               );
             }}
           </Await>
