@@ -40,19 +40,21 @@ function maybeSeedVal<T>(seeder: () => T): T | null {
 }
 
 export function seedDb() {
-  Array.from({ length: 2 }).forEach(() => {
-    const firstName = faker.person.firstName();
-    const lastName = faker.person.lastName();
-    const emailAddress = faker.internet.email({ firstName, lastName });
-    const password = faker.internet.password();
+  const spamton = db.user.create({
+    firstName: 'Spamton G.', // NOW'S YOUR CHANCE TO BE A [[BIG SHOT!!!]]
+    lastName: 'Spamton',
+    emailAddress: 'bigshot@bigshotautos.cy',
+    password: 'bigshot1997',
+  });
 
-    const user = db.user.create({
-      firstName,
-      lastName,
-      emailAddress,
-      password, // Professional idiot on mock course. Don't do this in production.
-    });
+  const chujin = db.user.create({
+    firstName: 'Chujin', // Undertale Yellow is also an excellent game
+    lastName: 'Ketsukane',
+    emailAddress: 'cketsu995@steamworks.ug',
+    password: 'kanako201X',
+  });
 
+  [spamton, chujin].forEach((user) => {
     // Add four courses per user
     Array.from({ length: 4 }).forEach(() => {
       db.course.create({
