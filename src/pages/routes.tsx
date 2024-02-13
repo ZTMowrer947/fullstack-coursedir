@@ -14,54 +14,56 @@ import CourseInfo from './courses/[id]/page';
 import courseListLoader from './courses/loader';
 import Courses from './courses/page';
 
-const routes = createBrowserRouter([
-  {
-    path: '/',
-    element: (
-      <Layout>
-        <Outlet />
-      </Layout>
-    ),
-    id: 'base',
-    loader: authLoader(queryClient),
-    children: [
-      {
-        index: true,
-        element: <Courses />,
-        loader: courseListLoader(queryClient),
-      },
-      {
-        path: 'signin',
-        element: <SigninPage />,
-        action: signInAction(queryClient),
-      },
-      {
-        path: 'signout',
-        action: signOutAction(queryClient),
-        element: <></>,
-      },
-      {
-        path: 'signup',
-        element: <SignupPage />,
-        action: signUpAction(queryClient),
-      },
-      {
-        path: 'courses',
-        children: [
-          {
-            index: true,
-            element: <Courses />,
-            loader: courseListLoader(queryClient),
-          },
-          {
-            path: ':id',
-            element: <CourseInfo />,
-            loader: courseDetailLoader(queryClient),
-          },
-        ],
-      },
-    ],
-  },
-]);
+export function initRoutes() {
+  return createBrowserRouter([
+    {
+      path: '/',
+      element: (
+        <Layout>
+          <Outlet />
+        </Layout>
+      ),
+      id: 'base',
+      loader: authLoader(queryClient),
+      children: [
+        {
+          index: true,
+          element: <Courses />,
+          loader: courseListLoader(queryClient),
+        },
+        {
+          path: 'signin',
+          element: <SigninPage />,
+          action: signInAction(queryClient),
+        },
+        {
+          path: 'signout',
+          action: signOutAction(queryClient),
+          element: <></>,
+        },
+        {
+          path: 'signup',
+          element: <SignupPage />,
+          action: signUpAction(queryClient),
+        },
+        {
+          path: 'courses',
+          children: [
+            {
+              index: true,
+              element: <Courses />,
+              loader: courseListLoader(queryClient),
+            },
+            {
+              path: ':id',
+              element: <CourseInfo />,
+              loader: courseDetailLoader(queryClient),
+            },
+          ],
+        },
+      ],
+    },
+  ]);
+}
 
-export default routes;
+export default initRoutes;

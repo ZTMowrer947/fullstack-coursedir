@@ -1,6 +1,8 @@
-import React from 'react';
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
+
+import initRoutes from '@/pages/routes.tsx';
 
 import App from './App.tsx';
 
@@ -18,13 +20,13 @@ if (import.meta.env.DEV) {
   }
 }
 
-// Import route information (must do this after MSW setup to ensure loaders work correctly in dev)
-const { default: routes } = await import('./pages/routes.tsx');
+// Initialize routes
+const routes = initRoutes();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  <StrictMode>
     <App>
       <RouterProvider router={routes} />
     </App>
-  </React.StrictMode>,
+  </StrictMode>,
 );
