@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import { defer } from 'react-router-dom';
 
 import { User } from '@/entities/user.ts';
+import { credentialCookieName, credentialCookieOpts } from '@/lib/cookie/config.ts';
 import { userInfoQuery } from '@/lib/queries/userInfo.ts';
 
 const authLoader = (queryClient: QueryClient) => {
@@ -25,11 +26,7 @@ const authLoader = (queryClient: QueryClient) => {
     const queryResult = queryClient.ensureQueryData(query).then((user) => {
       // If the stored credentials were not valid, delete the associated cookie
       if (credentials && !user) {
-        Cookies.remove('sdbc-credentials', {
-          expires: 7,
-          secure: import.meta.env.PROD,
-          sameSite: 'strict',
-        });
+        Cookies.remove(credentialCookieName, credentialCookieOpts);
       }
 
       return user;

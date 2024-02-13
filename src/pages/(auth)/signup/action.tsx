@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import { ActionFunctionArgs, json, redirect } from 'react-router-dom';
 import { ValidationError } from 'yup';
 
+import { credentialCookieName, credentialCookieOpts } from '@/lib/cookie/config.ts';
 import createNewUser from '@/lib/mutations/newUser';
 import { userInfoQuery } from '@/lib/queries/userInfo';
 
@@ -50,11 +51,7 @@ const signUpAction =
 
     queryClient.setQueryData(userQueryKey, newUser);
 
-    Cookies.set('sdbc-credentials', btoa(`${data.emailAddress}:${data.password}`), {
-      sameSite: 'strict',
-      expires: 7,
-      secure: import.meta.env.PROD,
-    });
+    Cookies.set(credentialCookieName, btoa(`${data.emailAddress}:${data.password}`), credentialCookieOpts);
 
     // Redirect to courses page
     return redirect('/courses');
