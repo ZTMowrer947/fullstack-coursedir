@@ -1,4 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
+import Cookies from 'js-cookie';
 import { ActionFunctionArgs, json, redirect } from 'react-router-dom';
 import { ValidationError } from 'yup';
 
@@ -49,7 +50,11 @@ const signUpAction =
 
     queryClient.setQueryData(userQueryKey, newUser);
 
-    // TODO: Also persist credentials in cookie data
+    Cookies.set('sdbc-credentials', btoa(`${data.emailAddress}:${data.password}`), {
+      sameSite: 'strict',
+      expires: 7,
+      secure: import.meta.env.PROD,
+    });
 
     // Redirect to courses page
     return redirect('/courses');
