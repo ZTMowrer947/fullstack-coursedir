@@ -1,13 +1,15 @@
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useSubmit } from 'react-router-dom';
+import { Link, useActionData, useSubmit } from 'react-router-dom';
 
-interface SignInFormData {
-  emailAddress: string;
-  password: string;
-}
+import type { UserCredentials } from '@/entities/user.ts';
+import { isInvalidCredentialsResponse, SignInActionResult } from '@/pages/(auth)/signin/action.tsx';
+
+type SignInFormData = UserCredentials;
 
 export default function SigninPage() {
+  const actionResult = useActionData() as SignInActionResult;
+  const [submitTimestamp, setSubmitTimestamp] = useState(-1);
   const submit = useSubmit();
   const { register, trigger, getValues } = useForm<SignInFormData>();
 
@@ -18,6 +20,8 @@ export default function SigninPage() {
 
     // If validation succeeded, proceed with submission
     if (isValid) {
+      setSubmitTimestamp(Date.now());
+
       // Send form data to action as JSON
       const data = getValues();
 
@@ -37,6 +41,9 @@ export default function SigninPage() {
       <div>
         <label htmlFor="password">Password</label>
         <input type="password" id="password" placeholder="Password..." {...register('password')} />
+        {isInvalidCredentialsResponse(actionResult) && actionResult.timestamp >= submitTimestamp && (
+          <p role="alert">Incorrect email/password combination.</p>
+        )}
       </div>
       <div>
         <button type="submit">Submit</button>

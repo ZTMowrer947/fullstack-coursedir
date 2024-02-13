@@ -33,7 +33,7 @@ const routes = createBrowserRouter([
       {
         path: 'signin',
         element: <SigninPage />,
-        action: signInAction(),
+        action: signInAction(queryClient),
       },
       {
         path: 'signout',
