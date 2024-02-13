@@ -1,5 +1,7 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom';
 
+import authLoader from '@/pages/(auth)/loader.ts';
+
 import queryClient from '../queryClient';
 import signInAction from './(auth)/signin/action';
 import SigninPage from './(auth)/signin/page';
@@ -19,6 +21,8 @@ const routes = createBrowserRouter([
         <Outlet />
       </Layout>
     ),
+    id: 'base',
+    loader: authLoader(queryClient),
     children: [
       {
         index: true,
