@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Await, NavLink, useFetcher, useRouteLoaderData } from 'react-router-dom';
 
-import { AuthLoaderData } from '@/pages/(auth)/loader.ts';
+import { AuthLoaderData } from '@/pages/user-loader.ts';
 
 export default function Header() {
   const data = useRouteLoaderData('base') as AuthLoaderData;

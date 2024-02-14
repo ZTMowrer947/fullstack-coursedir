@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import { Await, Link, useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
 
 import { courseDetailQuery } from '@/lib/queries/courseDetail';
-import { AuthLoaderData } from '@/pages/(auth)/loader.ts';
+import { AuthLoaderData } from '@/pages/user-loader.ts';
 
 import CourseDetail from './course-detail';
 import { CourseDetailData } from './loader';

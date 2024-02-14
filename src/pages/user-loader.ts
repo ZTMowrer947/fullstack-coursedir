@@ -6,7 +6,7 @@ import { User } from '@/entities/user.ts';
 import { credentialCookieName, credentialCookieOpts } from '@/lib/cookie/config.ts';
 import { userInfoQuery } from '@/lib/queries/userInfo.ts';
 
-const authLoader = (queryClient: QueryClient) => {
+const userLoader = (queryClient: QueryClient) => {
   return async () => {
     const credentials = Cookies.get('sdbc-credentials');
 
@@ -42,4 +42,4 @@ export type AuthLoaderData = {
   user: Promise<User | null>;
 };
 
-export default authLoader;
+export default userLoader;
