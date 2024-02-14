@@ -1,9 +1,8 @@
 import type { QueryClient } from '@tanstack/react-query';
-import Cookies from 'js-cookie';
 import { ActionFunction, LoaderFunction, redirect } from 'react-router-dom';
 
 import type { User } from '@/entities/user.ts';
-import { credentialCookieName, credentialCookieOpts } from '@/lib/cookie/config.ts';
+import { AuthManager } from '@/lib/auth-manager.ts';
 import { userInfoQuery } from '@/lib/queries/userInfo.ts';
 
 export interface EnsureAuthOptions {
@@ -12,7 +11,7 @@ export interface EnsureAuthOptions {
 }
 
 async function ensureAuth({ queryClient, requestedUri }: EnsureAuthOptions) {
-  const credentials = Cookies.get(credentialCookieName);
+  const credentials = AuthManager.credentials;
 
   // If there are no credentials stored, redirect to signin page
   if (!credentials) {
@@ -20,16 +19,13 @@ async function ensureAuth({ queryClient, requestedUri }: EnsureAuthOptions) {
   }
 
   // Fetch user using credentials
-  // TODO: Add more thorough validation of valid user credentials
-  const [emailAddress, password] = atob(credentials).split(':');
-
-  const query = userInfoQuery({ emailAddress, password });
+  const query = userInfoQuery(credentials);
 
   const user = await queryClient.ensureQueryData(query);
 
   // If no user was found with credentials, redirect to signin page
   if (!user) {
-    Cookies.remove(credentialCookieName, credentialCookieOpts);
+    AuthManager.clearCredentials();
 
     return redirect(`/signin?return_to=${encodeURIComponent(requestedUri)}`);
   }

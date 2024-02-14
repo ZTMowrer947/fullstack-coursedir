@@ -1,16 +1,17 @@
 import { User } from '@/entities/user';
+import { AuthManager } from '@/lib/auth-manager.ts';
 
 export interface UserCredentials {
   emailAddress: string;
   password: string;
 }
 
-async function fetchUserInfo({ emailAddress, password }: UserCredentials): Promise<User | null> {
-  const credentials = btoa(`${emailAddress}:${password}`);
+async function fetchUserInfo(credentials: UserCredentials): Promise<User | null> {
+  const encCredentials = AuthManager.encodeCredentials(credentials);
 
   const res = await fetch('/api/user', {
     headers: {
-      authorization: `Basic ${credentials}`,
+      authorization: `Basic ${encCredentials}`,
       accept: 'application/json',
     },
   });

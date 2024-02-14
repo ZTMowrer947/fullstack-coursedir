@@ -1,9 +1,8 @@
 import type { QueryClient } from '@tanstack/react-query';
-import Cookies from 'js-cookie';
 import { ActionFunctionArgs, redirect } from 'react-router-dom';
 
 import type { UserCredentials } from '@/entities/user.ts';
-import { credentialCookieName, credentialCookieOpts } from '@/lib/cookie/config.ts';
+import { AuthManager } from '@/lib/auth-manager.ts';
 import { userInfoQuery } from '@/lib/queries/userInfo.ts';
 
 type SignInFailure = { valid: false; timestamp: number };
@@ -24,7 +23,7 @@ const signInAction =
       } as const;
     }
 
-    Cookies.set(credentialCookieName, btoa(`${data.emailAddress}:${data.password}`), credentialCookieOpts);
+    AuthManager.storeCredentials(data);
 
     return redirect('/courses');
   };

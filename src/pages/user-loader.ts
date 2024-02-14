@@ -1,14 +1,13 @@
 import { QueryClient } from '@tanstack/react-query';
-import Cookies from 'js-cookie';
 import { defer } from 'react-router-dom';
 
 import { User } from '@/entities/user.ts';
-import { credentialCookieName, credentialCookieOpts } from '@/lib/cookie/config.ts';
+import { AuthManager } from '@/lib/auth-manager.ts';
 import { userInfoQuery } from '@/lib/queries/userInfo.ts';
 
 const userLoader = (queryClient: QueryClient) => {
   return async () => {
-    const credentials = Cookies.get('sdbc-credentials');
+    const credentials = AuthManager.credentials;
 
     // No credentials, no user
     if (!credentials) {
@@ -17,16 +16,12 @@ const userLoader = (queryClient: QueryClient) => {
       });
     }
 
-    // Fetch user using credentials
-    // TODO: Add more thorough validation of valid user credentials
-    const [emailAddress, password] = atob(credentials).split(':');
-
-    const query = userInfoQuery({ emailAddress, password });
+    const query = userInfoQuery(credentials);
 
     const queryResult = queryClient.ensureQueryData(query).then((user) => {
-      // If the stored credentials were not valid, delete the associated cookie
+      // If the stored credentials were not valid, delete them
       if (credentials && !user) {
-        Cookies.remove(credentialCookieName, credentialCookieOpts);
+        AuthManager.clearCredentials();
       }
 
       return user;

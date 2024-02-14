@@ -1,12 +1,11 @@
 import { QueryClient } from '@tanstack/react-query';
-import Cookies from 'js-cookie';
 import { ActionFunction } from 'react-router-dom';
 
-import { credentialCookieName, credentialCookieOpts } from '@/lib/cookie/config.ts';
+import { AuthManager } from '@/lib/auth-manager.ts';
 
 const signOutAction = (queryClient: QueryClient): ActionFunction => {
   return () => {
-    Cookies.remove(credentialCookieName, credentialCookieOpts);
+    AuthManager.clearCredentials();
 
     queryClient.removeQueries({ queryKey: ['user'], exact: true });
 

@@ -1,9 +1,8 @@
 import { QueryClient } from '@tanstack/react-query';
-import Cookies from 'js-cookie';
 import { ActionFunctionArgs, json, redirect } from 'react-router-dom';
 import { ValidationError } from 'yup';
 
-import { credentialCookieName, credentialCookieOpts } from '@/lib/cookie/config.ts';
+import { AuthManager } from '@/lib/auth-manager.ts';
 import createNewUser from '@/lib/mutations/newUser';
 import { userInfoQuery } from '@/lib/queries/userInfo';
 
@@ -51,7 +50,7 @@ const signUpAction =
 
     queryClient.setQueryData(userQueryKey, newUser);
 
-    Cookies.set(credentialCookieName, btoa(`${data.emailAddress}:${data.password}`), credentialCookieOpts);
+    AuthManager.storeCredentials(data);
 
     // Redirect to courses page
     return redirect('/courses');
