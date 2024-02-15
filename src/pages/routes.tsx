@@ -1,5 +1,6 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom';
+import { createBrowserRouter, Outlet, redirect } from 'react-router-dom';
 
+import guestLoader from '@/pages/(auth)/guest-loader.ts';
 import signOutAction from '@/pages/(auth)/signout/action.ts';
 import userLoader from '@/pages/user-loader.ts';
 
@@ -34,16 +35,21 @@ export function initRoutes() {
         {
           path: 'signin',
           element: <SigninPage />,
+          loader: guestLoader,
           action: signInAction(queryClient),
         },
         {
           path: 'signout',
           action: signOutAction(queryClient),
+          loader() {
+            return redirect('/courses');
+          },
           element: <></>,
         },
         {
           path: 'signup',
           element: <SignupPage />,
+          loader: guestLoader,
           action: signUpAction(queryClient),
         },
         {
