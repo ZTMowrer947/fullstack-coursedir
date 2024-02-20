@@ -1,81 +1,19 @@
 import { http, HttpResponse, RequestHandler, StrictResponse } from 'msw';
 import { ValidationError } from 'yup';
 
-import { User } from '@/entities/user';
-import { NewUserData, userSchema } from '@/lib/mutations/newUser';
+import { User } from '@/entities/user.ts';
+import { NewUserData, userSchema } from '@/lib/mutations/newUser.ts';
 
-import db from './db';
+import ensureAuth from './auth.ts';
+import db from './db.ts';
 
 const userHandlers: RequestHandler[] = [
   http.get('/api/user', ({ request }): StrictResponse<{ message: string } | User> => {
-    const authHeader = request.headers.get('authorization');
-    const hdrRegex = /^Basic (?<credentials>[A-Za-z0-9+/=]+)$/;
+    const authResult = ensureAuth(request.headers.get('authorization'));
 
-    // Ensure Basic auth is being used
-    if (!authHeader?.startsWith('Basic')) {
-      return HttpResponse.json(
-        { message: 'Auth not provided' },
-        {
-          status: 401,
-          headers: {
-            'www-authenticate': 'Basic',
-          },
-        },
-      );
-    }
+    if (authResult instanceof Response) return authResult;
 
-    const result = hdrRegex.exec(authHeader);
-
-    // Ensure credentials exist within header
-    if (!result?.groups?.credentials) {
-      return HttpResponse.json(
-        { message: 'Invalid auth type provided' },
-        {
-          status: 401,
-          headers: {
-            'www-authenticate': 'Basic',
-          },
-        },
-      );
-    }
-
-    // Decode credentials
-    const credStr = atob(result.groups.credentials);
-    const credParts = credStr.split(':');
-
-    // If credentials are not in proper format, return 401
-    if (credParts.length < 2) {
-      return HttpResponse.json(
-        { message: 'Invalid credential format' },
-        {
-          status: 401,
-          headers: {
-            'www-authenticate': 'Basic',
-          },
-        },
-      );
-    }
-
-    // Extract email and password from credentials
-    const [emailAddress, ...rest] = credParts;
-    const password = rest.join(':'); // To account for a password containing a colon
-
-    // Attempt to find user with credentials
-    const user = db.user.findFirst({
-      where: {
-        emailAddress: {
-          equals: emailAddress,
-        },
-        password: {
-          equals: password,
-        },
-      },
-    });
-
-    // If not found, return 401
-    if (!user) {
-      return HttpResponse.json({ message: 'Incorrect credentials ' }, { status: 401 });
-    }
+    const user = authResult;
 
     // Extract only the desired properties of the user
     const userData: User = {
