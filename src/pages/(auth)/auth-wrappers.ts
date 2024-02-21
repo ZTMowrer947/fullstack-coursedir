@@ -41,7 +41,7 @@ export function authLoaderWrapper(queryClient: QueryClient, innerLoader: InnerLo
     // Check if user is authenticated
     const authResult = await ensureAuth({
       queryClient,
-      requestedUri: request.url,
+      requestedUri: new URL(request.url).pathname,
     });
 
     if (authResult instanceof Response) {
@@ -58,7 +58,7 @@ export function authActionWrapper(queryClient: QueryClient, innerAction: InnerAc
     // Check if user is authenticated
     const authResult = await ensureAuth({
       queryClient,
-      requestedUri: request.url,
+      requestedUri: new URL(request.url).pathname,
     });
 
     if (authResult instanceof Response) {
