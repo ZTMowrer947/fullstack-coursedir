@@ -3,6 +3,7 @@ import { object, ObjectSchema, string, ValidationError } from 'yup';
 import type { Course } from '@/entities/course.ts';
 import { UserCredentials } from '@/entities/user.ts';
 import { AuthManager } from '@/lib/auth-manager.ts';
+import HttpError from '@/lib/errors/http.ts';
 
 export type CourseUpsertData = Pick<Course, 'title' | 'description' | 'estimatedTime' | 'materialsNeeded'>;
 
@@ -30,9 +31,9 @@ async function createNewCourse(credentials: UserCredentials, courseData: CourseU
   } else if (res.status === 400) {
     throw new (await res.json())() as ValidationError;
   } else if (res.status === 401) {
-    throw new Error('Not authorized to create course');
+    throw new HttpError('Not authorized to create course', 401);
   } else {
-    throw new Error('Unexpected failure during course creation');
+    throw new HttpError('Unexpected failure during course creation');
   }
 }
 
