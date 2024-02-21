@@ -1,7 +1,9 @@
 import { createBrowserRouter, Outlet, redirect } from 'react-router-dom';
 
+import { authLoaderWrapper } from '@/pages/(auth)/auth-wrappers.ts';
 import guestLoader from '@/pages/(auth)/guest-loader.ts';
 import signOutAction from '@/pages/(auth)/signout/action.ts';
+import NewCoursePage from '@/pages/courses/new/page.tsx';
 import userLoader from '@/pages/user-loader.ts';
 
 import queryClient from '../queryClient';
@@ -59,6 +61,11 @@ export function initRoutes() {
               index: true,
               element: <Courses />,
               loader: courseListLoader(queryClient),
+            },
+            {
+              path: 'new',
+              element: <NewCoursePage />,
+              loader: authLoaderWrapper(queryClient, () => () => null),
             },
             {
               path: ':id',
