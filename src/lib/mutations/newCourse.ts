@@ -29,7 +29,7 @@ async function createNewCourse(credentials: UserCredentials, courseData: CourseU
   if (res.ok) {
     return (await res.json()) as Course;
   } else if (res.status === 400) {
-    throw new (await res.json())() as ValidationError;
+    throw (await res.json()) as ValidationError;
   } else if (res.status === 401) {
     throw new HttpError('Not authorized to create course', 401);
   } else {
