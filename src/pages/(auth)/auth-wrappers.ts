@@ -37,11 +37,11 @@ export type InnerLoader<Context = unknown> = (queryClient: QueryClient, user: Us
 export type InnerAction<Context = unknown> = (queryClient: QueryClient, user: User) => ActionFunction<Context>;
 
 export function authLoaderWrapper(queryClient: QueryClient, innerLoader: InnerLoader): LoaderFunction {
-  return async ({ request }) => {
+  return async (params) => {
     // Check if user is authenticated
     const authResult = await ensureAuth({
       queryClient,
-      requestedUri: new URL(request.url).pathname,
+      requestedUri: new URL(params.request.url).pathname,
     });
 
     if (authResult instanceof Response) {
@@ -49,16 +49,16 @@ export function authLoaderWrapper(queryClient: QueryClient, innerLoader: InnerLo
     }
 
     // Pass on user data to inner loader
-    return innerLoader(queryClient, authResult);
+    return innerLoader(queryClient, authResult)(params);
   };
 }
 
 export function authActionWrapper(queryClient: QueryClient, innerAction: InnerAction): ActionFunction {
-  return async ({ request }) => {
+  return async (params) => {
     // Check if user is authenticated
     const authResult = await ensureAuth({
       queryClient,
-      requestedUri: new URL(request.url).pathname,
+      requestedUri: new URL(params.request.url).pathname,
     });
 
     if (authResult instanceof Response) {
@@ -66,6 +66,6 @@ export function authActionWrapper(queryClient: QueryClient, innerAction: InnerAc
     }
 
     // Pass user data to inner action
-    return innerAction(queryClient, authResult);
+    return innerAction(queryClient, authResult)(params);
   };
 }
