@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
 import { courseListQuery } from '@/lib/queries/courseList';
 
@@ -20,6 +20,7 @@ export default function Courses() {
       {query.isPending && 'Loading...'}
       {query.isError && 'Error!'}
       {query.data && <CourseList courses={query.data} />}
+      <Link to={'/courses/new'}>Create New Course</Link>
     </div>
   );
 }
