@@ -1,4 +1,4 @@
-import { FormEventHandler, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useActionData, useSubmit } from 'react-router-dom';
 
@@ -11,29 +11,19 @@ export default function SigninPage() {
   const actionResult = useActionData() as SignInActionResult;
   const [submitTimestamp, setSubmitTimestamp] = useState(-1);
   const submit = useSubmit();
-  const { register, trigger, getValues } = useForm<SignInFormData>();
+  const { register, handleSubmit } = useForm<SignInFormData>();
 
-  const handleFormSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-    // Perform form validation
-    const isValid = await trigger();
-    event.preventDefault();
+  const submitHandler = async (data: SignInFormData) => {
+    setSubmitTimestamp(Date.now());
 
-    // If validation succeeded, proceed with submission
-    if (isValid) {
-      setSubmitTimestamp(Date.now());
-
-      // Send form data to action as JSON
-      const data = getValues();
-
-      submit(JSON.stringify(data), {
-        method: 'post',
-        encType: 'application/json',
-      });
-    }
+    submit(JSON.stringify(data), {
+      method: 'post',
+      encType: 'application/json',
+    });
   };
 
   return (
-    <form action="#" method="post" onSubmit={handleFormSubmit}>
+    <form action="#" method="post" onSubmit={handleSubmit(submitHandler)}>
       <div>
         <label htmlFor="emailAddress">Email Address</label>
         <input type="email" id="emailAddress" placeholder="Email Address..." {...register('emailAddress')} />
