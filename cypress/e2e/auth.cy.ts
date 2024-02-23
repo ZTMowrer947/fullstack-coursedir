@@ -41,6 +41,7 @@ describe('Authentication subsystem', () => {
 
   it('reverts to unauthenticated state after signout', () => {
     cy.login(spamton.emailAddress, spamton.password);
+    cy.visit('/courses');
 
     cy.findByText('Sign Out').click();
 
