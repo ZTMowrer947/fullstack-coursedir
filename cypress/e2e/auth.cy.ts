@@ -58,7 +58,45 @@ describe('Authentication subsystem', () => {
     cy.findByText('Sign Up').should('exist');
   });
 
-  it('properly handles invalid signup submissions');
+  it('properly handles invalid signup submissions', () => {
+    cy.visit('/signup');
+
+    cy.findByText('Submit').click();
+
+    // Expect required alerts on every field
+    cy.findAllByRole('alert')
+      .should('have.length', 5)
+      .and(($alerts) => {
+        $alerts.each(function () {
+          expect(this.textContent).to.match(/required/);
+        });
+      });
+
+    // Fill in mostly existing data but with mismatching passwords
+    cy.findByLabelText('First Name').type(spamton.firstName);
+    cy.findByLabelText('Last Name').type(spamton.lastName);
+    cy.findByLabelText('Email Address').type(spamton.emailAddress);
+    cy.findByLabelText('Password').type(spamton.password);
+    cy.findByLabelText('Confirm Password').type(gaster.password);
+
+    // Now there should be only 1 alert, relating to the password field
+    cy.findAllByRole('alert')
+      .should('have.length', 1)
+      .and(($p) => {
+        expect($p.text()).to.match(/password( fields)? must match/i);
+      });
+
+    // Fix this confirmation error
+    cy.findByLabelText('Confirm Password').clear().type(spamton.password);
+    cy.findByText('Submit').click();
+
+    // Now there should be 1 alert, about a user already having this email
+    cy.findAllByRole('alert')
+      .should('have.length', 1)
+      .and(($p) => {
+        expect($p.text()).to.match(/email/i);
+      });
+  });
 
   it('signs in the newly created user after successful signup');
 });
