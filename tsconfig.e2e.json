@@ -1,6 +1,13 @@
 {
   "compilerOptions": {
-    "types": ["cypress", "@testing-library/cypress"]
+    "types": ["cypress", "@testing-library/cypress"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom"],
+    "target": "es2017",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true
   },
   "include": ["cypress/**/*", "cypress.config.ts"]
 }
