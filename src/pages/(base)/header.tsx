@@ -29,7 +29,7 @@ export default function Header() {
                   <span>
                     Welcome {user.firstName} {user.lastName}!
                   </span>
-                  <button type="submit">Log Out</button>
+                  <button type="submit">Sign Out</button>
                 </signoutFetcher.Form>
               );
             }}
