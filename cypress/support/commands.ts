@@ -12,13 +12,24 @@
 //
 // -- This is a parent command --
 Cypress.Commands.add('login', (emailAddress, password) => {
-  cy.session([emailAddress, password], () => {
-    cy.visit('/signin');
-    cy.findByLabelText('Email Address').type(emailAddress);
-    cy.findByLabelText('Password').type(password);
-    cy.findByText('Submit').click();
-    cy.url().should('not.contain', '/signin');
-  });
+  cy.session(
+    [emailAddress, password],
+    () => {
+      cy.visit('/signin');
+      cy.findByLabelText('Email Address').type(emailAddress);
+      cy.findByLabelText('Password').type(password);
+      cy.findByText('Submit').click();
+      cy.url().should('not.contain', '/signin');
+    },
+    {
+      validate() {
+        cy.visit('/courses');
+        cy.findByText(/^Welcome/).should('exist');
+        const encoded = btoa(`${emailAddress}:${password}`);
+        cy.getCookie('sdbc-credentials').should('have.property', 'value', encoded);
+      },
+    },
+  );
 });
 //
 //
