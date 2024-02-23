@@ -39,6 +39,15 @@ describe('Authentication subsystem', () => {
     cy.findByText('Sign Out').should('exist');
   });
 
+  it('should redirect back to homepage from signin/signup pages if a user is already signed in', () => {
+    cy.login(spamton.emailAddress, spamton.password);
+    cy.visit('/signin');
+    cy.url().should('not.contain', '/signin');
+
+    cy.visit('/signup');
+    cy.url().should('not.contain', '/signup');
+  });
+
   it('reverts to unauthenticated state after signout', () => {
     cy.login(spamton.emailAddress, spamton.password);
     cy.visit('/courses');
@@ -49,11 +58,7 @@ describe('Authentication subsystem', () => {
     cy.findByText('Sign Up').should('exist');
   });
 
-  it('ensures fields on signup page are filled');
-
-  it('ensures uniqueness of user emails on signup page');
-
-  it('ensures password is confirmed on signup page');
+  it('properly handles invalid signup submissions');
 
   it('signs in the newly created user after successful signup');
 });
