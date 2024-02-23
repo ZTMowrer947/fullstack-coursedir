@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormEventHandler, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useActionData, useSubmit } from 'react-router-dom';
 
@@ -13,33 +13,20 @@ export default function SignupPage() {
   const submit = useSubmit();
   const {
     register,
-    trigger,
-    getValues,
     setError,
-    clearErrors,
     formState: { errors },
+    handleSubmit,
   } = useForm<SignUpFormData>({
     resolver: yupResolver(signUpSchema),
   });
 
-  const handleFormSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-    // Perform form validation
-    const isValid = await trigger();
-    event.preventDefault();
+  const submitHandler = async (data: SignUpFormData) => {
+    setSubmitTimestamp(Date.now());
 
-    // If validation succeeded, proceed with submission
-    if (isValid) {
-      clearErrors();
-      setSubmitTimestamp(Date.now());
-
-      // Send form data to action as JSON
-      const data = getValues();
-
-      submit(JSON.stringify(data), {
-        method: 'post',
-        encType: 'application/json',
-      });
-    }
+    submit(JSON.stringify(data), {
+      method: 'post',
+      encType: 'application/json',
+    });
   };
 
   useEffect(() => {
@@ -50,7 +37,7 @@ export default function SignupPage() {
   }, [actionResult, submitTimestamp, setError]);
 
   return (
-    <form action="#" method="post" onSubmit={handleFormSubmit}>
+    <form action="#" method="post" onSubmit={handleSubmit(submitHandler)}>
       <fieldset>
         <div>
           <label htmlFor="firstName">First Name</label>
@@ -58,7 +45,7 @@ export default function SignupPage() {
           {errors.firstName && <p role="alert">{errors.firstName.message}</p>}
         </div>
         <div>
-          <label htmlFor="lastname">Last Name</label>
+          <label htmlFor="lastName">Last Name</label>
           <input type="text" id="lastName" placeholder="Last Name..." {...register('lastName')} />
           {errors.lastName && <p role="alert">{errors.lastName.message}</p>}
         </div>
