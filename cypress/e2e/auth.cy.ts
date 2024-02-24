@@ -98,5 +98,21 @@ describe('Authentication subsystem', () => {
       });
   });
 
-  it('signs in the newly created user after successful signup');
+  it('signs in the newly created user after successful signup', () => {
+    cy.visit('/signup');
+
+    // Fill in the fields
+    cy.findByLabelText('First Name').type(gaster.firstName);
+    cy.findByLabelText('Last Name').type(gaster.lastName);
+    cy.findByLabelText('Email Address').type(gaster.emailAddress);
+    cy.findByLabelText('Password').type(gaster.password);
+    cy.findByLabelText('Confirm Password').type(gaster.password);
+
+    cy.findByText('Submit').click();
+
+    // Verify that signup suceeded
+    cy.url().should('not.contain', '/signup');
+    cy.findByText(/Welcome /).should('exist');
+    cy.findByText('Sign Out').should('exist');
+  });
 });
