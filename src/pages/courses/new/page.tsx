@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormEventHandler, useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useActionData, useSubmit } from 'react-router-dom';
 
@@ -10,11 +10,9 @@ import { NewCourseActionResult } from '@/pages/courses/new/action.ts';
 export default function NewCoursePage() {
   const {
     register,
-    trigger,
-    clearErrors,
-    getValues,
     setError,
     formState: { errors },
+    handleSubmit,
   } = useForm<CourseUpsertData>({
     resolver: yupResolver(courseSchema),
   });
@@ -22,28 +20,14 @@ export default function NewCoursePage() {
   const submit = useSubmit();
   const actionResult = useActionData() as NewCourseActionResult | undefined;
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
-    async (event) => {
-      // Perform form validation
-      const isValid = await trigger();
-      event.preventDefault();
+  const submitHandler = async (data: CourseUpsertData) => {
+    setSubmitTimestamp(Date.now());
 
-      // If validation succeeded, proceed with submission
-      if (isValid) {
-        clearErrors();
-        setSubmitTimestamp(Date.now());
-
-        // Send form data to action as JSON
-        const data = getValues();
-
-        submit(JSON.stringify(data), {
-          method: 'post',
-          encType: 'application/json',
-        });
-      }
-    },
-    [clearErrors, getValues, submit, trigger],
-  );
+    submit(JSON.stringify(data), {
+      method: 'post',
+      encType: 'application/json',
+    });
+  };
 
   useEffect(() => {
     if (!actionResult || actionResult instanceof Response) return;
@@ -54,7 +38,7 @@ export default function NewCoursePage() {
   }, [actionResult, setError, submitTimestamp]);
 
   return (
-    <form method="post" onSubmit={handleSubmit}>
+    <form method="post" onSubmit={handleSubmit(submitHandler)}>
       <div>
         <div>
           <input
