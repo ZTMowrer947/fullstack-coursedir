@@ -5,8 +5,8 @@ describe('Authentication subsystem', () => {
   it('shows signin and signup links to unauthenticated user', () => {
     cy.visit('/courses');
 
-    cy.findByText('Sign In').should('exist');
-    cy.findByText('Sign Up').should('exist');
+    cy.findByText('Sign In');
+    cy.findByText('Sign Up');
   });
 
   it('displays error when user attempts to sign in with incorrect credentials', () => {
@@ -18,7 +18,7 @@ describe('Authentication subsystem', () => {
     cy.findByLabelText('Password').type(gaster.password);
     cy.findByText('Submit').click();
 
-    cy.findByRole('alert').should('exist');
+    cy.findByRole('alert');
     cy.url().should('contain', '/signin');
   });
 
@@ -35,8 +35,8 @@ describe('Authentication subsystem', () => {
 
     cy.findByText('Sign In').should('not.exist');
     cy.findByText('Sign Up').should('not.exist');
-    cy.findByText(/^Welcome /).should('exist');
-    cy.findByText('Sign Out').should('exist');
+    cy.findByText(/^Welcome /);
+    cy.findByText('Sign Out');
   });
 
   it('should redirect back to homepage from signin/signup pages if a user is already signed in', () => {
@@ -54,8 +54,8 @@ describe('Authentication subsystem', () => {
 
     cy.findByText('Sign Out').click();
 
-    cy.findByText('Sign In').should('exist');
-    cy.findByText('Sign Up').should('exist');
+    cy.findByText('Sign In');
+    cy.findByText('Sign Up');
   });
 
   it('properly handles invalid signup submissions', () => {
@@ -87,7 +87,7 @@ describe('Authentication subsystem', () => {
       });
 
     // Fix this confirmation error
-    cy.findByLabelText('Confirm Password').clear().type(spamton.password);
+    cy.findByLabelText('Confirm Password').type(`{selectall}{backspace}${spamton.password}`);
     cy.findByText('Submit').click();
 
     // Now there should be 1 alert, about a user already having this email
@@ -112,7 +112,7 @@ describe('Authentication subsystem', () => {
 
     // Verify that signup suceeded
     cy.url().should('not.contain', '/signup');
-    cy.findByText(/Welcome /).should('exist');
-    cy.findByText('Sign Out').should('exist');
+    cy.findByText(/Welcome /);
+    cy.findByText('Sign Out');
   });
 });
