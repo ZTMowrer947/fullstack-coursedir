@@ -9,7 +9,9 @@ export interface CourseListProps {
 export default function CourseList({ courses }: CourseListProps) {
   const courseItems = courses.map((course) => (
     <li key={course.id}>
-      <Link to={`/courses/${course.id.toString()}`}>{course.title}</Link>
+      <Link to={`/courses/${course.id.toString()}`} data-testid="course-link">
+        {course.title}
+      </Link>
     </li>
   ));
 
