@@ -6,7 +6,21 @@ beforeEach(() => {
 });
 
 describe('Course list page', () => {
-  it('presents a list of course links and a link to course creation');
+  it('presents a list of course links and a link to course creation', () => {
+    cy.visit('/courses');
+
+    // We should have a list of links to courses
+    cy.findAllByTestId('course-link')
+      .should('have.length.above', 0)
+      .and(($courseLinks) => {
+        $courseLinks.each(function () {
+          expect(this.getAttribute('href')).to.match(/^\/courses\/\d+$/);
+        });
+      });
+
+    // And also a link to create more courses
+    cy.findByRole('link', { name: 'Create New Course' });
+  });
 });
 
 describe('Course detail page', () => {
