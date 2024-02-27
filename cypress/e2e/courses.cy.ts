@@ -1,4 +1,5 @@
 type Spamton = typeof import('../fixtures/spamton.json');
+type NewCourse = typeof import('../fixtures/new-course.json');
 
 beforeEach(() => {
   cy.fixture('spamton.json').as('spamton');
@@ -15,6 +16,10 @@ describe('Course detail page', () => {
 });
 
 describe('Course creation page', () => {
+  beforeEach(() => {
+    cy.fixture('new-course.json').as('newCourse');
+  });
+
   it('redirects to authentication page if no user is signed in', () => {
     cy.visit('/courses/new');
     cy.url().should('not.contain', '/courses/new');
@@ -35,10 +40,36 @@ describe('Course creation page', () => {
       .should('have.length', 2)
       .should(($alerts) => {
         $alerts.each(function () {
-          expect($(this).text()).to.match(/required/i);
+          expect(this.textContent).to.match(/required/i);
         });
       });
   });
 
-  it('redirects to page of newly created course');
+  it('redirects to page of newly created course', function () {
+    // Login to access page
+    const user: Spamton = this.spamton;
+    cy.login(user.emailAddress, user.password);
+
+    const courseData: NewCourse = this.newCourse;
+
+    // First ensure that a course with this title doesn't exist
+    cy.visit('/courses');
+    cy.findByText(courseData.title).should('not.exist');
+
+    // Actually go to the page to create the new page
+    cy.visit('/courses/new');
+
+    cy.findByPlaceholderText('Course title...').type(courseData.title);
+    cy.findByPlaceholderText('Course description...').type(courseData.description);
+
+    cy.findByText('Create Course').click();
+
+    // We should be redirected to the new course
+    cy.url().should('match', /\/courses\/\d+$/);
+    cy.findByRole('heading', { level: 1 }).should('have.text', courseData.title);
+
+    // And it should show up in the course listing as well
+    cy.findByText('Back to list').click();
+    cy.findAllByTestId('course-link').last().should('have.text', courseData.title);
+  });
 });
