@@ -54,7 +54,13 @@ describe('Course creation page', () => {
 
     // First ensure that a course with this title doesn't exist
     cy.visit('/courses');
-    cy.findByText(courseData.title).should('not.exist');
+    cy.findAllByTestId('course-link')
+      .should('have.length.above', 0)
+      .should(($courseLink) => {
+        $courseLink.each(function () {
+          expect(this.textContent).not.to.equal(courseData.title);
+        });
+      });
 
     // Actually go to the page to create the new page
     cy.visit('/courses/new');
