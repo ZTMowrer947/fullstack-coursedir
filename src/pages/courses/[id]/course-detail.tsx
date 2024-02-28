@@ -8,7 +8,7 @@ export default function CourseDetail({ course }: CourseDetailProps) {
   return (
     <div>
       <h1>{course.title}</h1>
-      <div>{course.description}</div>
+      <div data-testid="description">{course.description}</div>
       <div>
         {course.estimatedTime && (
           <div>

@@ -24,9 +24,32 @@ describe('Course list page', () => {
 });
 
 describe('Course detail page', () => {
-  it('presents course information and a link to return to course listing');
+  it('presents course information and a link to return to course listing', () => {
+    cy.visit('/courses/1');
 
-  it('only also presents update and deletion links if course author is logged in');
+    // Page should have title, description, and link to course listing
+    cy.findByRole('heading', { level: 1 });
+    cy.findByTestId('description');
+    cy.findByRole('link', { name: 'Back to list' }).should('have.attr', 'href', '/courses');
+
+    // Course update and delete links should not be there
+    cy.findByRole('link', { name: 'Update Course' }).should('not.exist');
+    cy.findByRole('link', { name: 'Delete Course' }).should('not.exist');
+  });
+
+  it('only also presents update and deletion links if course author is logged in', function () {
+    // Login to view auth-only links
+    const user: Spamton = this.spamton;
+    cy.login(user.emailAddress, user.password);
+
+    cy.visit('/courses/1');
+
+    cy.findByRole('link', { name: 'Back to list' }).should('have.attr', 'href', '/courses');
+
+    // Course update/delete links should be there this time
+    cy.findByRole('link', { name: 'Update Course' });
+    cy.findByRole('link', { name: 'Delete Course' });
+  });
 });
 
 describe('Course creation page', () => {
