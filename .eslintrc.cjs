@@ -6,12 +6,20 @@ module.exports = {
       version: 'detect',
     },
     linkComponents: ['Link', 'NavLink'],
+    'import/resolver': {
+      typescript: {
+        project: ['tsconfig.json', 'tsconfig.e2e.json', 'tsconfig.node.json']
+      }
+    }
   },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'plugin:jsx-a11y/recommended',
     'plugin:cypress/recommended',
     'plugin:chai-friendly/recommended',
     'prettier',

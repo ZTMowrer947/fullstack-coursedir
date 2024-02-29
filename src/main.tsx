@@ -1,8 +1,8 @@
 import { StrictMode } from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 
-import initRoutes from '@/pages/routes.tsx';
+import configRoutes from '@/pages/routes.tsx';
 
 import App from './App.tsx';
 
@@ -21,9 +21,9 @@ if (import.meta.env.DEV) {
 }
 
 // Initialize routes
-const routes = initRoutes();
+const routes = configRoutes();
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App>
       <RouterProvider router={routes} />
