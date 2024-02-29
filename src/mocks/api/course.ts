@@ -45,7 +45,7 @@ const courseHandlers: RequestHandler[] = [
     if (mappedCourse) {
       return HttpResponse.json<Course | { message: string }>(mappedCourse);
     } else {
-      return HttpResponse.json({ message: 'not found' }, { status: 401 });
+      return HttpResponse.json({ message: 'not found' }, { status: 404 });
     }
   }),
 
