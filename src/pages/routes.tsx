@@ -3,6 +3,7 @@ import { createBrowserRouter, Outlet, redirect } from 'react-router-dom';
 import { authActionWrapper, authLoaderWrapper } from '@/pages/(auth)/auth-wrappers.ts';
 import guestLoader from '@/pages/(auth)/guest-loader.ts';
 import signOutAction from '@/pages/(auth)/signout/action.ts';
+import courseDeleteAction from '@/pages/courses/[id]/delete/action.ts';
 import ConfirmDelete from '@/pages/courses/[id]/delete/page.tsx';
 import courseUpdateDeleteLoader from '@/pages/courses/[id]/updel-loader.ts';
 import newCourseAction from '@/pages/courses/new/action.ts';
@@ -83,6 +84,7 @@ export function initRoutes() {
                   path: 'delete',
                   element: <ConfirmDelete />,
                   loader: authLoaderWrapper(queryClient, courseUpdateDeleteLoader),
+                  action: authActionWrapper(queryClient, courseDeleteAction),
                 },
               ],
             },

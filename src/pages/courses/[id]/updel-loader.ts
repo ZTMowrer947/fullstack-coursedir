@@ -9,7 +9,7 @@ const courseUpdateDeleteLoader = (queryClient: QueryClient, user: User) => async
   const course = await courseDetailLoader(queryClient)(args);
 
   // If course does not belong to user, throw 403
-  if (course.userId !== user.id) throw new Response(`Not authorized to delete this course`, { status: 403 });
+  if (course.userId !== user.id) throw new Response(`Not authorized to update or delete this course`, { status: 403 });
 
   return course;
 };
