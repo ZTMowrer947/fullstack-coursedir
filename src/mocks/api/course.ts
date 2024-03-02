@@ -101,12 +101,80 @@ const courseHandlers: RequestHandler[] = [
     });
   }),
 
-  http.put('/api/courses/:id', () => {
-    return new HttpResponse(null, { status: 503 });
+  http.put('/api/courses/:id', async ({ request, params }) => {
+    const authResult = ensureAuth(request.headers.get('authorization'));
+
+    if (authResult instanceof Response) return authResult;
+
+    // Extract ID of authenticated user
+    const user = authResult;
+
+    const id = Number.parseInt(params.id.toString(), 10);
+
+    const course = findCourseById(id);
+
+    if (!course) return HttpResponse.json({ message: `No course with ID ${params.id}` }, { status: 404 });
+
+    if (course.userId !== user.id)
+      return HttpResponse.json(
+        { message: 'Not authorized to modify course authored by another user' },
+        { status: 403 },
+      );
+
+    const data = await request.json();
+
+    // Validate course data, throwing a 400 if it fails
+    let result: CourseUpsertData;
+
+    try {
+      result = await courseSchema.validate(data, { abortEarly: false });
+    } catch (err) {
+      const validationErrors = err as ValidationError;
+
+      return HttpResponse.json(validationErrors, { status: 400 });
+    }
+
+    // Apply update to course data, and return 204
+    db.course.update({
+      data: result,
+      where: {
+        id: {
+          equals: course.id,
+        },
+      },
+    });
+
+    return new HttpResponse(null, { status: 204 });
   }),
 
-  http.delete('/api/courses/:id', () => {
-    return new HttpResponse(null, { status: 503 });
+  http.delete('/api/courses/:id', ({ request, params }) => {
+    const authResult = ensureAuth(request.headers.get('authorization'));
+
+    if (authResult instanceof Response) return authResult;
+
+    // Extract ID of authenticated user
+    const user = authResult;
+
+    const id = Number.parseInt(params.id.toString(), 10);
+
+    const course = findCourseById(id);
+
+    if (!course) return HttpResponse.json({ message: `No course with ID ${params.id}` }, { status: 404 });
+
+    if (course.userId !== user.id)
+      return HttpResponse.json(
+        { message: 'Not authorized to delete course authored by another user' },
+        { status: 403 },
+      );
+
+    // Delete course and return 204
+    db.course.delete({
+      where: {
+        id: { equals: course.id },
+      },
+    });
+
+    return new HttpResponse(null, { status: 204 });
   }),
 ];
 
