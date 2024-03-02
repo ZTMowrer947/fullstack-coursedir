@@ -100,6 +100,14 @@ const courseHandlers: RequestHandler[] = [
       },
     });
   }),
+
+  http.put('/api/courses/:id', () => {
+    return new HttpResponse(null, { status: 503 });
+  }),
+
+  http.delete('/api/courses/:id', () => {
+    return new HttpResponse(null, { status: 503 });
+  }),
 ];
 
 export default courseHandlers;
