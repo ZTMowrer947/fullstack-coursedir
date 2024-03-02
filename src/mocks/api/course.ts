@@ -7,6 +7,31 @@ import ensureAuth from '@/mocks/api/auth.ts';
 
 import db from './db';
 
+function findCourseById(id: number): Course | null {
+  const course = db.course.findFirst({
+    where: {
+      id: {
+        equals: id,
+      },
+    },
+  });
+
+  return course != null
+    ? {
+        id: course.id,
+        title: course.title,
+        description: course.description,
+        estimatedTime: course.estimatedTime,
+        materialsNeeded: course.materialsNeeded,
+        userId: course.author!.id,
+        user: {
+          firstName: course.author!.firstName,
+          lastName: course.author!.lastName,
+        },
+      }
+    : null;
+}
+
 const courseHandlers: RequestHandler[] = [
   http.get('/api/courses', () => {
     // Get courses and map into previews
@@ -18,32 +43,10 @@ const courseHandlers: RequestHandler[] = [
   http.get('/api/courses/:id', ({ params }) => {
     const id = Number.parseInt(params.id.toString(), 10);
 
-    const course = db.course.findFirst({
-      where: {
-        id: {
-          equals: id,
-        },
-      },
-    });
+    const course = findCourseById(id);
 
-    const mappedCourse: Course | null =
-      course != null
-        ? {
-            id: course.id,
-            title: course.title,
-            description: course.description,
-            estimatedTime: course.estimatedTime,
-            materialsNeeded: course.materialsNeeded,
-            userId: course.author!.id,
-            user: {
-              firstName: course.author!.firstName,
-              lastName: course.author!.lastName,
-            },
-          }
-        : null;
-
-    if (mappedCourse) {
-      return HttpResponse.json<Course | { message: string }>(mappedCourse);
+    if (course) {
+      return HttpResponse.json<Course | { message: string }>(course);
     } else {
       return HttpResponse.json({ message: 'not found' }, { status: 404 });
     }
