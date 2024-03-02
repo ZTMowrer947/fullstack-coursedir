@@ -3,6 +3,8 @@ import { createBrowserRouter, Outlet, redirect } from 'react-router-dom';
 import { authActionWrapper, authLoaderWrapper } from '@/pages/(auth)/auth-wrappers.ts';
 import guestLoader from '@/pages/(auth)/guest-loader.ts';
 import signOutAction from '@/pages/(auth)/signout/action.ts';
+import ConfirmDelete from '@/pages/courses/[id]/delete/page.tsx';
+import courseUpdateDeleteLoader from '@/pages/courses/[id]/updel-loader.ts';
 import newCourseAction from '@/pages/courses/new/action.ts';
 import NewCoursePage from '@/pages/courses/new/page.tsx';
 import userLoader from '@/pages/user-loader.ts';
@@ -13,7 +15,7 @@ import SigninPage from './(auth)/signin/page';
 import signUpAction from './(auth)/signup/action';
 import SignupPage from './(auth)/signup/page';
 import Layout from './(base)/layout';
-import courseDetailLoader from './courses/[id]/loader';
+import courseDetailLoader from './courses/[id]/loader.tsx';
 import CourseInfo from './courses/[id]/page';
 import courseListLoader from './courses/loader';
 import Courses from './courses/page';
@@ -71,8 +73,18 @@ export function initRoutes() {
             },
             {
               path: ':id',
-              element: <CourseInfo />,
-              loader: courseDetailLoader(queryClient),
+              children: [
+                {
+                  index: true,
+                  element: <CourseInfo />,
+                  loader: courseDetailLoader(queryClient),
+                },
+                {
+                  path: 'delete',
+                  element: <ConfirmDelete />,
+                  loader: authLoaderWrapper(queryClient, courseUpdateDeleteLoader),
+                },
+              ],
             },
           ],
         },

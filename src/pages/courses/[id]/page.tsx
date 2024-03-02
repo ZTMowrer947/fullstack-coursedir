@@ -6,7 +6,7 @@ import { courseDetailQuery } from '@/lib/queries/courseDetail';
 import { AuthLoaderData } from '@/pages/user-loader.ts';
 
 import CourseDetail from './course-detail';
-import { CourseDetailData } from './loader';
+import { CourseDetailData } from './loader.tsx';
 
 export default function CourseInfo() {
   const initialData = useLoaderData() as CourseDetailData;
