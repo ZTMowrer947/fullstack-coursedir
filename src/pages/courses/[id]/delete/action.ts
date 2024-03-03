@@ -8,7 +8,7 @@ import { courseDetailQuery } from '@/lib/queries/courseDetail.ts';
 
 const courseDeleteAction = (queryClient: QueryClient, user: User): ActionFunction => {
   return async ({ request, params }) => {
-    const data = await request.formData();
+    const data = await request.json();
 
     const idNum = params.id ? Number.parseInt(params.id, 10) : undefined;
 
@@ -26,11 +26,11 @@ const courseDeleteAction = (queryClient: QueryClient, user: User): ActionFunctio
     // If course does not belong to user, throw 403
     if (result.userId !== user.id) throw new Response(`Not authorized to delete this course`, { status: 403 });
 
-    if (data.get('title') !== result.title) return { titlesMatch: false };
+    if (data.title !== result.title) return { titlesMatch: false, timestamp: Date.now() };
 
     await deleteCourse(AuthManager.credentials!, idNum);
 
-    return redirect('/course');
+    return redirect('/courses');
   };
 };
 
