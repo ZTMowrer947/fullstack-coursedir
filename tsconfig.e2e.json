@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "types": ["cypress", "@testing-library/cypress"],
     "resolveJsonModule": true,
     "esModuleInterop": true,
