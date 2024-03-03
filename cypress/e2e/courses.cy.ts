@@ -116,3 +116,53 @@ describe('Course creation page', () => {
     cy.findAllByTestId('course-link').last().should('have.text', courseData.title);
   });
 });
+
+describe('Course delete page', () => {
+  it('redirects to authentication page if no user is signed in', () => {
+    cy.visit('/courses/1/delete');
+    cy.url().should('not.contain', '/courses/1/delete');
+  });
+
+  it('should remove course from course listing only after correct title is input', function () {
+    // Login to access page
+    const user: Spamton = this.spamton;
+    cy.login(user.emailAddress, user.password);
+
+    cy.visit('/courses/1/delete');
+
+    // Find the warnings of the irrecoverability of deletion
+    const warningPRegex = /"(.+)" course/;
+    cy.findByRole('heading', { level: 1, name: 'WARNING!' });
+    cy.findByText(warningPRegex)
+      .then(($p) => {
+        // Extract the course title we must type in
+        const result = warningPRegex.exec($p.text());
+
+        expect(result).to.not.be.null;
+
+        return result[1];
+      })
+      .as('title');
+
+    // First attempt to submit without typing anything in
+    cy.findByRole('button', { name: 'DELETE course' }).click();
+
+    // Expect an alert to appear and the URL not to change
+    cy.findByRole('alert');
+    cy.url().should('contain', '/courses/1/delete');
+
+    // Type in the needed title to actually confirm the deletion
+    cy.get('@title').then((title) => {
+      cy.findByPlaceholderText('Confirm Title...').type(title.toString());
+    });
+
+    cy.findByRole('button', { name: 'DELETE course' }).click();
+
+    // We should be back to the course listing, and the course with the given title should not exist
+    cy.url().should('match', /\/courses$/);
+
+    cy.get('@title').then((title) => {
+      cy.findByRole('link', { name: title.toString() }).should('not.exist');
+    });
+  });
+});
